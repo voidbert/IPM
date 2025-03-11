@@ -1,0 +1,7 @@
+# Code editors and operating systems
+.DS_Store
+.vscode
+
+# LaTeX compilation
+*-eps-converted-to.pdf
+reports/build
