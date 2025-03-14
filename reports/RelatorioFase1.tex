@@ -6,11 +6,13 @@
 \usepackage[a4paper, margin=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{pdfpages}
 \usepackage{setspace}
 
 \title{\textbf{Interface Pessoa-Máquina \\ \large Trabalho Prático -- Fase I}}
-\date{15 de março de 2025}
-\author{Grupo 12}
+\date{16 de março de 2025}
+\author{Grupo 12 \\
+    \url{https://www.figma.com/design/Ps4VLCPz66bKq5p2ypzrDR/Projeto-IPM}}
 
 \begin{document}
 
@@ -50,5 +52,45 @@
         A76350            & A104179
     \end{tabular}
 \end{center}
+
+\begin{abstract}
+    No âmbito deste trabalho prático, foi prototipada uma interface de utilizador de um sistema para
+    a gestão de horários de um curso universitário, utilizado tanto pelos alunos como pelo diretor
+    de curso. Neste documento, apresenta-se a interface modelada com recurso à ferramenta Figma
+    \cite{figma}, justificando as várias decisões tomadas face aos perfis dos utilizadores da
+    aplicação. Perante o grande volume de dados que são horários, o principal foco do
+    desenvolvimento desta interface foi a apresentação desta informação de uma forma familiar,
+    flexível, e sem sobrecarregar o utilizador. Foi também realizada uma avaliação da interface
+    apresentada, fazendo uso das heurísticas de Nielsen \cite{nielsen}. Apesar de algumas limitações
+    da ferramenta de modelação, julga-se ter construído um protótipo de uma interface que cumpre os
+    objetivos do enunciado, e que se encontra suficientemente detalhado para a sua implementação.
+\end{abstract}
+
+\section{Análise da Interface Desenvolvida}
+
+\section{Mapa de Navegação}
+
+\section{Avaliação Heurística}
+
+\section{Conclusão e Trabalho Futuro}
+
+\begingroup
+\section{Bibliografia}
+\renewcommand{\section}[2]{}
+
+\begin{thebibliography}{9}
+    \bibitem{figma}
+        "Figma: Collaborative Interface Design Tool."{}. Figma. Accessed: Mar. 13, 2025. [Online.]
+        Available: \url{https://www.figma.com/}
+    \bibitem{nielsen}
+        "10 Usability Heuristics for User Interface Design". Nielsen Norman Group.
+        Accessed: Mar. 13, 2025. [Online.] Available:
+        \url{https://www.nngroup.com/articles/ten-usability-heuristics/}
+\end{thebibliography}
+\endgroup
+
+\includepdf[pages=1,pagecommand=\section{Anexo -- Enunciado do Trabalho}\thispagestyle{empty}]
+    {../Assignment.pdf}
+\includepdf[pages=2-]{../Assignment.pdf}
 
 \end{document}
