@@ -80,7 +80,7 @@ de curso como as alunos inserem as suas credenciais para se autenticarem:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/prototype/iniciar-sessao.png}
-    \caption{Captura de ecrã do protótipo da página ``Iniciar Sessão''.}
+    \caption{Captura de ecrã do protótipo da página ``Iniciar Sessão'' no tema claro.}
     \label{iniciar-sessao}
 \end{figure}
 
@@ -192,7 +192,7 @@ com problemas de destreza manual ou a utilizar ecrãs mais pequenos.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{res/prototype/dialogo-informacao-turno.png}
-    \caption{Diálogo com informação de um turno na página ``O meu Horário''.}
+    \caption{Captura de ecrã do diálogo com informação de um turno na página ``O meu Horário''.}
     \label{dialogo-informacao-turno}
 \end{figure}
 
@@ -235,12 +235,18 @@ desta página e abortando a troca de turnos.
 
 Quando se clica num turno, deve ser enviado um pedido de troca ao diretor de curso. No entanto,
 como não é possível retroceder no envio deste pedido, um diálogo de confirmação deve surgir após
-clicar num turno:
+clicar num turno, como pode ser visto abaixo. Teve-se o cuidado de utilizar mensagens de
+confirmação apenas quando estritamente necessário, ou seja, quando as ações a executar não eram
+reversíveis (princípio do esforço proporcional, associado ao princípio da recuperabilidade).
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/prototype/dialogo-confirmacao-troca.png}
-    \caption{Diálogo para confirmação da troca de um turno na página ``O meu Horário''.}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do diálogo para confirmação da troca de um turno na página
+        ``O meu Horário''.
+    }
     \label{dialogo-confirmacao-troca}
 \end{figure}
 
@@ -277,10 +283,7 @@ pode ver todos os turnos de todas as UCs em que se encontra inscrito:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/prototype/horario-completo.png}
-    \caption{
-        \onehalfspacing
-        Captura de ecrã do protótipo da página ``Horário Completo'' durante uma troca de turnos.
-    }
+    \caption{Captura de ecrã do protótipo da página ``Horário Completo''.}
     \label{horario-completo}
 \end{figure}
 
@@ -304,7 +307,10 @@ página ``Horário Completo'':
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/prototype/horario-completo-trocar.png}
-    \caption{Captura de ecrã do protótipo da página ``Horário Completo''.}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do protótipo da página ``Horário Completo'' durante uma troca de turnos.
+    }
     \label{horario-completo-trocar}
 \end{figure}
 
@@ -375,8 +381,299 @@ notificação:
         aluno sabe que o seu pedido não será satisfeito antes do diretor de curso publicar novos
         horário, fazendo com que possivelmente possa pedir para trocar outros turnos;
     \item Atualização do horário do aluno (cenário 3), que ocorre quando o diretor de curso publica
-        novos horários e o conjunto de turnos que o aluno deve frequentar é alterado.
+        novos horários e o conjunto de turnos que o aluno deve frequentar é alterado. É de notar que
+        estas alterações podem ser outras que não a aprovação dos pedidos do aluno: o diretor é
+        capaz de alterar qualquer turno que cada aluno deve frequentar.
 \end{itemize}
+
+\subsection{Página ``Resolver Problemas''}
+
+Quando é o diretor de curso a iniciar sessão, a página que lhe será apresentada é a seguinte:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/resolver-problemas.png}
+    \caption{Captura de ecrã do protótipo da página ``Resolver Problemas''.}
+    \label{resolver-problemas}
+\end{figure}
+
+Como se pode observar, esta página é divida em duas colunas. Do lado esquerdo, são apresentados os
+vários problemas que o diretor de curso pode resolver: alunos com turnos por atribuir (cenário 1) e
+pedidos de troca de turno (cenário 3). Em primeiro lugar, devem ser apresentados os problemas
+relacionados com os alunos com estatuto, e só depois os dos restantes alunos. Ademais, o segundo
+critério de ordenação é o tipo de problema: primeiro são apresentados os alunos sem horário
+atribuído a algumas UCs, e só depois os pedidos de troca. Assim, com esta ordem, espera-se que o
+utilizador se foque, em primeiro lugar, em endereçar os problemas relacionados com os alunos com
+mais limitações horárias, os estudantes com estatuo, e só depois se preocupe com os restantes,
+priorizando alunos sem horário sobre preferências horárias de alunos. O aluno apresentado no ecrã é
+apresentado a um tom mais escuro, tal como qualquer aluno a ser sobrevoado pelo cursor, mostrando
+que é possível interagir (no caso, clicar) nestes alunos, para mudar o problema a ser apresentado:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{res/prototype/resolver-problemas-hover.png}
+    \caption{
+        \onehalfspacing
+        Cores de alunos escolhido para visualização, sobrevoado pelo rato, e sem alteração,
+        respetivamente, na página ``Resolver Problemas''.
+    }
+    \label{resolver-problemas-hover}
+\end{figure}
+
+Do lado direito da página, surge o horário do aluno, a cinzento, e os turnos que lhe podem ser
+atribuídos, a uma cor viva, que muda quando o cursor os sobrevoa, indicando que é possível interagir
+com os mesmos. Clicar num turno abaixo da sua sua capacidade deve colocar o aluno nesse turno,
+marcar o problema como resolvido, e automaticamente prosseguir para o próximo problema. No entanto,
+caso o turno esteja cheio, o seguinte diálogo deve ser apresentado:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/dialogo-turno-cheio.png}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do diálogo de adição de um aluno a um turno cheio, na página
+        ``Resolver Problemas''.
+    }
+    \label{dialogo-turno-cheio}
+\end{figure}
+
+Este diálogo relembra o utilizador de que este se encontra a adicionar um aluno a um turno cheio,
+dando-lhe a opção de cancelar essa operação, de trocar a sala do turno (cenário 3), ou de colocar o
+aluno no turno e deixar que a sua lotação ultrapasse a sua capacidade (também cenário 3). É de notar
+que apenas o botão para troca de sala, que redireciona o utilizador para a página ``Gerir Turno'',
+não se encontra ativo para todos os turnos práticos, visto que a sua capacidade pode não ser
+limitada pela capacidade da sala em que são lecionados. Nesse caso, deve haver uma \emph{tooltip}
+associada ao botão com essa informação.
+
+Quando o problema apresentado é um de troca de turnos, o esquema de cores dos turnos segue o
+utilizado na página ``O meu horário'' (ver figura \ref{o-meu-horario-trocar}):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/resolver-problemas-pedido.png}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do protótipo da página ``Resolver Problemas'' durante a resolução de um
+        pedido de troca de turno.
+    }
+    \label{resolver-problemas-pedido}
+\end{figure}
+
+No canto superior esquerdo, pode observar-se um botão para desfazer a ação previamente realizada,
+o que faz com que seja fácil recuperar de erros. No entanto, é impossível reverter a recusa de
+pedidos de troca de alunos, uma vez que quando um pedido é recusado, uma notificação é enviada ao
+aluno a avisá-lo. Por esse motivo, quando se recursa o pedido de um aluno usando o botão no canto
+inferior diretor da página, um diálogo de confirmação surge antes, a perguntar se o utilizador tem
+a certeza que deseja realizar esta ação irreversível:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/dialogo-confirmacao-recusa.png}
+    \caption{
+        \onehalfspacing
+        Diálogo de confirmação de recusa de um pedido de troca de turno na página
+        ``Resolver Problemas''.
+    }
+    \label{dialogo-confirmacao-recusa}
+\end{figure}
+
+\subsection{Página ``Gerir Turnos''}
+
+Além de resolver problemas simples de atribuição de turnos a alunos, o diretor de curso pode
+precisar de fazer uma gestão mais aprofundada de cada turno, mesmo além da que é descrita pelo
+cenário 3. Ações como manualmente tirar alunos de turnos para depois os colocar noutros devem ser
+suportadas, para permitir que o diretor de curso faça uma otimização manual dos horários, procurando
+garantir que os horários de todos os alunos são válidos e que nenhum turno excede a sua capacidade.
+Para escolher um turno para gerir, o diretor de curso pode utilizar a página cujo protótipo se
+apresenta abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/gerir-turnos.png}
+    \caption{Captura de ecrã do protótipo da página ``Gerir Turnos''.}
+    \label{gerir-turnos}
+\end{figure}
+
+Esta página é semelhante à página ``Horário Completo'', onde todos os turnos de todas as UCs em que
+um aluno se encontra inscrito lhe são apresentadas. Agora, sem a necessidade de realçar o horário do
+aluno, todos os turnos são apresentados com a cor que identifica a sua UC. A barra lateral é ainda
+mais importante: deve ser possível que o diretor de curso consulte todos os turnos de todas as UCs
+do curso, e não apenas as quais um dado aluno se encontra inscrito. Isto é um grande desafio de
+observabilidade, uma vez que não é possível apresentar todos os turnos em simultâneo no espaço
+finito do ecrã, e deve ser dada ao diretor de curso a possibilidade de escolher quais ele pretende
+visualizar. Optou-se por um sistema em que o diretor de curso escolhe que turnos deseja visualizar
+com base na sua UC, e não com base numa pesquisa pelo nome do turno, visto que a gestão de um turno
+pode precisar da modificação de outros turnos da mesma UC (por exemplo, para mudar um aluno de
+turno). Ademais, a visualização destes turnos numa estrutura de horário permite que o diretor de
+curso facilmente identifique turnos à mesma hora que outros.
+
+\subsection{Página ``Gerir Turno''}
+
+Quando o diretor de curso carrega num turno da página ``Gerir Turnos'', será redirecionado para a
+página ``Gerir Turno'', cujo protótipo se apresenta abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/gerir-turno.png}
+    \caption{Captura de ecrã do protótipo da página ``Gerir Turno''.}
+    \label{gerir-turno}
+\end{figure}
+
+Como se pode observar, do lado esquerdo da página, é possível ver alguma informação sobre o turno
+selecionado para modificação, e também uma lista de \emph{dropdown} para escolha da sala do turno.
+Esta lista deve apenas apresentar salas com capacidade suficiente para o turno. Ademais, devem ser
+apresentadas em primeiro lugar as salas livres, e só depois opções de troca de sala com outros
+turnos (que não façam com que esses turnos fiquem sobrelotados). Por último, o segundo critério de
+ordenação deve ser a capacidade das salas:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{res/prototype/gerir-turno-dropdown-salas.png}
+    \caption{Lista de \emph{dropdown} para a definição da sala de um turno.}
+    \label{gerir-turno-dropdown-salas}
+\end{figure}
+
+Com esta ordenação da lista, como é mais provável que o diretor de curso selecione uma das primeiras
+opções, é mais provável que escolha uma sala que não cause distúrbios a outros turnos (não exija
+outras mudanças de sala) e que não tenha uma capacidade excessiva, deixando as salas maiores para
+turnos que realmente precisem delas. Para a escolha da sala, foi decidido que uma lista de
+\emph{dropdown} seria utilizada, visto que apenas era necessário que o diretor de curso escolhesse
+uma sala válida, e não uma sala em específico. Deste modo, é possível apresentar as opções de troca
+de uma forma mais simples, sem adicionar complexidade à interface.
+
+Do lado direito da página, é possível gerir o conjunto de alunos inscrito no turno. Em primeiro
+lugar, está disponível uma barra de pesquisa, que permite filtrar que alunos devem ser apresentados,
+permitindo uma melhor observabilidade dos conteúdos da página, especialmente em turnos de maior
+dimensão. Ademais, encontra-se associado um botão a cada aluno, que o remove do turno. No protótipo
+em Figma, um clique neste botão não se reflete na remoção do aluno da lista, uma vez que isso
+levaria à necessidade da prototipagem um número excessivamente elevado de estados. No entanto, um
+efeito observável da interação com este botão é a apresentação da mensagem abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/gerir-turno-desfazer.png}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do protótipo da página ``Gerir Turno'' com a opção de desfazer a remoção de
+        um aluno do turno.
+    }
+    \label{gerir-turno-desfazer}
+\end{figure}
+
+Para o diretor de curso minimizar o seu tempo a utilizar a aplicação, como é descrito pelo perfil
+do José, a opção de desfazer a ação de remover um aluno surge instantaneamente após a sua execução,
+e o diretor não tem de procurar esse aluno para o voltar a adicionar.
+
+Por outro lado, para adicionar um aluno ao turno, o utilizador pode clicar no botão
+``Adicionar aluno'', que abrirá o diálogo abaixo, onde o utilizador poderá procurar um novo aluno
+para adicionar ao turno:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/gerir-turno-adicionar-aluno.png}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do diálogo para adição de um aluno a um turno na página ``Gerir Turno''.
+    }
+    \label{gerir-turno-desfazer-adicionar-aluno}
+\end{figure}
+
+Quando um aluno é adicionado com um clique num dos botões ``+'', este diálogo será fechado e será
+apresentada uma mensagem semelhante à da figura \ref{gerir-turno-desfazer}, permitindo ao utilizador
+facilmente desfazer a sua ação, contribuindo para a recuperabilidade da interface.
+
+\subsection{Página ``Publicar Horários''}
+
+Quando o diretor de curso completa as alterações que deseja aos horários, pode publicá-los, um
+processo descrito no cenário 1. Para o fazer, pode utilizar a página ``Publicar Horários'', cujo
+protótipo é apresentado abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/publicar-horarios.png}
+    \caption{Captura de ecrã do protótipo da página ``Publicar Horários''.}
+    \label{publicar-horarios}
+\end{figure}
+
+Nesta página, antes do diretor de curso publicar os horários, é-lhe apresentada uma lista dos
+problemas ainda por resolver. É de notar que o sistema não impede que o diretor de curso publique
+horários com turnos por atribuir e pedidos de troca por satisfazer (o diretor é livre para o fazer
+se assim o desejar), mas confirma diversas vezes que essa é a sua intenção: primeiro é apresentada
+esta lista de problemas por resolver, e se o diretor decidir publicar os horários mesmo assim, o
+seguinte diálogo de confirmação é apresentado:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/dialogo-confirmacao-publicacao.png}
+    \caption{Diálogo para confirmação da publicação dos horários na página ``Publicar Horários''.}
+    \label{dialogo-confirmacao-publicacao}
+\end{figure}
+
+Estas confirmações seguem o princípio do esforço proporcional, sendo necessário um maior esforço
+para executar estas ações irreversíveis, como a publicação de horários. Caso o utilizador não deseje
+publicar os horários, pode fechar este diálogo e carregar no botão ``Resolver problemas'', ou num
+dos problemas apresentados, o que o redirecionará para a página ``Resolver Problemas''. Por outro
+lado, caso o utilizador decida publicar os horários, uma mensagem de confirmação é apresentada, para
+dar \emph{feedback} ao utilizador do sucesso desta operação definitiva:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]
+        {res/prototype/resolver-problemas-toast-sucesso-publicao.png}
+    \caption{
+        \onehalfspacing
+        Captura de ecrã do protótipo da página ``Resolver Problemas'' com a confirmação de sucesso
+        na publicação de horários.
+    }
+    \label{resolver-problemas-toast-sucesso-publicao}
+\end{figure}
+
+\subsection{Página ``Notificações do Diretor de Curso''}
+
+Esta página, semelhante à página ``Notificações do Aluno'', permite que o diretor de curso veja as
+notificações de eventos que lhe possam ser relevantes:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/notificacoes-diretor.png}
+    \caption{Captura de ecrã do protótipo da página ``Notificações do Diretor de Curso''.}
+    \label{notificacoes-diretor}
+\end{figure}
+
+Os tipos de notificação possíveis são os seguintes:
+
+\begin{itemize}
+    \item Pedido de troca de sala por parte de um docente (cenário 2);
+    \item Pedidos de troca de turnos por parte de estudantes (cenários 3 e 4). Os pedidos são
+        agrupados (por exemplo, ``Tem N pedidos de troca de turno'') para que estes, devido ao maior
+        número de alunos, não ultrapassem em número os pedidos de docentes, o que poderia fazer com
+        que estes últimos não fossem vistos pelo diretor;
+\end{itemize}
+
+Ao contrário do que acontecia na página ``Notificações do Aluno'', o diretor de curso faz mais com
+uma notificação do que ser informado do seu conteúdo: precisa de agir sobre ela. Logo, quando
+sobrevoa o cursor sobre uma notificação, os seguintes botões devem aparecer no seu lado direto:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{res/prototype/notificacoes-diretor-hover.png}
+    \caption{Botões que surgem quando uma notificação é sobrevoada pelo cursor.}
+    \label{notificacoes-diretor-hover}
+\end{figure}
+
+Da esquerda para a direita, estes permitem marcar a notificação como resolvida, marcá-la como algo
+que não será resolvido, e ir para a página onde pode ser resolvida. Por exemplo, quando se clica num
+destes últimos botões associado a um pedido de troca de sala, o utilizador será redirecionado para a
+página ``Gerir Turno'' do turno correspondente. As notificações em diferentes estados são
+representadas em diferentes tons de cinza. A figura seguinte apresenta, de cima para baixo, duas
+notificações por ler, uma notificação por tratar, e uma notificação tratada ou rejeitada:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/prototype/notificacoes-diretor-cor.png}
+    \caption{Cores das notificações do diretor de curso conforme o seu estado.}
+    \label{notificacoes-diretor-cor}
+\end{figure}
 
 \section{Mapa de Navegação}
 
