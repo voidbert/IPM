@@ -69,7 +69,7 @@
     objetivos do enunciado, e que se encontra suficientemente detalhado para a sua implementação.
 \end{abstract}
 
-\section{Análise da Interface Desenvolvida}
+\section{Apresentação da Interface Desenvolvida}
 
 \subsection{Página ``Iniciar Sessão''}
 
@@ -677,7 +677,88 @@ notificações por ler, uma notificação por tratar, e uma notificação tratad
 
 \section{Mapa de Navegação}
 
-TODO
+Para o leitor entender como é possível navegar entre as páginas apresentadas, foi construído um
+mapa de navegação da aplicação. Devido ao seu grande tamanho, foi partido em várias partes, que
+se apresentam abaixo. No entanto, antes de as apresentar, é necessário realçar que apesar da
+notação de diagramas de máquinas de estado UML \cite{uml} ter sido utilizada, uma exceção foi aberta
+para representar diálogos e \emph{toasts}: estes \emph{popups} são apresentados como estados, com
+uma transição de estado para a página onde eles são apresentados, correspondente ao seu fecho. Logo,
+a estrutura $A \rightarrow P \rightarrow B$, onde $P$ é um \emph{popup}, representa a apresentação
+no \emph{popup} $P$ na página $B$. Segue-se, então, o mapa de navegação:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{res/navigation/1.png}
+    \caption{
+        \onehalfspacing
+        Início de sessão no mapa de navegação. Apenas se representou o tema escuro das páginas nesta
+        parte do mapa de navegação.
+    }
+    \label{navigation-1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/2.png}
+    \caption{Horário do aluno e troca de turno no mapa de navegação.}
+    \label{navigation-2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/3.png}
+    \caption{
+        \onehalfspacing
+        Horário completo e troca de turno no mapa de navegação. É possível ver a consistência deste
+        processo com o processo de troca de turno a partir do horário do aluno.
+    }
+    \label{navigation-3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{res/navigation/4.png}
+    \includegraphics[width=0.55\textwidth]{res/navigation/5.png}
+    \caption{Páginas ``Histórico de Pedidos'' e ``Notificações do Aluno'' no mapa de navegação.}
+    \label{navigation-4-5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/6.png}
+    \caption{
+        \onehalfspacing
+        Página ``Resolver Problemas'' no mapa de navegação. É de notar que o primeiro diálogo a
+        contar de cima é utilizado para turnos práticos, e o de baixo para turnos teóricos.
+        Ademais, são representados problemas de 3 alunos diferentes, para mostrar que ações fazem
+        com que um problema seja marcado como resolvido, removendo-o da lista, e quais não o fazem.
+        Uma exceção é o clique num aluno, que não deve remover o problema anterior da lista, mas
+        que foi representado para mostrar que é possível clicar em alunos para ver e resolver os
+        seus problemas.
+    }
+    \label{navigation-6}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/7.png}
+    \caption{Gestão de turnos no mapa de navegação.}
+    \label{navigation-7}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/8.png}
+    \caption{Página ``Publicar Horários'' no mapa de navegação.}
+    \label{navigation-8}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/navigation/9.png}
+    \caption{Página ``Notificações do Diretor de Curso'' no mapa de navegação.}
+    \label{navigation-9}
+\end{figure}
 
 \section{Avaliação Heurística}
 
@@ -867,15 +948,18 @@ pronta a ser implementada para a segunda fase deste trabalho prático.
 
 \begin{thebibliography}{9}
     \bibitem{figma}
-        "Figma: Collaborative Interface Design Tool."{}. Figma. Accessed: Mar. 13, 2025. [Online.]
+        ``Figma: Collaborative Interface Design Tool.''. Figma. Accessed: Mar. 13, 2025. [Online.]
         Available: \url{https://www.figma.com/}
     \bibitem{nielsen}
-        "10 Usability Heuristics for User Interface Design". Nielsen Norman Group.
+        ``10 Usability Heuristics for User Interface Design''. Nielsen Norman Group.
         Accessed: Mar. 13, 2025. [Online.] Available:
         \url{https://www.nngroup.com/articles/ten-usability-heuristics/}
     \bibitem{material-icons}
-        "Material Symbols \& Icons"{}. Google Fonts. Accessed: Mar. 14, 2025. [Online.] Available:
+        ``Material Symbols \& Icons''. Google Fonts. Accessed: Mar. 14, 2025. [Online.] Available:
         \url{https://fonts.google.com/icons}
+    \bibitem{uml}
+        ``About the Unified Modeling Language Specification Version 2.5.1''. OMG.
+        Accessed: Mar. 16, 2025. [Online.] Available: \url{https://www.omg.org/spec/UML}
 \end{thebibliography}
 \endgroup
 
