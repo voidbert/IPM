@@ -677,7 +677,177 @@ notificações por ler, uma notificação por tratar, e uma notificação tratad
 
 \section{Mapa de Navegação}
 
+TODO
+
 \section{Avaliação Heurística}
+
+Para avaliar a interface construída, foram utilizadas Heurísticas de Nielsen \cite{nielsen}. Cada
+elemento do grupo avaliou os fluxos e as páginas em que menos tinha participado no processo de
+construção, assim deparando-se com algo que conhecia menos bem. Apesar do pequeno número de
+avaliadores, algumas falhas foram encontradas e corrigidas. Nesta secção, procura-se detalhar os
+resultados encontrados pelos vários elementos do grupo, os aspetos que puderam ser resolvidos, e
+algumas possíveis melhorias para as próximas iterações do processo de desenvolvimento da aplicação.
+
+\subsection{Visibilidade do Estado do Sistema}
+
+Para garantir que o utilizador conhece o estado do sistema, e sabe se as suas ações foram ou não
+registadas com sucesso, foram utilizadas diversas mensagens a sinalizar o mesmo, como podem ser
+vistas nas figuras \ref{o-meu-horario-toast-sucesso-troca},
+\ref{horario-completo-toast-sucesso-troca} e \ref{resolver-problemas-toast-sucesso-publicao}. Estas
+mensagens são utilizadas em ações pouco frequentes e irreversíveis. No entanto, há situações em que
+o utilizador executa a mesma ação repetidamente, e onde não se deseja apresentar a mesma mensagem
+diversas vezes, pois esta pode perder o seu efeito. Um exemplo desta situação é a página
+``Resolver Problemas'', onde a confirmação da resolução de um problema passa pela remoção desse
+problema da lista de problemas, e pela mudança automática do sistema para o problema seguinte,
+alterando consideravelmente o horário no ecrã do utilizador.
+
+Uma melhoria possível para as próximas iterações do processo de desenvolvimento da aplicação é a
+adição de \emph{feedback} quando a aplicação se encontra a transferir conteúdo do servidor, e não
+está em condições de o apresentar ao utilizador. Elementos como rodas de carregamento são
+especialmente importantes em conexões à Internet mais lentas, algo que não foi considerado nesta
+etapa de prototipagem.
+
+\subsection{Correspondência entre o Sistema e o Mundo Real}
+
+A interface desenvolvida procura apresentar a informação de uma forma que é familiar para o
+utilizador. Além de ter sido feito um esforço para evitar o uso de conceitos técnicos na interface,
+foi dada especial atenção à apresentação dos horários. Esta é feita numa grelha, com colunas a
+corresponder aos dias da semana e linhas a corresponder às horas do dia. Esta interface foi
+escolhida porque os utilizadores já estariam habituados a ver os seus horários assim (por exemplo,
+no \emph{website} da universidade, entregue pelas suas escolas durante o secundário, \emph{etc.}).
+Outro detalhe que se teve em conta foi a forma que a interface se refere às UCs: são utilizadas
+siglas, e não os seus nomes completos. Esta decisão foi tomada porque a maioria dos alunos e dos
+docentes (e, por extensão, o diretor de curso), se referem às UCs deste modo.
+
+\subsection{Controlo e Liberdade do Utilizador}
+
+A interface desenvolvida procura sempre realçar os elementos com os quais é possível interagir,
+guiando o utilizador pelas suas possíveis ações. Isto é principalmente evidente através dos
+efeitos que acontecem quando o cursor sobrevoa elementos da interface (turnos de horários,
+alunos em listas, ícones, \emph{etc}., como apresentado nas figuras \ref{turno-hover} e
+\ref{resolver-problemas-hover}), mostrando que é possível interagir com os mesmos. O mesmo se aplica
+aos turnos que são destacados durante o processo de troca de turnos (figuras
+\ref{o-meu-horario-trocar} e \ref{horario-completo-trocar}). No entanto, é de notar que este realce
+de certos elementos da página usando cores pode ser problemático para utilizadores daltónicos, e a
+impossibilidade do efeito de \emph{hover} em dispositivos móveis levou à necessidade de adição de
+pequenas instruções de utilização em algumas páginas.
+
+Ademais, na interface desenvolvida, todas as ações sem consequências irreversíveis podem ser
+desfeitas em apenas um clique do rato ou com um atalho de teclado (figuras
+\ref{resolver-problemas-pedido} e \ref{gerir-turno-desfazer}).
+
+Por último, grande partes dos problemas encontrados durante a análise heurística relacionaram-se com
+o controlo e a liberdade de utilizador. Para a maior parte das páginas, devido à barra de navegação
+e à baixa profundidade do mapa de navegação da aplicação, era fácil ao utilizador saber em que
+página se encontrava e como lá tinha chegado. No entanto, para as restantes páginas como, por
+exemplo, as páginas de notificações, foi necessário adicionar os títulos destas páginas aos seus
+conteúdos, para o utilizador saber em que página estava.
+
+\subsection{Consistência e Normas}
+
+A consistência foi um dos principais focos do desenvolvimento desta interface. Além de se terem
+procurado eliminar inconsistências entre as diversas páginas, tornando a interface mais previsível,
+foram consultadas as interfaces de várias outras aplicações, para que a interface desenvolvida
+fosse consistente com o que o utilizador já poderia estar habituado. Para garantir esta consistência
+externa, foram várias vezes utilizadas normas de desenho. Por exemplo, o uso dos Material Icons
+\cite{material-icons} faz com que o utilizador saiba o significado da iconografia da aplicação,
+mesmo quando a está a usar pela primeira vez. Outro exemplo foi a separação das páginas de
+notificações das outras páginas da barra de navegação, algo que não faria sentido por si só, mas que
+foi feito para que esta interface se assemelhasse a outras já conhecidas pelo utilizador.
+
+A principal dificuldade que surgiu com a consistência foi a compatibilização de uma interface
+consistente com uma de uso eficiente. Houve instâncias em que, para a interface ser consistente com
+o que o utilizador poderia estar habituado, o número de cliques para executar cada ação foi
+aumentado. A título de exemplo, na página ``Gerir Turno'', não se integrou a funcionalidade de
+adição de um novo aluno na barra de pesquisa existente (se o diretor de curso procurasse por um
+aluno que não estivesse no turno, o sistema forneceria a possibilidade de o adicionar), visto que
+esta interface, pouco usual, não seria de aprendizagem intuitiva.
+
+\subsection{Prevenção de Erros}
+
+Uma outra dificuldade enfrentada no desenvolvimento desta interface foi a de alertar o utilizador
+para os erros que este pode cometer, sem o impedir de os cometer. Nada no enunciado do trabalho
+prático indica que, por exemplo, o diretor de curso não possa publicar horários com turnos por
+atribuir ou causar sobreposições de turnos nos horários dos alunos. Este último ponto até acaba por
+ser uma inevitabilidade quando os estudantes se encontram a repetir cadeiras de anos anteriores.
+Perante esta proibição de impedir erros por completo, a interface desenvolvida foca-se em garantir
+que o diretor de curso sabe que está a cometer um erro, e que apenas o faz porque não tem nenhuma
+outra opção. Tendo em conta esta abordagem, o desempenho da aplicação neste aspeto é bom:
+confirmações como as das figuras \ref{dialogo-turno-cheio}, \ref{publicar-horarios} e
+\ref{dialogo-confirmacao-publicacao} garantem que o diretor está ciente de que se encontra a cometer
+erros, mas pode avançar com as suas ações se assim o desejar. Outro exemplo é a apresentação dos
+horários dos alunos na página ``Resolver Problemas'', que permitem ao diretor de curso ver
+facilmente se a atribuição de um dado turno ao aluno causaria ou não uma sobreposição. O mesmo é
+válido para a troca de turnos por parte dos alunos.
+
+A principal dificuldade sentida na prevenção de erros na interface foi a identificação de todas as
+situações de erro possível, algo que pode não ter sido feito perfeitamente, e ainda haver formas
+de cometer erros sem qualquer aviso. Para resolver este problema, avaliação heurística poderá não
+ser suficiente (mesmo com um aumento no número de avaliadores), sendo ideal fazer testes com
+utilizadores reais.
+
+\subsection{Reconhecimento \emph{vs.} Recordação}
+
+Perante o elevado número de alunos com que o diretor de curso deve lidar, não é possível que este
+consiga ter a mente tudo o que precisa de fazer quando toca à gestão de horários. Por este motivo,
+as páginas ``Resolver Problemas'' e ``Notificações do Diretor de Curso'' apresentam a este
+utilizador exatamente o que tem de fazer para satisfazer as necessidade dos alunos e professores.
+Ademais, caso o diretor de curso, por exemplo, acidentalmente remova alunos de um turno e não
+desfaça essa ação, os novos alunos sem turno automaticamente aparecerão na página
+``Resolver Problemas'', e o diretor de curso não se terá de lembrar quais os alunos que removeu e
+que deve voltar a adicionar a um turno.
+
+\subsection{Flexibilidade e Eficiência de Utilização}
+
+A interface foi desenhada para ser de uso eficiente, particularmente a do diretor de curso. Esta
+está repleta de atalhos, como os das notificações em ``Notificações do Diretor de Curso'' e os
+problemas em ``Publicar Horários'', ambos para a página ``Resolver Problemas''. Ademais, sempre que
+for possível desfazer uma ação, deve ser possível utilizar o atalho de teclado Ctrl+Z, acelerando a
+interação com a aplicação, especialmente por um utilizador com uma vasta experiência tecnológica,
+como o do perfil do José.
+
+Em relação à flexibilidade da interface, há diversos aspetos em que os utilizadores a podem
+personalizar para uma maior eficiência. A título de exemplo, os alunos podem escolher entre ver
+apenas os turnos que lhe foram atribuídos ou todos os turnos de todas as UCs a que se encontra
+inscrito. Esta escolha é importante porque a informação necessária pelo aluno é diferente
+conforme o número de pedidos de troca que este deseja realizar: para um pedido o seu horário apenas
+serve, mas pode dar jeito conhecer os horários dos outros turnos para fazer mais do que uma troca.
+Também existe alguma flexibilidade cosmética, por exemplo, com os temas claro e escuro da interface.
+No entanto, visto que muitos alunos utilizarão esta aplicação para consultar o seu horário durante
+todo o semestre, poderão estar interessados em escolher as cores com que cada UC é representada, uma
+funcionalidade que pode vir a ser suportada numa futura iteração do processo de desenvolvimento.
+
+\subsection{Estética e Desenho Minimalista}
+
+Um dos principais desafios no desenvolvimento desta interface foi a apresentação do grande volume de
+dados que são os horários de uma forma minimal, sem a informação dada ser a menos ou a mais. A já
+referida representação dos horários em forma de grelha faz com que o utilizador seja capaz de
+interpretar mais facilmente este grande volume de dados, quando comparada com uma representação em
+lista, por exemplo. Ademais, certa informação destes horários, como, por exemplo, a lotação dos
+turnos, apenas é apresentada quando estritamente necessário. A título de exemplo, na figura
+\ref{o-meu-horario-trocar}, apenas é apresentada a lotação dos turnos para os quais o utilizador
+pode trocar. Por último, a separação das páginas ``O meu Horário'' e ``Horário Completo'' permite
+que os alunos apenas precisem de visualizar a informação que desejam, podendo optar por evitar o
+grande número de turnos que é o horário completo se não precisarem dele.
+
+\subsection{Ajuda aos Utilizadores a Reconhecer, Diagnosticar e Recuperar de Erros}
+
+Devido a um forte esforço na prevenção de erros na interface, o único erro que é apresentado ao
+utilizador ocorre na página ``Iniciar Sessão'', e é descritivo do erro em linguagem simples,
+indicando o problema. No entanto, pode haver erros resultantes de uma má programação da aplicação
+ou devido a situações excecionais (por exemplo, erros do servidor). Nesse caso, páginas de erro
+explicativas devem ser modeladas, mas isso é algo que pode ser pensado para a próxima iteração do
+desenvolvimento desta aplicação.
+
+\subsection{Ajuda e Documentação}
+
+A interface desenvolvida procura guiar o utilizador pelas ações ao seu dispor, pelo que não se
+julgou necessária a escrita de um manual de uso para a aplicação. Mesmo assim, algumas dicas de
+contexto foram espalhadas pela interface, como legendas dos ícones e justificações de por que motivo
+alguns botões se encontram bloqueados (como a da figura \ref{dialogo-turno-cheio}). No entanto, no
+evento indesejado em que um utilizador não sabe de todo como deve interagir com a aplicação, algo
+que se fez de tudo para prevenir, uma boa oportunidade de melhoria seria a escrita de um breve
+manual de utilização.
 
 \section{Conclusão e Trabalho Futuro}
 
