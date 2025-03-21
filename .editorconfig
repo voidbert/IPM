@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Code editors and operating systems
-.DS_Store
-.vscode
+[*.{js,ts,vue,html,css}]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-# NodeJS
-node_modules
-dist
-
-# TypeScript
-*.tsbuildinfo
-
-# LaTeX compilation
-*-eps-converted-to.pdf
-reports/build
+end_of_line = lf
+max_line_length = 100
