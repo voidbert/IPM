@@ -1,0 +1,30 @@
+name: Vue and TypeScript checks
+on:
+    pull_request:
+        paths:
+            - '.github/workflows/**'
+            - 'src/**'
+            - 'eslint.config.js'
+            - 'index.html'
+            - 'package.json'
+            - 'tsconfig.json'
+            - 'vite.config.js'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: npm ci && npm run build
+
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: npm ci && npm run lint
+
+    format:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: npm ci && npm run check-format
