@@ -17,12 +17,14 @@ import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescri
 import skipFormatting from "@vue/eslint-config-prettier/skip-formatting";
 
 export default defineConfigWithVueTs(
-    {
-        name: "app/files-to-lint",
-        files: ["**/*.{ts,vue}"]
-    },
-
     pluginVue.configs["flat/essential"],
     vueTsConfigs.recommended,
-    skipFormatting
+    skipFormatting,
+    {
+        name: "app/files-to-lint",
+        files: ["**/*.{ts,vue}"],
+        rules: {
+            "vue/multi-word-component-names": "off"
+        }
+    }
 );
