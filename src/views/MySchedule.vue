@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <Navbar type="login" />
+    <Navbar type="student" />
     <main>Hello, world!</main>
 </template>
 
