@@ -13,22 +13,38 @@
 // limitations under the License.
 
 import { createApp } from "vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { RouteRecordSingleView, createRouter, createWebHistory } from "vue-router";
 
 import App from "./App.vue";
-import LoginPage from "./views/LoginPage.vue";
-
 import "./main.css";
 
+import LoginPage from "./views/LoginPage.vue";
+import MySchedule from "./views/MySchedule.vue";
+import SolveProblems from "./views/SolveProblems.vue";
+
+// Dynamically set up routes based only on the name of the pages
+const pages = [LoginPage, MySchedule, SolveProblems];
+const routes: RouteRecordSingleView[] = pages.map((page) => {
+    const name = page.__name;
+    const path = "/" + name;
+
+    return {
+        path: path,
+        name: name,
+        component: page
+    };
+});
+
+routes.push({
+    path: "/",
+    name: "Index",
+    component: LoginPage
+});
+
+// Run application
 const router = createRouter({
     history: createWebHistory(),
-    routes: [
-        {
-            path: "/",
-            name: "home",
-            component: LoginPage
-        }
-    ]
+    routes: Object.values(routes)
 });
 
 const app = createApp(App);
