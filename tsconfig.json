@@ -30,7 +30,7 @@
         "module": "ESNext",
         "moduleResolution": "bundler",
         "moduleDetection": "force",
-        "verbatimModuleSyntax": true,
+        "verbatimModuleSyntax": false,
 
         // Javascript and libs
         "allowJs": false,
