@@ -12,17 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Code editors and operating systems
-.DS_Store
-.vscode
-
-# NodeJS
-node_modules
-dist
-
-# TypeScript
-*.tsbuildinfo
-
-# LaTeX compilation
-*-eps-converted-to.pdf
-reports/build
+* text=auto eol=lf
