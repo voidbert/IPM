@@ -1,4 +1,4 @@
-/*
+<!--
     Copyright 2025 Ana Oliveira, Humberto Gomes, Inês Marques, Rafael Vilas Boas, Sara Lopes
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,25 +12,19 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/
+-->
 
-:root {
-    --color-uminho: #80171b;
+<template>
+    <Navbar type="director" />
+    <main>Hello, world!</main>
+</template>
 
-    --color-navbar-text-default: #fff;
-    --color-navbar-hoverable-icon-default: #fff;
-    --color-navbar-hoverable-icon-hover: #ddd;
-
-    --color-body-background: #fff;
-    --color-body-foreground: #000;
+<style scoped>
+main {
+    padding: 10px;
 }
+</style>
 
-body {
-    min-height: 100vh;
-    margin: 0px;
-
-    background-color: var(--color-body-background);
-    color: var(--color-body-foreground);
-
-    font-family: sans-serif;
-}
+<script setup lang="ts">
+import Navbar from "../components/Navbar.vue";
+</script>

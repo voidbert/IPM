@@ -15,7 +15,16 @@
 -->
 
 <template>
+    <Navbar type="login" />
     <main>Hello, world!</main>
 </template>
 
-<script setup lang="ts"></script>
+<style scoped>
+main {
+    padding: 10px;
+}
+</style>
+
+<script setup lang="ts">
+import Navbar from "../components/Navbar.vue";
+</script>
