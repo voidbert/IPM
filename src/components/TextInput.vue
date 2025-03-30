@@ -16,7 +16,7 @@
 
 <template>
     <div class="text_input">
-    <input type="text" :class="props.type" :placeholder="props.placeholder"></input>
+    <input type="text" :class="props.type" :placeholder="props.placeholder"/>
     <object v-if="props.type=='search'" data="/search.svg" id="search-logo-svg" />
     </div>
 </template>
