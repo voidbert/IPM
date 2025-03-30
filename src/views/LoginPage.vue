@@ -17,8 +17,8 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
-    <TextInput type="text-input" placeholder="Email"/>
-    <TextInput type="text-input" placeholder="Password"/>
+    <TextInput type="text-input" placeholder="Email" />
+    <TextInput type="text-input" placeholder="Password" />
 </template>
 
 <style scoped>
