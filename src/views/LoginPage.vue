@@ -17,6 +17,8 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
+    <TextInput type="text-input" placeholder="Email"/>
+    <TextInput type="text-input" placeholder="Password"/>
 </template>
 
 <style scoped>
@@ -27,4 +29,5 @@ main {
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import TextInput from "../components/TextInput.vue";
 </script>
