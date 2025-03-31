@@ -15,43 +15,49 @@
 -->
 
 <template>
-    <div class="text_input">
+    <div class="text-input-container">
+        <div v-if="props.type == 'search'" class="search-logo-svg" />
         <input type="text" :class="props.type" :placeholder="props.placeholder" />
-        <object v-if="props.type == 'search'" data="/search.svg" id="search-logo-svg" />
     </div>
 </template>
 
 <style scoped>
-.text_input {
-    display: flex;
-    flex-direction: row;
-}
-.text-input {
-    display: flex;
-    width: 723px;
-    height: 1.5rem;
-    align-items: center;
-    border-radius: 1px;
-    border: 2px solid var(--color-searchbar-border);
-    background: var(--color-body-background);
-}
-input[class="search"] {
-    padding-right: 30px;
-}
-.search {
-    display: flex;
-    width: 723px;
-    height: 1.5rem;
-    align-items: center;
-    border-radius: 10px;
-    border: 2px solid var(--color-searchbar-border);
-    background: var(--color-body-background);
-}
-#search-logo-svg {
-    height: 1rem;
+.text-input-container {
     position: relative;
-    top: 0.3rem;
-    right: 25px;
+    display: block;
+    margin: 6px;
+}
+
+.text-input-container input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 2rem;
+
+    border: 2px solid var(--color-searchbar-border);
+    background: var(--color-body-background);
+}
+
+.search {
+    border-radius: 1rem;
+    padding-right: 1.5rem;
+    padding-left: 0.5rem;
+}
+
+.text-input {
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.search-logo-svg {
+    position: absolute;
+    height: 1.5rem;
+    width: 1.5rem;
+    right: 0.25rem;
+    top: 0.25rem;
+
+    background-color: var(--color-searchbar-border);
+    mask: url("/search.svg");
+    mask-size: cover;
 }
 </style>
 
