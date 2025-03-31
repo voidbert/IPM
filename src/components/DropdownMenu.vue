@@ -15,84 +15,74 @@
 -->
 
 <template>
-  <div class="dropdown-wrapper">
-    <label :for="props.id" class="dropdown-label">{{ props.label }}</label>
+    <div class="dropdown-wrapper">
+        <label :for="props.id" class="dropdown-label">{{ props.label }}</label>
 
-    <div class="select-container">
-      <select
-        :id="props.id"
-        v-model="model"
-        class="dropdown-select"
-        @change="removeFocus"
-      >
-        <option
-          v-for="option in props.options"
-          :key="option"
-          :value="option"
-        >
-          {{ option }}
-        </option>
-      </select>
+        <div class="select-container">
+            <select :id="props.id" v-model="model" class="dropdown-select" @change="removeFocus">
+                <option v-for="option in props.options" :key="option" :value="option">
+                    {{ option }}
+                </option>
+            </select>
 
-      <span class="material-icons-round dropdown-icon">expand_more</span>
+            <span class="material-icons-round dropdown-icon">expand_more</span>
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  label: string
-  options: string[]
-  modelValue: string | undefined
-  id?: string
-}>()
+    label: string;
+    options: string[];
+    modelValue: string | undefined;
+    id?: string;
+}>();
 
-const emit = defineEmits(['update:modelValue'])
-const model = defineModel({ type: String })
+const model = defineModel({ type: String });
 
 function removeFocus(event: Event) {
-  (event.target as HTMLSelectElement).blur()
+    (event.target as HTMLSelectElement).blur();
 }
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round');
+@import url("https://fonts.googleapis.com/css2?family=Material+Icons+Round");
 
 .dropdown-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  width: 100%;
-  max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    max-width: 400px;
 }
 
 .dropdown-label {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .select-container {
-  position: relative;
+    position: relative;
 }
 
 .dropdown-select {
-  width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 0.75rem;
-  border: 1px solid var(--color-dropdown-border, #ccc);
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: var(--color-dropdown-background, #fff);
-  color: var(--color-dropdown-text, #000);
-  appearance: none;
-  line-height: 1.5;
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    border: 1px solid var(--color-dropdown-border, #ccc);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--color-dropdown-background, #fff);
+    color: var(--color-dropdown-text, #000);
+    appearance: none;
+    line-height: 1.5;
 }
 
 .dropdown-icon {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.5rem;
-  color: var(--color-dropdown-icon, #666);
-  pointer-events: none;
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--color-dropdown-icon, #666);
+    pointer-events: none;
 }
 </style>
