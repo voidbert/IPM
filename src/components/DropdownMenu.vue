@@ -25,7 +25,7 @@
                 </option>
             </select>
 
-            <span class="material-icons-round dropdown-icon">expand_more</span>
+            <object data="/expand-more.svg" type="image/svg+xml" class="dropdown-icon" />
         </div>
     </div>
 </template>
@@ -46,8 +46,6 @@ function removeFocus(event: Event) {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Material+Icons+Round");
-
 .dropdown-wrapper {
     display: flex;
     flex-direction: column;
@@ -57,7 +55,7 @@ function removeFocus(event: Event) {
 }
 
 .dropdown-label {
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .select-container {
@@ -67,11 +65,11 @@ function removeFocus(event: Event) {
 .dropdown-select {
     width: 100%;
     padding: 0.5rem 2.5rem 0.5rem 0.75rem;
-    border: 1px solid var(--color-dropdown-border, #ccc);
+    border: 1px solid var(--color-dropdown-border);
     border-radius: 6px;
     font-size: 1rem;
-    background-color: var(--color-dropdown-background, #fff);
-    color: var(--color-dropdown-text, #000);
+    background-color: var(--color-dropdown-background);
+    color: var(--color-dropdown-text);
     appearance: none;
     line-height: 1.5;
 }
@@ -81,8 +79,8 @@ function removeFocus(event: Event) {
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.5rem;
-    color: var(--color-dropdown-icon, #666);
+    width: 1.5rem;
+    height: 1.5rem;
     pointer-events: none;
 }
 </style>
