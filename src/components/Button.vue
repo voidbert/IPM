@@ -15,18 +15,43 @@
 -->
 
 <template>
-    <Navbar type="login" />
-    <main>Hello, world!</main>
-    <Button type="confirm" text="Iniciar Sessão" />
+    <button :class="type">{{ text }}</button>
 </template>
 
 <style scoped>
-main {
-    padding: 10px;
+button {
+    border: none;
+    border-radius: 0.3em;
+    width: 100%;
+    height: 100%;
+    padding: 1em 1em;
+    font-weight: 500;
+    font-size: 0.8em;
+}
+.confirm {
+    color: var(--color-text-light);
+    background-color: var(--color-uminho);
+}
+.disabled {
+    color: var(--color-text-light);
+    background-color: var(--color-button-disabled);
+}
+.cancel {
+    color: var(--color-text-dark);
+    background-color: var(--color-button-cancel);
+}
+:hover {
+    cursor: pointer;
 }
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
-import Button from "../components/Button.vue";
+
+defineProps<{
+    type: "confirm" | "disabled" | "cancel",
+    text: String,
+}>();
+
+
+
 </script>
