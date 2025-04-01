@@ -17,7 +17,7 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
-    <Button type="action" id="b1">
+    <Button type="action">
         <p><b>Iniciar Sessão</b></p>
     </Button>
 </template>
