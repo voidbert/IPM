@@ -49,7 +49,7 @@ const emit = defineEmits<{
 
 const model = defineModel({ type: Boolean });
 
-const handleUndo = (): void => {
+const handleUndo = () => {
     emit("undo");
     model.value = false;
 };
