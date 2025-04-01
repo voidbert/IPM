@@ -15,20 +15,24 @@
 -->
 
 <template>
-    <button :class="type">{{ text }}</button>
+    <button :class="type">
+        <slot>{{ text }}</slot>
+    </button>
 </template>
 
 <style scoped>
 button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 0.3em;
+    padding: 1.2rem 1.2rem;
     width: 100%;
     height: 100%;
-    padding: 1em 1em;
-    font-weight: 500;
-    font-size: 0.8em;
+    transition: filter 0.3s linear;
 }
-.confirm {
+.action {
     color: var(--color-text-light);
     background-color: var(--color-uminho);
 }
@@ -36,18 +40,28 @@ button {
     color: var(--color-text-light);
     background-color: var(--color-button-disabled);
 }
-.cancel {
+.light {
     color: var(--color-text-dark);
     background-color: var(--color-button-cancel);
 }
-:hover {
+.action:hover {
+    filter: brightness(140%) saturate(0.8);
+}
+.disabled:hover {
+    cursor: not-allowed;
+}
+.light:hover {
+    filter: brightness(80%);
+}
+:hover:not(.disabled) {
     cursor: pointer;
+    transition: filter 0.3s linear;
 }
 </style>
 
 <script setup lang="ts">
 defineProps<{
-    type: "confirm" | "disabled" | "cancel";
-    text: string;
+    type: "action" | "disabled" | "light";
+    text?: String;
 }>();
 </script>
