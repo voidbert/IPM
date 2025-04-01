@@ -23,6 +23,9 @@
 
     --color-body-background: #fff;
     --color-body-foreground: #000;
+
+    --color-student-name: #555;
+    --color-student-profile-picture-fallback: #aaa;
 }
 
 body {
