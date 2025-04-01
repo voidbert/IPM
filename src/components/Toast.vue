@@ -1,5 +1,6 @@
 <!--
-    Copyright 2025 Ana Oliveira, Humberto Gomes, Inês Marques, Rafael Vilas Boas, Sara Lopes
+    Copyright 2025 Ana Oliveira, Humberto Gomes, Inês Marques,
+    Rafael Vilas Boas, Sara Lopes
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,90 +16,66 @@
 -->
 
 <template>
-    <transition name="fade">
-        <div class="toast" v-if="model" :class="toastClass">
-            <template v-if="props.type === 'undo'">
-                <span class="material-icons-round toast-undo-icon">undo</span>
-                <span class="toast-undo-label" @click="handleUndo">
-                    <slot name="undo">Desfazer</slot>
-                </span>
+    <Transition name="toast-slide">
+        <div class="toast" v-if="model" role="alert">
+            <span class="toast-message">
+                <slot />
+            </span>
+
+            <template v-if="props.type === 'success-with-undo'">
+                <span class="toast-undo-action" @click="handleUndo"> Desfazer </span>
             </template>
 
             <template v-else>
-                <span class="toast-message">
-                    <slot />
-                </span>
-
-                <template v-if="props.type === 'success-with-undo'">
-                    <span class="toast-undo-action" @click="handleUndo">
-                        <slot name="action">Desfazer</slot>
-                    </span>
-                </template>
-
-                <template v-else>
-                    <span class="material-icons-round toast-close-icon" @click="model = false"
-                        >close</span
-                    >
-                </template>
+                <object
+                    data="/close.svg"
+                    type="image/svg+xml"
+                    class="toast-close-icon"
+                    @click="model = false" />
             </template>
         </div>
-    </transition>
+    </Transition>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-    type: "success" | "success-with-undo" | "undo";
+    type: "success" | "success-with-undo";
     duration?: number;
-    onUndo?: () => void;
+}>();
+
+const emit = defineEmits<{
+    (e: "undo"): void;
 }>();
 
 const model = defineModel({ type: Boolean });
 
-const toastClass = props.type === "undo" ? "toast undo" : "toast success";
-
-function handleUndo(): void {
-    if (props.onUndo) props.onUndo();
+const handleUndo = (): void => {
+    emit("undo");
     model.value = false;
-}
+};
 
 if (props.duration && props.duration > 0) {
     setTimeout(() => {
-        model.value = false;
+        if (model.value) model.value = false;
     }, props.duration);
 }
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Material+Icons+Round");
-
 .toast {
     position: fixed;
     bottom: 2rem;
-    right: 2rem;
-    max-width: 400px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 6px;
     font-weight: 500;
-    font-size: 0.95rem;
-    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.toast.success {
     background-color: var(--color-uminho);
     color: var(--color-toast-text-default);
-}
-
-.toast.undo {
-    background-color: var(--color-toast-text-default);
-    color: var(--color-toast-muted);
-    box-shadow: none;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    justify-content: flex-start;
 }
 
 .toast-message {
@@ -107,10 +84,13 @@ if (props.duration && props.duration > 0) {
 }
 
 .toast-close-icon {
-    font-size: 1.6rem;
+    width: 1.6rem;
+    height: 1.6rem;
     cursor: pointer;
     user-select: none;
     margin-left: 1rem;
+    color: var(--color-toast-text-default);
+    pointer-events: all;
 }
 
 .toast-undo-action {
@@ -119,25 +99,14 @@ if (props.duration && props.duration > 0) {
     margin-left: 1rem;
 }
 
-.toast-undo-icon {
-    font-size: 1.2rem;
-    color: var(--color-toast-muted);
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+    transition: all 0.4s ease;
 }
 
-.toast-undo-label {
-    cursor: pointer;
-    color: var(--color-toast-muted);
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
+.toast-slide-enter-from,
+.toast-slide-leave-to {
     opacity: 0;
+    transform: translate(-50%, 40px);
 }
 </style>
