@@ -46,12 +46,8 @@ button {
 </style>
 
 <script setup lang="ts">
-
 defineProps<{
-    type: "confirm" | "disabled" | "cancel",
-    text: String,
+    type: "confirm" | "disabled" | "cancel";
+    text: string;
 }>();
-
-
-
 </script>
