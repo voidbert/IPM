@@ -34,7 +34,6 @@
 const props = defineProps<{
     label: string;
     options: string[];
-    modelValue: string | undefined;
     id?: string;
 }>();
 
