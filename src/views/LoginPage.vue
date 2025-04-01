@@ -17,7 +17,9 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
-    <Button type="action" id="b1"><p><b>Iniciar Sessão</b></p></Button>
+    <Button type="action" id="b1">
+        <p><b>Iniciar Sessão</b></p>
+    </Button>
 </template>
 
 <style scoped>
