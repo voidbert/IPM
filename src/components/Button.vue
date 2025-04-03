@@ -30,7 +30,7 @@ button {
     padding: 1.2rem 1.2rem;
     width: 100%;
     height: 100%;
-    transition: filter 0.3s linear;
+    transition: filter 0.1s linear;
 }
 .action {
     color: var(--color-text-light);
@@ -55,7 +55,7 @@ button {
 }
 :hover:not(.disabled) {
     cursor: pointer;
-    transition: filter 0.3s linear;
+    transition: filter 0.1s linear;
 }
 </style>
 
