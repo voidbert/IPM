@@ -21,6 +21,11 @@
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
+    --color-dropdown-background: #fff;
+    --color-dropdown-text: #000;
+    --color-dropdown-border: #ccc;
+    --color-dropdown-icon: #666;
+
     --color-body-background: #fff;
     --color-body-foreground: #000;
 }
