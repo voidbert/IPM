@@ -15,13 +15,14 @@
 -->
 
 <template>
-    <div :style="style" class="navbar-hoverable-icon" :title="props.tooltip" />
+    <button :style="style" class="navbar-hoverable-icon" :title="props.tooltip" />
 </template>
 
 <style scoped>
 .navbar-hoverable-icon {
-    border: 0px;
-    padding: 0px;
+    all: unset;
+    width: 100%;
+    height: 100%;
 
     background: var(--color-navbar-hoverable-icon-default);
     mask-size: cover;
