@@ -23,7 +23,9 @@
             </span>
 
             <template v-if="props.type === 'success-with-undo'">
-                <span class="toast-undo-action toast-action-hover" @click="handleUndo"> Desfazer </span>
+                <span class="toast-undo-action toast-action-hover" @click="handleUndo">
+                    Desfazer
+                </span>
             </template>
 
             <template v-else>
@@ -31,8 +33,7 @@
                     src="/close.svg"
                     class="toast-close-icon toast-action-hover"
                     role="button"
-                    @click="model = false"
-                />
+                    @click="model = false" />
             </template>
         </div>
     </Transition>
