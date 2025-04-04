@@ -23,15 +23,16 @@
             </span>
 
             <template v-if="props.type === 'success-with-undo'">
-                <span class="toast-undo-action" @click="handleUndo"> Desfazer </span>
+                <span class="toast-undo-action toast-action-hover" @click="handleUndo"> Desfazer </span>
             </template>
 
             <template v-else>
-                <object
-                    data="/close.svg"
-                    type="image/svg+xml"
-                    class="toast-close-icon"
-                    @click="model = false" />
+                <img
+                    src="/close.svg"
+                    class="toast-close-icon toast-action-hover"
+                    role="button"
+                    @click="model = false"
+                />
             </template>
         </div>
     </Transition>
@@ -97,6 +98,15 @@ if (props.duration && props.duration > 0) {
     cursor: pointer;
     font-weight: bold;
     margin-left: 1rem;
+}
+
+.toast-action-hover {
+    transition: all 0.2s ease;
+}
+
+.toast-action-hover:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
 }
 
 .toast-slide-enter-active,
