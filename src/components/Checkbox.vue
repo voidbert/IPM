@@ -16,7 +16,7 @@
 
 <template>
     <label class="custom-checkbox">
-        <input type="checkbox" v-model="checked" ref="checkbox" @change="emitChange"/>
+        <input type="checkbox" v-model="checked" ref="checkbox" @change="emitChange" />
         <span>{{ labelText }}</span>
     </label>
 </template>
@@ -25,7 +25,7 @@
 import { ref, onMounted, defineEmits } from "vue";
 
 const emit = defineEmits<{
-    (event: 'update:checked', value: boolean): void;
+    (event: "update:checked", value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -45,7 +45,7 @@ onMounted(() => {
 });
 
 const emitChange = () => {
-    emit('update:checked', checked.value);
+    emit("update:checked", checked.value);
 };
 </script>
 
