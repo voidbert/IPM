@@ -33,27 +33,34 @@ button {
     transition: filter 0.1s linear;
     min-width: max-content;
 }
+
 .action {
     color: var(--color-text-light);
     background-color: var(--color-button-action);
 }
+
 .disabled {
     color: var(--color-text-light);
     background-color: var(--color-button-disabled);
 }
+
 .light {
     color: var(--color-text-dark);
     background-color: var(--color-button-cancel);
 }
+
 .action:hover {
     filter: brightness(140%) saturate(0.8);
 }
+
 .disabled:hover {
     cursor: not-allowed;
 }
+
 .light:hover {
     filter: brightness(80%);
 }
+
 :hover:not(.disabled) {
     cursor: pointer;
     transition: filter 0.1s linear;
