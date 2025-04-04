@@ -16,7 +16,7 @@
 
 <template>
     <button :class="type">
-        <slot>{{ text }}</slot>
+        <slot />
     </button>
 </template>
 
@@ -31,10 +31,11 @@ button {
     width: 100%;
     height: 100%;
     transition: filter 0.1s linear;
+    min-width: max-content;
 }
 .action {
     color: var(--color-text-light);
-    background-color: var(--color-uminho);
+    background-color: var(--color-button-action);
 }
 .disabled {
     color: var(--color-text-light);
@@ -62,6 +63,5 @@ button {
 <script setup lang="ts">
 defineProps<{
     type: "action" | "disabled" | "light";
-    text?: String;
 }>();
 </script>

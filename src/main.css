@@ -24,6 +24,7 @@
     --color-body-background: #fff;
     --color-body-foreground: #000;
 
+    --color-button-action: var(--color-uminho);
     --color-button-disabled: #808080;
     --color-button-cancel: #f2f2f2;
 
