@@ -15,31 +15,30 @@
 -->
 
 <template>
-    <Navbar type="login" />
-    <main>Hello, world!</main>
-    <TextInput type="text-input" placeholder="Email" />
-    <TextInput type="search" placeholder="Password" />
-    <Button type="action">
-        <p><b>Iniciar Sessão</b></p>
-    </Button>
+    <div class="application-icon">
+        <object data="/favicon.svg" class="application-icon-svg" />
+        <span class="application-icon-text">SWAP</span>
+    </div>
 </template>
 
 <style scoped>
-main {
-    padding: 10px;
+.application-icon {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
 }
-Button {
-    /* Just for testing purposes, change later */
-    position: absolute;
-    width: 10vw;
-    height: 5vh;
-    left: 50vw;
-    bottom: 30vh;
+
+.application-icon-svg {
+    height: 4rem;
+}
+
+.application-icon-text {
+    color: var(--color-navbar-text-default);
+    font-size: 1.5em;
+    font-weight: bold;
+
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
 }
 </style>
-
-<script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
-import TextInput from "../components/TextInput.vue";
-import Button from "../components/Button.vue";
-</script>

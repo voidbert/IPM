@@ -28,7 +28,7 @@
 
 <style scoped>
 .navbar-links {
-    display: flex;
+    display: inline-flex;
     gap: 5pt;
 }
 
