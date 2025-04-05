@@ -17,14 +17,26 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
+    <Button type="action">
+        <p><b>Iniciar Sessão</b></p>
+    </Button>
 </template>
 
 <style scoped>
 main {
     padding: 10px;
 }
+Button {
+    /* Just for testing purposes, change later */
+    position: absolute;
+    width: 10vw;
+    height: 5vh;
+    left: 50vw;
+    bottom: 30vh;
+}
 </style>
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import Button from "../components/Button.vue";
 </script>
