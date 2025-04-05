@@ -17,6 +17,8 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
+    <TextInput type="text-input" placeholder="Email" />
+    <TextInput type="search" placeholder="Password" />
     <Button type="action">
         <p><b>Iniciar Sessão</b></p>
     </Button>
@@ -38,5 +40,6 @@ Button {
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 </script>
