@@ -21,9 +21,10 @@ import "./main.css";
 import LoginPage from "./views/LoginPage.vue";
 import MySchedule from "./views/MySchedule.vue";
 import SolveProblems from "./views/SolveProblems.vue";
+import Notifications from "./views/Notifications.vue";
 
 // Dynamically set up routes based only on the name of the pages
-const pages = [LoginPage, MySchedule, SolveProblems];
+const pages = [LoginPage, MySchedule, SolveProblems, Notifications];
 const routes: RouteRecordSingleView[] = pages.map((page) => {
     const name = page.__name;
     const path = "/" + name;
