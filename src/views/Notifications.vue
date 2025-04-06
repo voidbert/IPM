@@ -16,16 +16,99 @@
 
 <template>
     <Navbar type="student" />
-    <Notification type="student" from="Nome" description="Troca de turno PL4 -> PL6" :date="new Date()" />
+    <main>
+        <h2>Notificações</h2>
+        <NotificationsList :type=type :notifications=notifications id="notifications" @changeRead="updateNotification" />
+    </main>
 </template>
 
 <style scoped>
 main {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+#notifications {
+    width: 80vw;
 }
 </style>
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
-import Notification from "../components/Notification.vue";
+import NotificationsList from "../components/NotificationsList.vue";
+
+let type: "student" | "director" = "student";
+
+let notifications = {
+    student: [
+        {
+            id: 0,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date(),
+            read: false,
+        },
+        {
+            id: 1,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date(),
+            read: false,
+        },
+        {
+            id: 2,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date("2025-04-03"),
+            read: true,
+        },
+        {
+            id: 3,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date("2025-04-03"),
+            read: true,
+        }
+    ],
+    director: [
+        {
+            id: 4,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date(),
+            read: false,
+        },
+        {
+            id: 5,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date(),
+            read: false,
+        },
+        {
+            id: 6,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date("2025-04-03"),
+            read: true,
+        },
+        {
+            id: 7,
+            sender: "Nome",
+            content: "Troca de turno PL4 -> PL6",
+            date: new Date("2025-04-03"),
+            read: true,
+        }
+    ]
+}[type];
+
+const updateNotification = (read:boolean, id:number) => {
+    let notification = notifications.find((e) => e.id == id);
+    if (notification) {
+        notification.read = read;
+    }
+}
+
 </script>
