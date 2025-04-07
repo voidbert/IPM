@@ -51,7 +51,7 @@
 .toggle-button span {
     display: flex;
     align-items: center;
-    padding: 0.2rem 0.2rem;
+    padding: 0.2rem 0.4rem;
     white-space: nowrap;
     cursor: default;
 }
