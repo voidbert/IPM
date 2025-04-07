@@ -53,6 +53,8 @@ const emitChange = () => {
 .custom-checkbox {
     display: flex;
     align-items: center;
+}
+.custom-checkbox * {
     cursor: pointer;
 }
 input[type="checkbox"]:indeterminate {
