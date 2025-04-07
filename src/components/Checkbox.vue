@@ -52,17 +52,21 @@ const emitChange = () => {
 <style scoped>
 .custom-checkbox {
     display: flex;
+    flex: 1;
     align-items: center;
-}
-.custom-checkbox * {
+    color: var(--color-checkbox-text-light);
     cursor: pointer;
 }
+.custom-checkbox:hover {
+    color: var(--color-checkbox-text-hover);
+}
 input[type="checkbox"]:indeterminate {
-    accent-color: rgb(222, 165, 165);
+    accent-color: var(--color-checkbox-indeterminate-light);
 }
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: var(--color-uminho);
+    accent-color: var(--color-checkbox-checked-light);
+    cursor: pointer;
 }
 </style>
