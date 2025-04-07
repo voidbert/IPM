@@ -15,12 +15,12 @@
 -->
 
 <template>
-    <div ref="notification" class="notification unread" :class=props.type @click="changeRead">
+    <div ref="notification" class="notification" :class=props.type @click="props.type!='request' ? changeRead : null">
         <div class="notification-left">
-            <div class="bubble-position">
+            <div v-if="props.type!='request'" class="bubble-position">
                 <div ref="bubble" class="bubble" />
             </div>
-            <div id="mail-card" />
+            <div v-if="props.type!='request'" id="mail-card" />
             <p>{{ props.info.sender }}</p>
         </div>
         <div>
@@ -138,13 +138,13 @@ import IconButton from './IconButton.vue';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps<{
-    type: "student" | "director",
+    type: "student" | "director" | "request",
     info: {
         id: number,
         sender: string,
         content: string,
         date: Date,
-        read: boolean,
+        read?: boolean,
     },
     link?: string;
 }>();
@@ -178,6 +178,11 @@ const display = () => {
         bubble.value.style.visibility = 'hidden';
         notification.value.classList.remove('unread');
         notification.value.classList.add('read');
+    }
+    else if (props.info.read === false && bubble.value && notification.value) {
+        bubble.value.style.visibility = 'visible';
+        notification.value.classList.remove('read');
+        notification.value.classList.add('unread');
     }
 }
 
