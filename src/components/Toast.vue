@@ -107,7 +107,6 @@ if (props.duration && props.duration > 0) {
 
 .toast-action-hover:hover {
     opacity: 0.7;
-    transform: scale(1.05);
 }
 
 .toast-slide-enter-active,
