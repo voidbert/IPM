@@ -22,6 +22,8 @@ body {
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
+    --color-toast-text-default: #ffffff;
+
     --color-searchbar-border: #b9b9b9;
     --color-dropdown-background: #fff;
     --color-dropdown-text: #000;
