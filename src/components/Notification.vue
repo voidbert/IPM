@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <div ref="notification" class="notification" :class=props.type @click="props.type!='request' ? changeRead : null">
+    <div ref="notification" class="notification" :class=props.type @click="props.type!='request' ? changeRead() : null">
         <div class="notification-left">
             <div v-if="props.type!='request'" class="bubble-position">
                 <div ref="bubble" class="bubble" />
