@@ -60,10 +60,10 @@ const emitChange = () => {
 .custom-checkbox:hover {
     color: var(--color-checkbox-text-hover);
 }
-input[type="checkbox"]:indeterminate {
+.custom-checkbox input[type="checkbox"]:indeterminate {
     accent-color: var(--color-checkbox-indeterminate-light);
 }
-input[type="checkbox"] {
+.custom-checkbox input[type="checkbox"] {
     width: 20px;
     height: 20px;
     accent-color: var(--color-checkbox-checked-light);
