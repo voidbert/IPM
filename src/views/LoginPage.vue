@@ -17,7 +17,7 @@
 <template>
     <Navbar type="login" />
     <main>Hello, world!</main>
-    <ShiftBlock :shifts_info=info></ShiftBlock>
+    <ShiftBlock :shifts_info="info"></ShiftBlock>
 </template>
 
 <style scoped>
@@ -29,7 +29,25 @@ main {
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import ShiftBlock from "../components/ShiftBlock.vue";
-let type:  "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted"= "full"
-let info = [{type:type, uc:"IPM", name:"PL4", room:"Ed. 2  0.08", capacity:"20/30", show_capacity:false, color_nr:1}, 
-            {type:type, uc:"IPM", name:"PL4", room:"Ed. 2  0.08", capacity:"20/30", show_capacity:false, color_nr:2}]
+const type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted" = "full";
+const info = [
+    {
+        type: type,
+        uc: "IPM",
+        name: "PL4",
+        room: "Ed. 2  0.08",
+        capacity: "20/30",
+        show_capacity: false,
+        color_nr: 1
+    },
+    {
+        type: type,
+        uc: "IPM",
+        name: "PL4",
+        room: "Ed. 2  0.08",
+        capacity: "20/30",
+        show_capacity: false,
+        color_nr: 2
+    }
+];
 </script>

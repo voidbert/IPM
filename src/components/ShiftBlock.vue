@@ -16,12 +16,11 @@
 
 <template>
     <div class="shift-block">
-        <Shift v-for="shift in props.shifts_info" :shift_info="shift"></Shift>
+        <Shift v-for="shift in props.shifts_info" :key="shift.name" :shift_info="shift"></Shift>
     </div>
 </template>
 
 <style scoped>
-
 .shift-block {
     display: flex;
     width: 200px;
@@ -31,20 +30,19 @@
     gap: 3px;
     flex-shrink: 0;
 }
-
 </style>
 
 <script setup lang="ts">
 import Shift from "./Shift.vue";
 const props = defineProps<{
-    shifts_info:{
+    shifts_info: {
         type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
         color_nr: number;
         uc: string;
         name: string;
         room: string;
         capacity: string;
-        show_capacity: Boolean;
-    }[]
+        show_capacity: boolean;
+    }[];
 }>();
 </script>

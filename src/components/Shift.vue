@@ -15,17 +15,23 @@
 -->
 
 <template>
-    <div class="shift" :class="props.shift_info.type" :style="style" @mouseenter="hover = true" @mouseleave="hover = false" >
+    <div
+        class="shift"
+        :class="props.shift_info.type"
+        :style="style"
+        @mouseenter="hover = true"
+        @mouseleave="hover = false">
         <p>{{ props.shift_info.uc }}</p>
         <p>{{ props.shift_info.name }}</p>
         <p class="room-text">{{ props.shift_info.room }}</p>
-        <p v-if="props.shift_info.show_capacity" class="capacity">{{ props.shift_info.capacity }}</p>
+        <p v-if="props.shift_info.show_capacity" class="capacity">
+            {{ props.shift_info.capacity }}
+        </p>
     </div>
 </template>
 
 <style scoped>
-
-.shift{
+.shift {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,10 +40,9 @@
     align-self: stretch;
     flex-shrink: 0;
     border-radius: 5px;
-
 }
 
-.shift p{
+.shift p {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
     margin-left: 20%;
@@ -45,74 +50,67 @@
     color: var(--color-shift-text);
 }
 
-.room-text{
-    font-size: 0.75em;;
+.room-text {
+    font-size: 0.75em;
 }
 
-.full{
+.full {
     border: 1px solid var(--color-shift-border);
 }
 
-.full-pressed{
+.full-pressed {
     border: 1px solid var(--color-shift-border);
     box-shadow: 0px 4px 6px 0px var(--color-shift-dark-grey) inset;
 }
 
-.border{
+.border {
     background: var(--color-shift-grey);
 }
 
-
-.disabled{
+.disabled {
     border: 1px solid var(--color-shift-border);
     background: var(--color-shift-grey);
 }
 
-.disabled-highlighted{
+.disabled-highlighted {
     border: 1px solid var(--color-shift-border);
     background: var(--color-shift-dark-grey);
 }
 
-.capacity{
+.capacity {
     position: relative;
     left: 35%;
     top: 8%;
 }
-
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from "vue";
 const props = defineProps<{
-    shift_info:{
+    shift_info: {
         type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
         color_nr: number;
         uc: string;
         name: string;
         room: string;
         capacity: string;
-        show_capacity: Boolean;
-    }
+        show_capacity: boolean;
+    };
 }>();
-let hover = ref(false);
+const hover = ref(false);
 const style = computed(() => {
-    if(props.shift_info.type=="full" && !hover.value){
-        return `background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`
+    if (props.shift_info.type == "full" && !hover.value) {
+        return `background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+    } else if (props.shift_info.type == "full") {
+        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+    } else if (props.shift_info.type == "full-pressed") {
+        return `background: var(--color-shift-${props.shift_info.color_nr});`;
+    } else if (props.shift_info.type == "border" && !hover.value) {
+        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+    } else if (props.shift_info.type == "border") {
+        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+    } else {
+        return "";
     }
-    else if(props.shift_info.type=="full"){
-        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`
-    }
-    else if(props.shift_info.type=="full-pressed"){
-        return `background: var(--color-shift-${props.shift_info.color_nr});`
-    }
-    else if (props.shift_info.type=="border" && !hover.value){
-        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`
-    }
-    else if (props.shift_info.type=="border"){
-        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`
-    }
-    else{
-        return ""
-    }
-})
+});
 </script>
