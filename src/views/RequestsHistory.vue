@@ -17,7 +17,7 @@
 <template>
     <Navbar type="student" />
     <main>
-        <RequestsList :type=type :requests=requests id="requests" />
+        <RequestsList :type="type" :requests="requests" id="requests" />
     </main>
 </template>
 
@@ -40,34 +40,33 @@ main {
 import Navbar from "../components/Navbar.vue";
 import RequestsList from "../components/RequestsList.vue";
 
-let type: "request" = "request";
+const type = "request";
 
 // Example data, change later
-let requests = [
+const requests = [
     {
         id: 8,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
+        date: new Date()
     },
     {
         id: 9,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
+        date: new Date()
     },
     {
         id: 10,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
+        date: new Date("2025-04-03")
     },
     {
         id: 11,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
+        date: new Date("2025-04-03")
     }
-]
-
+];
 </script>

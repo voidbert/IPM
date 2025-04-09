@@ -16,15 +16,15 @@
 
 <template>
     <div class="toggle-button">
-        <div ref="left" class="toggle-left active">
-            <Transition name="toggle-transition">
-            <span @click="changeActive('left')"><b>{{ props.left }}</b></span>
-            </Transition>
+        <div ref="left_elem" class="toggle-left active">
+            <span @click="changeActive('left')"
+                ><b>{{ props.left }}</b></span
+            >
         </div>
-        <div ref="right" class="toggle-right">
-            <Transition name="toggle-transition">
-            <span @click="changeActive('right')"><b>{{ props.right }}</b></span>
-            </Transition>
+        <div ref="right_elem" class="toggle-right">
+            <span @click="changeActive('right')"
+                ><b>{{ props.right }}</b></span
+            >
         </div>
     </div>
 </template>
@@ -41,7 +41,8 @@
     transition: background-color 0.1s linear;
 }
 
-.toggle-left, .toggle-right {
+.toggle-left,
+.toggle-right {
     display: flex;
     justify-content: center;
     padding: 0.2rem 0.5rem;
@@ -69,61 +70,52 @@
 }
 
 .toggle-left.active {
-    box-shadow: inset 0 0 1px var(--color-toggle-button-shadow), 1px 0 4px rgba(0, 0, 0, 0.25);
+    box-shadow:
+        inset 0 0 1px var(--color-toggle-button-shadow),
+        1px 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .toggle-right.active {
-    box-shadow: inset 0 0 1px var(--color-toggle-button-shadow), 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-
-.toggle-transition-enter-active,
-.toggle-transition-leave-active {
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.toggle-transition-enter, 
-.toggle-transition-leave-to {
-    transform: scale(1.05);
-    background-color: var(--color-toggle-button-active);
-    opacity: 0;
+    box-shadow:
+        inset 0 0 1px var(--color-toggle-button-shadow),
+        0 1px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
 const props = defineProps<{
-    left: string,
-    right: string
+    left: string;
+    right: string;
 }>();
 
 const emit = defineEmits<{
-    (event: 'changeActive', active: 'left' | 'right'): void;
+    (event: "changeActive", active: "left" | "right"): void;
 }>();
 
-const left = ref<HTMLDivElement>();
-const right = ref<HTMLDivElement>();
+const left_elem = ref<HTMLDivElement>();
+const right_elem = ref<HTMLDivElement>();
 
-const changeActive = (clicked: 'left' | 'right') => {
-    if (clicked == 'left') {
-        right.value?.classList.remove('active');
-        left.value?.classList.add('active');
-        emit('changeActive', 'left');
+const changeActive = (clicked: "left" | "right") => {
+    if (clicked == "left") {
+        right_elem.value?.classList.remove("active");
+        left_elem.value?.classList.add("active");
+        emit("changeActive", "left");
+    } else if (clicked == "right") {
+        left_elem.value?.classList.remove("active");
+        right_elem.value?.classList.add("active");
+        emit("changeActive", "right");
     }
-    else if (clicked == 'right') {
-        left.value?.classList.remove('active');
-        right.value?.classList.add('active');
-        emit('changeActive', 'right');
-    }
-}
+};
 
 const calcWidth = () => {
-    if (left.value && right.value) {
-        const width = Math.max(left.value.offsetWidth, right.value.offsetWidth);
-        left.value.style.width = `${width}px`;
-        right.value.style.width = `${width}px`;
+    if (left_elem.value && right_elem.value) {
+        const width = Math.max(left_elem.value.offsetWidth, right_elem.value.offsetWidth);
+        left_elem.value.style.width = `${width}px`;
+        right_elem.value.style.width = `${width}px`;
     }
-}
+};
 
 onMounted(calcWidth);
 </script>

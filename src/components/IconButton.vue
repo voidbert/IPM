@@ -15,9 +15,10 @@
 -->
 
 <template>
-    <div class="button" >
-        <RouterLink v-if="props.link" :to=props.link /> <!-- Redirect -->
-        <div class="icon" :class=type />
+    <div class="button">
+        <RouterLink v-if="props.link" :to="props.link" />
+        <!-- Redirect -->
+        <div class="icon" :class="type" />
     </div>
 </template>
 
@@ -67,7 +68,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    type: "accept" | "reject" | "view",
+    type: "accept" | "reject" | "view";
     link?: string;
 }>();
 </script>

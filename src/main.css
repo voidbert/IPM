@@ -26,29 +26,29 @@
 
     --color-notification-text: #333333;
     --color-notification-card: #000;
-    --color-notification-director-side-hover: #80171B;
+    --color-notification-director-side-hover: #80171b;
     --color-notification-director-hover: #eddfed;
     --color-notification-shadow: #0000003f;
-    --color-notification-bubble: #20B6B0;
+    --color-notification-bubble: #20b6b0;
     --color-notification-unread: #f7f7f7;
     --color-notification-read: #ededed;
     --color-notification-closed: #00000000;
 
     --color-notifications-list: #ededed;
-    --color-notifications-list-header-border: #BFBFBF;
+    --color-notifications-list-header-border: #bfbfbf;
 
     --color-requests-list: #ededed;
 
-    --color-toggle-button: #9E9494;
-    --color-toggle-button-text: #E6E6E6;
-    --color-toggle-button-active: #705C5C;
-    --color-toggle-button-hover: #B7AFAF;
+    --color-toggle-button: #9e9494;
+    --color-toggle-button-text: #e6e6e6;
+    --color-toggle-button-active: #705c5c;
+    --color-toggle-button-hover: #b7afaf;
     --color-toggle-button-shadow: #808080;
 
-    --color-icon-button: #D6C2C2;
+    --color-icon-button: #d6c2c2;
     --color-icon-button-hover: #993337;
-    --color-icon-button-icon: #AD8585;
-    --color-icon-button-icon-hover: #FAF4F4;
+    --color-icon-button-icon: #ad8585;
+    --color-icon-button-icon-hover: #faf4f4;
 }
 
 body {

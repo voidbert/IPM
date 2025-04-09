@@ -15,12 +15,16 @@
 -->
 
 <template>
-    <div ref="notification_elem" class="notification" :class=props.type @click="props.type!='request' ? changeRead() : null">
+    <div
+        ref="notification_elem"
+        class="notification"
+        :class="props.type"
+        @click="props.type != 'request' ? changeRead() : null">
         <div class="notification-left">
-            <div v-if="props.type!='request'" class="bubble-position">
+            <div v-if="props.type != 'request'" class="bubble-position">
                 <div ref="bubble_elem" class="bubble" />
             </div>
-            <div v-if="props.type!='request'"id="mail-card" />
+            <div v-if="props.type != 'request'" id="mail-card" />
             <p>{{ props.info.sender }}</p>
         </div>
         <div>
@@ -28,10 +32,10 @@
         </div>
         <div class="notification-right">
             <p>{{ getDate() }}</p>
-            <div v-if="props.type=='director'&&props.info.state=='pending'" class="buttons">
+            <div v-if="props.type == 'director' && props.info.state == 'pending'" class="buttons">
                 <IconButton type="accept" @click="acceptAction" />
                 <IconButton type="reject" @click="rejectAction" />
-                <IconButton type="view" :link=props.link />
+                <IconButton type="view" :link="props.link" />
             </div>
         </div>
     </div>
@@ -49,7 +53,9 @@
     box-shadow: 0px 2px 4px var(--color-notification-shadow);
     color: var(--color-notification-text);
     gap: 0 0.5rem;
-    transition: background-color 0.1s linear, box-shadow 0.1s linear;
+    transition:
+        background-color 0.1s linear,
+        box-shadow 0.1s linear;
 }
 
 .notification > div {
@@ -85,7 +91,9 @@
 
 .director:hover {
     background-color: var(--color-notification-director-hover);
-    box-shadow: inset 2px 0 0 var(--color-notification-director-side-hover), 0px 2px 4px var(--color-notification-shadow);
+    box-shadow:
+        inset 2px 0 0 var(--color-notification-director-side-hover),
+        0px 2px 4px var(--color-notification-shadow);
 }
 
 .unread .bubble-position {
@@ -134,74 +142,83 @@
 </style>
 
 <script setup lang="ts">
-import IconButton from './IconButton.vue';
-import { onMounted, ref } from 'vue';
-import { notification, state, type } from "../models/Notification.ts";
+import IconButton from "./IconButton.vue";
+import { onMounted, ref } from "vue";
+import { notification, state, notification_type } from "../models/Notification.ts";
 
 const bubble_elem = ref<HTMLElement>();
 const notification_elem = ref<HTMLElement>();
 
 const props = defineProps<{
-    type: type,
-    info: notification,
+    type: notification_type;
+    info: notification;
     link?: string;
 }>();
 
 const emit = defineEmits<{
-    (event: 'changeRead', read: boolean, id: number): void;
-    (event: 'changeState', state: state, id: number): void;
+    (event: "changeRead", read: boolean, id: number): void;
+    (event: "changeState", state: state, id: number): void;
 }>();
 
 const getDate = () => {
-    let today = new Date()
-    return sameDay(props.info.date, today) ? "Hoje" : props.info.date.toLocaleDateString()
-}
+    const today = new Date();
+    return sameDay(props.info.date, today) ? "Hoje" : props.info.date.toLocaleDateString();
+};
 
 const sameDay = (d1: Date, d2: Date) => {
-    return d1.getFullYear() === d2.getFullYear() &&
-           d1.getMonth() === d2.getMonth() &&
-           d1.getDate() === d2.getDate()
-}
+    return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+    );
+};
 
 const setClosed = () => {
     if (notification_elem.value) {
-        notification_elem.value.classList.remove('unread');
-        notification_elem.value.classList.remove('read');
-        notification_elem.value.classList.add('closed');
+        notification_elem.value.classList.remove("unread");
+        notification_elem.value.classList.remove("read");
+        notification_elem.value.classList.add("closed");
     }
-}
+};
 
 const acceptAction = () => {
-    setClosed()
-    emit('changeState', "accepted", props.info.id);
-}
+    emit("changeState", "accepted", props.info.id);
+    setClosed();
+};
 
 const rejectAction = () => {
-    setClosed()
-    emit('changeState', "rejected", props.info.id);
-}
+    emit("changeState", "rejected", props.info.id);
+    setClosed();
+};
 
 const changeRead = () => {
-    props.info.read = true;
+    emit("changeRead", true, props.info.id);
     display();
-    emit('changeRead', true, props.info.id);
-}
+};
 
 const display = () => {
-    if (props.info.read && bubble_elem.value && notification_elem.value && (props.info.state == "pending" || props.type == "student")) {
-        bubble_elem.value.style.visibility = 'hidden';
-        notification_elem.value.classList.remove('unread');
-        notification_elem.value.classList.add('read');
+    if (
+        props.info.read &&
+        bubble_elem.value &&
+        notification_elem.value &&
+        (props.info.state == "pending" || props.type == "student")
+    ) {
+        bubble_elem.value.style.visibility = "hidden";
+        notification_elem.value.classList.remove("unread");
+        notification_elem.value.classList.add("read");
+    } else if (
+        props.info.read === false &&
+        bubble_elem.value &&
+        notification_elem.value &&
+        (props.info.state == "pending" || props.type == "student")
+    ) {
+        bubble_elem.value.style.visibility = "visible";
+        notification_elem.value.classList.remove("read");
+        notification_elem.value.classList.add("unread");
+    } else if (props.info.state != "pending" && props.type != "request") {
+        setClosed();
     }
-    else if (props.info.read === false && bubble_elem.value && notification_elem.value && (props.info.state == "pending" || props.type == "student")) {
-        bubble_elem.value.style.visibility = 'visible';
-        notification_elem.value.classList.remove('read');
-        notification_elem.value.classList.add('unread');
-    }
-    else if (props.info.state != "pending" && props.type != "request") {
-        setClosed()
-    }
-}
+};
 
-onMounted(display)
+onMounted(display);
 </script>

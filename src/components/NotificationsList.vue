@@ -20,7 +20,14 @@
             <ToggleButton left="Todos" right="Não Lidos" @changeActive="updateVisible" />
         </div>
         <div class="notifications-list">
-            <Notification v-for="n in filteredNotifications" :type=props.type :info=n :key="n.id" :link="generateLink(n)" @changeRead="updateNotification" @changeState="changeState" />
+            <Notification
+                v-for="n in filteredNotifications"
+                :type="props.type"
+                :info="n"
+                :key="n.id"
+                :link="generateLink(n)"
+                @changeRead="updateNotification"
+                @changeState="changeState" />
         </div>
     </div>
 </template>
@@ -56,7 +63,7 @@ import ToggleButton from "./ToggleButton.vue";
 import { computed, ref } from "vue";
 import { notification, state } from "../models/Notification.ts";
 
-const filter =ref<"left" | "right">("left");
+const filter = ref<"left" | "right">("left");
 
 const props = defineProps<{
     type: "student" | "director";
@@ -64,55 +71,53 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'changeRead', read: boolean, id: number): void;
-    (event: 'changeState', state: state, id: number): void;
+    (event: "changeRead", read: boolean, id: number): void;
+    (event: "changeState", state: state, id: number): void;
 }>();
 
-const generateLink = (n:notification) => {
-    if (props.type == "director" && n.state=="pending") {
+const generateLink = (n: notification) => {
+    if (props.type == "director" && n.state == "pending") {
         return `/SolveProblems/${n.id}`;
     }
     return undefined;
-}
+};
 
-const updateVisible = (active:"left" | "right") => {
-    filter.value = active
-}
+const updateVisible = (active: "left" | "right") => {
+    filter.value = active;
+};
 
 const filteredNotifications = computed(() => {
-    let notifications = []
+    let notifications = [];
     if (filter.value == "right") {
         notifications = props.notifications.filter((n) => !n.read);
-    }
-    else {
+    } else {
         notifications = props.notifications;
     }
-    notifications.sort((n1,n2) => {
+    notifications.sort((n1, n2) => {
         if (n1.state == "pending" && n2.state != "pending") {
             return -1;
-        }
-        else if (n1.state != "pending" && n2.state == "pending") {
+        } else if (n1.state != "pending" && n2.state == "pending") {
             return 1;
-        }
-        else if (n1.state == "pending" && n2.state == "pending" ||
-                 n1.state != "pending" && n2.state != "pending") {
+        } else if (
+            (n1.state == "pending" && n2.state == "pending") ||
+            (n1.state != "pending" && n2.state != "pending")
+        ) {
             if (n1.date == n2.date) return 0;
             else return n1.date < n2.date ? 1 : -1;
-        }
-        else return 0;
+        } else return 0;
     });
-    return notifications
+    return notifications;
 });
 
 const changeState = (state: state, id: number) => {
-    emit('changeState', state, id);
-}
+    emit("changeState", state, id);
+};
 
-const updateNotification = (read:boolean, id:number) => {
-    let notification = props.notifications.find((e) => e.id == id);
+const updateNotification = (read: boolean, id: number) => {
+    const notification = props.notifications.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
-        emit('changeRead', read, id);
+        emit("changeRead", read, id);
     }
-}
+};
 </script>

@@ -18,7 +18,12 @@
     <Navbar type="student" />
     <main>
         <h2>Notificações</h2>
-        <NotificationsList :type=type :notifications=notifications id="notifications" @changeRead="updateNotification" @changeState="updateNotificationState" />
+        <NotificationsList
+            :type="type"
+            :notifications="notifications"
+            id="notifications"
+            @changeRead="updateNotification"
+            @changeState="updateNotificationState" />
     </main>
 </template>
 
@@ -41,48 +46,48 @@ import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
 import { notification, state } from "../models/Notification.ts";
 
-let type: "student" | "director" = "director";
+const type: "student" | "director" = "director";
 
 // Example data, change later
-let notifications_student: notification[] = [
+const notifications_student: notification[] = [
     {
         id: 0,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
         date: new Date(),
-        read: false,
+        read: false
     },
     {
         id: 1,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
         date: new Date(),
-        read: false,
+        read: false
     },
     {
         id: 2,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
         date: new Date("2025-04-03"),
-        read: true,
+        read: true
     },
     {
         id: 3,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
         date: new Date("2025-04-03"),
-        read: true,
+        read: true
     }
-]
+];
 
-let notifications_director : notification[] = [
+const notifications_director: notification[] = [
     {
         id: 4,
         sender: "Nome",
         content: "Troca de turno PL4 -> PL6",
         date: new Date(),
         read: false,
-        state: "pending",
+        state: "pending"
     },
     {
         id: 5,
@@ -90,7 +95,7 @@ let notifications_director : notification[] = [
         content: "Troca de turno PL4 -> PL6",
         date: new Date(),
         read: false,
-        state: "pending",
+        state: "pending"
     },
     {
         id: 6,
@@ -98,7 +103,7 @@ let notifications_director : notification[] = [
         content: "Troca de turno PL4 -> PL6",
         date: new Date("2025-04-03"),
         read: true,
-        state: "pending",
+        state: "pending"
     },
     {
         id: 7,
@@ -106,27 +111,26 @@ let notifications_director : notification[] = [
         content: "Troca de turno PL4 -> PL6",
         date: new Date("2025-04-03"),
         read: true,
-        state: "accepted",
+        state: "accepted"
     }
-]
+];
 
-let notifications: notification[] = {
+const notifications: notification[] = {
     student: notifications_student,
     director: notifications_director
 }[type];
 
-const updateNotification = (read:boolean, id:number) => {
-    let notification = notifications.find((e) => e.id == id);
+const updateNotification = (read: boolean, id: number) => {
+    const notification = notifications.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
     }
-}
+};
 
-const updateNotificationState = (state:state, id:number) => {
-    let notification = notifications.find((e) => e.id == id);
+const updateNotificationState = (state: state, id: number) => {
+    const notification = notifications.find((e) => e.id == id);
     if (notification) {
         notification.state = state;
     }
-}
-
+};
 </script>

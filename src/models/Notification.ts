@@ -1,4 +1,4 @@
-type type = "student" | "director" | "request";
+type notification_type = "student" | "director" | "request";
 
 type state = "pending" | "accepted" | "rejected";
 
@@ -11,4 +11,4 @@ type notification = {
     state?: state;
 };
 
-export { notification, state, type };
+export { notification, state, notification_type };
