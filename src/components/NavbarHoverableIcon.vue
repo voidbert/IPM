@@ -15,16 +15,17 @@
 -->
 
 <template>
-    <button :style="style" class="navbar-hoverable-icon" :title="props.tooltip" />
+    <button class="navbar-hoverable-icon" :title="props.tooltip" />
 </template>
 
 <style scoped>
 .navbar-hoverable-icon {
     all: unset;
-    width: 100%;
     height: 100%;
+    aspect-ratio: 1 / 1;
 
-    background: var(--color-navbar-hoverable-icon-default);
+    background-color: var(--color-navbar-hoverable-icon-default);
+    mask-image: v-bind("'url(\"' + props.url + '\")'");
     mask-size: cover;
 }
 
@@ -36,21 +37,8 @@
 </style>
 
 <script setup lang="ts">
-import { CSSProperties, ref } from "vue";
-
 const props = defineProps<{
     url: string;
     tooltip: string;
 }>();
-
-// Calculate the element's aspect ratio
-const img = new Image();
-const style = ref<CSSProperties>({
-    maskImage: "url(" + props.url + ")"
-});
-
-img.addEventListener("load", () => {
-    style.value["aspectRatio"] = img.width / img.height;
-});
-img.src = props.url;
 </script>

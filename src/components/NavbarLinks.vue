@@ -16,11 +16,7 @@
 
 <template>
     <ul class="navbar-links">
-        <RouterLink
-            v-for="link in props.links"
-            :key="link.url"
-            :to="link.url"
-            :class="linkClass(link.url)">
+        <RouterLink class="navbar-pill" v-for="link in props.links" :key="link.url" :to="link.url">
             <li>{{ link.name }}</li>
         </RouterLink>
     </ul>
@@ -32,43 +28,33 @@
     gap: 5pt;
 }
 
-.navbar-pill-default,
-.navbar-pill-active {
+.navbar-pill {
     padding: 0.4em;
     border-radius: 0.3em;
 
     list-style-type: none;
     text-decoration: none;
-}
 
-.navbar-pill-default {
     color: var(--color-navbar-text-default);
 }
 
-.navbar-pill-active {
+.navbar-pill.router-link-active {
     color: var(--color-uminho);
     background-color: var(--color-navbar-text-default);
     text-shadow: 0px 0px 1px var(--color-uminho);
 }
 
-.navbar-pill-default:hover,
-.navbar-pill-default:active {
+.navbar-pill:hover:not(.router-link-active),
+.navbar-pill:active:not(.router-link-active) {
     text-shadow: 0px 0px 1px var(--color-navbar-text-default);
 }
 </style>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-
 const props = defineProps<{
     links: {
         name: string;
         url: string;
     }[];
 }>();
-
-const pageUrl = useRoute().path;
-const linkClass = (url: string) => {
-    return pageUrl === url ? "navbar-pill-active" : "navbar-pill-default";
-};
 </script>
