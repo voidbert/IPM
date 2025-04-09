@@ -26,3 +26,6 @@ dist
 # LaTeX compilation
 *-eps-converted-to.pdf
 reports/build
+
+# JSON Server
+.db-new.json
