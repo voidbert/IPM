@@ -18,7 +18,7 @@
     <Navbar type="student" />
     <main>
         <h2>Notificações</h2>
-        <NotificationsList :type=type :notifications=notifications id="notifications" @changeRead="updateNotification" />
+        <NotificationsList :type=type :notifications=notifications id="notifications" @changeRead="updateNotification" @changeState="updateNotificationState" />
     </main>
 </template>
 
@@ -30,6 +30,7 @@ main {
     align-items: center;
     height: 100%;
 }
+
 #notifications {
     width: 80vw;
 }
@@ -38,76 +39,93 @@ main {
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
+import { notification, state } from "../models/Notification.ts";
 
-let type: "student" | "director" = "student";
+let type: "student" | "director" = "director";
 
-let notifications = {
-    student: [
-        {
-            id: 0,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date(),
-            read: false,
-        },
-        {
-            id: 1,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date(),
-            read: false,
-        },
-        {
-            id: 2,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date("2025-04-03"),
-            read: true,
-        },
-        {
-            id: 3,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date("2025-04-03"),
-            read: true,
-        }
-    ],
-    director: [
-        {
-            id: 4,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date(),
-            read: false,
-        },
-        {
-            id: 5,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date(),
-            read: false,
-        },
-        {
-            id: 6,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date("2025-04-03"),
-            read: true,
-        },
-        {
-            id: 7,
-            sender: "Nome",
-            content: "Troca de turno PL4 -> PL6",
-            date: new Date("2025-04-03"),
-            read: true,
-        }
-    ]
+// Example data, change later
+let notifications_student: notification[] = [
+    {
+        id: 0,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date(),
+        read: false,
+    },
+    {
+        id: 1,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date(),
+        read: false,
+    },
+    {
+        id: 2,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+    },
+    {
+        id: 3,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+    }
+]
+
+let notifications_director : notification[] = [
+    {
+        id: 4,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date(),
+        read: false,
+        state: "pending",
+    },
+    {
+        id: 5,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date(),
+        read: false,
+        state: "pending",
+    },
+    {
+        id: 6,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+        state: "pending",
+    },
+    {
+        id: 7,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+        state: "accepted",
+    }
+]
+
+let notifications: notification[] = {
+    student: notifications_student,
+    director: notifications_director
 }[type];
 
 const updateNotification = (read:boolean, id:number) => {
     let notification = notifications.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
+    }
+}
+
+const updateNotificationState = (state:state, id:number) => {
+    let notification = notifications.find((e) => e.id == id);
+    if (notification) {
+        notification.state = state;
     }
 }
 

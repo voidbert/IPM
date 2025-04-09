@@ -29,6 +29,7 @@ main {
     align-items: center;
     height: 100%;
 }
+
 #requests {
     width: 80vw;
     margin-top: 5vh;
@@ -41,6 +42,7 @@ import RequestsList from "../components/RequestsList.vue";
 
 let type: "request" = "request";
 
+// Example data, change later
 let requests = [
     {
         id: 8,
