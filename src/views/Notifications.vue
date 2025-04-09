@@ -46,7 +46,7 @@ import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
 import { notification, state } from "../models/Notification.ts";
 
-const type: "student" | "director" = "director";
+const type: "student" | "director" = "student";
 
 // Example data, change later
 const notifications_student: notification[] = [
