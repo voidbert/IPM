@@ -15,12 +15,12 @@
 -->
 
 <template>
-    <div ref="notification" class="notification" :class=props.type @click="props.type!='request' ? changeRead() : null">
+    <div ref="notification_elem" class="notification" :class=props.type @click="props.type!='request' ? changeRead() : null">
         <div class="notification-left">
             <div v-if="props.type!='request'" class="bubble-position">
-                <div ref="bubble" class="bubble" />
+                <div ref="bubble_elem" class="bubble" />
             </div>
-            <div v-if="props.type!='request'" id="mail-card" />
+            <div v-if="props.type!='request'"id="mail-card" />
             <p>{{ props.info.sender }}</p>
         </div>
         <div>
@@ -28,9 +28,9 @@
         </div>
         <div class="notification-right">
             <p>{{ getDate() }}</p>
-            <div v-if="props.type=='director'" class="buttons">
-                <IconButton type="accept" />
-                <IconButton type="reject" />
+            <div v-if="props.type=='director'&&props.info.state=='pending'" class="buttons">
+                <IconButton type="accept" @click="acceptAction" />
+                <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link=props.link />
             </div>
         </div>
@@ -46,10 +46,17 @@
     padding: 0.4rem 1.6rem;
     font-weight: 500;
     font-size: 0.8rem;
-    box-shadow: 0px 2px 4px #0000003f;
-    color: #333333;
+    box-shadow: 0px 2px 4px var(--color-notification-shadow);
+    color: var(--color-notification-text);
     gap: 0 0.5rem;
     transition: background-color 0.1s linear, box-shadow 0.1s linear;
+}
+
+.notification > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .notification > div > p:first-child {
@@ -58,62 +65,6 @@
 
 .notification:hover {
     cursor: pointer;
-}
-
-.director:hover {
-    background-color: #eddfed;
-    box-shadow: inset 2px 0 0 #80171B, 0px 2px 4px #0000003f;
-}
-
-.director .notification-right .buttons {
-    display: none;
-}
-
-.director:hover .notification-right .buttons {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.director:hover .notification-right p {
-    display: none;
-}
-
-.unread .bubble-position {
-    position: relative;
-    width: 0;
-    height: 0;
-}
-
-.unread .bubble {
-    position: absolute;
-    background-color: #20B6B0;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 1rem;
-    left: 0.3rem;
-    bottom: 0.4rem;
-    z-index: 1;
-}
-
-.unread {
-    background-color: #f7f7f7;
-}
-
-.read {
-    background-color: #ededed;
-}
-
-.closed {
-    background-color: #00000000;
-    filter: opacity(40%);
-    box-shadow: 0 0 0 #00000000;
-}
-
-.notification > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
 .notification-left {
@@ -127,30 +78,78 @@
 #mail-card {
     width: 2rem;
     height: 2rem;
-    background-color: #000;
+    background-color: var(--color-notification-card);
     mask-image: url("/public/mail.svg");
     mask-size: cover;
+}
+
+.director:hover {
+    background-color: var(--color-notification-director-hover);
+    box-shadow: inset 2px 0 0 var(--color-notification-director-side-hover), 0px 2px 4px var(--color-notification-shadow);
+}
+
+.unread .bubble-position {
+    position: relative;
+    width: 0;
+    height: 0;
+}
+
+.unread .bubble {
+    position: absolute;
+    background-color: var(--color-notification-bubble);
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 1rem;
+    left: 0.3rem;
+    bottom: 0.4rem;
+    z-index: 1;
+}
+
+.unread {
+    background-color: var(--color-notification-unread);
+}
+
+.read {
+    background-color: var(--color-notification-read);
+}
+
+.closed {
+    background-color: var(--color-notification-closed);
+    filter: opacity(40%);
+    box-shadow: 0 0 0 var(--color-notification-closed);
+}
+
+.director .notification-right .buttons {
+    display: none;
+}
+
+.director:hover:not(.closed) .notification-right .buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.director:hover:not(.closed) .notification-right p {
+    display: none;
 }
 </style>
 
 <script setup lang="ts">
 import IconButton from './IconButton.vue';
 import { onMounted, ref } from 'vue';
+import { notification, state, type } from "../models/Notification.ts";
+
+const bubble_elem = ref<HTMLElement>();
+const notification_elem = ref<HTMLElement>();
 
 const props = defineProps<{
-    type: "student" | "director" | "request",
-    info: {
-        id: number,
-        sender: string,
-        content: string,
-        date: Date,
-        read?: boolean,
-    },
+    type: type,
+    info: notification,
     link?: string;
 }>();
 
 const emit = defineEmits<{
     (event: 'changeRead', read: boolean, id: number): void;
+    (event: 'changeState', state: state, id: number): void;
 }>();
 
 const getDate = () => {
@@ -164,8 +163,23 @@ const sameDay = (d1: Date, d2: Date) => {
            d1.getDate() === d2.getDate()
 }
 
-const bubble = ref<HTMLElement>();
-const notification = ref<HTMLElement>();
+const setClosed = () => {
+    if (notification_elem.value) {
+        notification_elem.value.classList.remove('unread');
+        notification_elem.value.classList.remove('read');
+        notification_elem.value.classList.add('closed');
+    }
+}
+
+const acceptAction = () => {
+    setClosed()
+    emit('changeState', "accepted", props.info.id);
+}
+
+const rejectAction = () => {
+    setClosed()
+    emit('changeState', "rejected", props.info.id);
+}
 
 const changeRead = () => {
     props.info.read = true;
@@ -174,15 +188,18 @@ const changeRead = () => {
 }
 
 const display = () => {
-    if (props.info.read && bubble.value && notification.value) {
-        bubble.value.style.visibility = 'hidden';
-        notification.value.classList.remove('unread');
-        notification.value.classList.add('read');
+    if (props.info.read && bubble_elem.value && notification_elem.value && (props.info.state == "pending" || props.type == "student")) {
+        bubble_elem.value.style.visibility = 'hidden';
+        notification_elem.value.classList.remove('unread');
+        notification_elem.value.classList.add('read');
     }
-    else if (props.info.read === false && bubble.value && notification.value) {
-        bubble.value.style.visibility = 'visible';
-        notification.value.classList.remove('read');
-        notification.value.classList.add('unread');
+    else if (props.info.read === false && bubble_elem.value && notification_elem.value && (props.info.state == "pending" || props.type == "student")) {
+        bubble_elem.value.style.visibility = 'visible';
+        notification_elem.value.classList.remove('read');
+        notification_elem.value.classList.add('unread');
+    }
+    else if (props.info.state != "pending" && props.type != "request") {
+        setClosed()
     }
 }
 

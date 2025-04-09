@@ -34,10 +34,10 @@
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
-    background-color: #9E9494;
+    background-color: var(--color-toggle-button);
     border-radius: 0.5rem;
     font-size: 0.8rem;
-    color: #E6E6E6;
+    color: var(--color-toggle-button-text);
     transition: background-color 0.1s linear;
 }
 
@@ -58,22 +58,22 @@
 
 .toggle-left:not(.active) span:hover,
 .toggle-right:not(.active) span:hover {
-    background-color: #B7AFAF;
+    background-color: var(--color-toggle-button-hover);
     border-radius: 0.5rem;
     cursor: pointer;
 }
 
 .active {
     border-radius: 0.5rem;
-    background-color: #705C5C;
+    background-color: var(--color-toggle-button-active);
 }
 
 .toggle-left.active {
-    box-shadow: inset 0 0 1px #808080, 1px 0 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 1px var(--color-toggle-button-shadow), 1px 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .toggle-right.active {
-    box-shadow: inset 0 0 1px #808080, 0 1px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 1px var(--color-toggle-button-shadow), 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .toggle-transition-enter-active,
@@ -84,7 +84,7 @@
 .toggle-transition-enter, 
 .toggle-transition-leave-to {
     transform: scale(1.05);
-    background-color: #705C5C;
+    background-color: var(--color-toggle-button-active);
     opacity: 0;
 }
 </style>

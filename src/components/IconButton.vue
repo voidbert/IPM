@@ -16,7 +16,7 @@
 
 <template>
     <div class="button" >
-        <RouterLink v-if="link" :to=link />
+        <RouterLink v-if="props.link" :to=props.link /> <!-- Redirect -->
         <div class="icon" :class=type />
     </div>
 </template>
@@ -27,31 +27,37 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.5em;
-    background-color: #D6C2C2;
+    background-color: var(--color-icon-button);
     width: 1.5rem;
     height: 1.5rem;
     transition: background-color 0.1s linear;
 }
+
 .button:hover {
-    background-color: #993337;
+    background-color: var(--color-icon-button-hover);
 }
+
 .button:hover .icon {
-    background-color: #FAF4F4;
+    background-color: var(--color-icon-button-icon-hover);
 }
+
 .icon {
-    background-color: #AD8585;
+    background-color: var(--color-icon-button-icon);
     mask-image: url("/public/icon-accept.svg");
     mask-size: cover;
     width: 80%;
     height: 80%;
     transition: background-color 0.1s linear;
 }
+
 .accept {
     mask-image: url("/public/icon-accept.svg");
 }
+
 .reject {
     mask-image: url("/public/icon-reject.svg");
 }
+
 .view {
     mask-image: url("/public/icon-view.svg");
     width: 100%;

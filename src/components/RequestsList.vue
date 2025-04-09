@@ -16,7 +16,7 @@
 
 <template>
     <div class="requests">
-        <Notification v-for="r in props.requests" type="request" :info=r :key="r.id" />
+        <Notification v-for="r in sortedRequests" type="request" :info=r :key="r.id" />
     </div>
 </template>
 
@@ -26,7 +26,7 @@
     width: 100%;
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
-    background-color: #ededed;
+    background-color: var(--color-requests-list);
     display: flex;
     flex-direction: column;
     gap: 0.5rem 0;
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import Notification from "../components/Notification.vue";
+import { computed } from "vue";
 
 const props = defineProps<{
     requests:
@@ -45,12 +46,12 @@ const props = defineProps<{
             date: Date
         }[];
 }>();
-/*
-notifications: {
-        sender: String,
-        content: String,
-        date: Date
-    }[]
-*/
+
+const sortedRequests = computed(() => {
+    return props.requests.sort((r1,r2) => {
+        if (r1.date == r2.date) return 0;
+        else return r1.date < r2.date ? 1 : -1;
+    });
+});
 
 </script>
