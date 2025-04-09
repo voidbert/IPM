@@ -26,6 +26,24 @@
     --color-dropdown-border: #ccc;
     --color-dropdown-icon: #666;
 
+    --color-shift-text: hsla(0, 0%, 0%, 0.5);
+    --color-shift-border: rgba(0, 0, 0, 0.10);
+    --color-shift-grey: #DCDCDC;
+    --color-shift-dark-grey: #959595;
+
+    --color-shift-1: #F5A3A3;
+    --color-shift-1-bright: #F07575;
+    --color-shift-2: #A3BDF5;
+    --color-shift-2-bright: #759CF0;
+    --color-shift-3: #A6F5A3;
+    --color-shift-3-bright: #7AF075;
+    --color-shift-4: #F5A3E4;
+    --color-shift-4-bright: #F075D7;
+    --color-shift-5: #F5F3A3;
+    --color-shift-5-bright: #F0EE75;
+    --color-shift-6: #A3F5F1;
+    --color-shift-6-bright: #75F0EA;
+    
     --color-body-background: #fff;
     --color-body-foreground: #000;
 }

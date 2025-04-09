@@ -15,21 +15,36 @@
 -->
 
 <template>
-    <Navbar type="login" />
-    <main>Hello, world!</main>
-    <ShiftBlock :shifts_info=info></ShiftBlock>
+    <div class="shift-block">
+        <Shift v-for="shift in props.shifts_info" :shift_info="shift"></Shift>
+    </div>
 </template>
 
 <style scoped>
-main {
-    padding: 10px;
+
+.shift-block {
+    display: flex;
+    width: 200px;
+    height: 142px;
+    padding: 5px;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
 }
+
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
-import ShiftBlock from "../components/ShiftBlock.vue";
-let type:  "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted"= "full"
-let info = [{type:type, uc:"IPM", name:"PL4", room:"Ed. 2  0.08", capacity:"20/30", show_capacity:false, color_nr:1}, 
-            {type:type, uc:"IPM", name:"PL4", room:"Ed. 2  0.08", capacity:"20/30", show_capacity:false, color_nr:2}]
+import Shift from "./Shift.vue";
+const props = defineProps<{
+    shifts_info:{
+        type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
+        color_nr: number;
+        uc: string;
+        name: string;
+        room: string;
+        capacity: string;
+        show_capacity: Boolean;
+    }[]
+}>();
 </script>
