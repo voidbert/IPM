@@ -14,13 +14,17 @@
     limitations under the License.
 */
 
-:root {
+/* Color themes */
+body {
     --color-uminho: #80171b;
 
     --color-navbar-text-default: #fff;
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
+    --color-toast-text-default: #ffffff;
+
+    --color-searchbar-border: #b9b9b9;
     --color-dropdown-background: #fff;
     --color-dropdown-text: #000;
     --color-dropdown-border: #ccc;
@@ -44,10 +48,29 @@
     --color-shift-6: #a3f5f1;
     --color-shift-6-bright: #75f0ea;
 
+    --color-button-action: var(--color-uminho);
+    --color-button-disabled: #808080;
+    --color-button-cancel: #f2f2f2;
+
+    --color-text-dark: #000;
+    --color-text-light: #fff;
+
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+}
+
+body[class="light"] {
     --color-body-background: #fff;
     --color-body-foreground: #000;
 }
 
+body[class="dark"] {
+    --color-body-background: #111;
+    --color-body-foreground: #eee;
+}
+
+/* Base app style */
 body {
     min-height: 100vh;
     margin: 0px;
