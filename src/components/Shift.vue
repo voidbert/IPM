@@ -102,11 +102,11 @@ const style = computed(() => {
     if (props.shift_info.type == "full" && !hover.value) {
         return `background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else if (props.shift_info.type == "full") {
-        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "full-pressed") {
         return `background: var(--color-shift-${props.shift_info.color_nr});`;
     } else if (props.shift_info.type == "border" && !hover.value) {
-        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "border") {
         return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else {
