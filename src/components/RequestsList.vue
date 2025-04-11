@@ -16,7 +16,7 @@
 
 <template>
     <div class="requests">
-        <Notification v-for="r in sortedRequests" type="request" :info="r" :key="r.id" />
+        <NotificationItem v-for="r in sortedRequests" type="request" :info="r" :key="r.id" />
     </div>
 </template>
 
@@ -34,7 +34,7 @@
 </style>
 
 <script setup lang="ts">
-import Notification from "../components/Notification.vue";
+import NotificationItem from "./NotificationItem.vue";
 import { computed } from "vue";
 
 const props = defineProps<{

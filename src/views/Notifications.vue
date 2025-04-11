@@ -44,12 +44,12 @@ main {
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
-import { notification, state } from "../models/Notification.ts";
+import { Notification, State } from "../models/Notification.ts";
 
 const type: "student" | "director" = "student";
 
 // Example data, change later
-const notifications_student: notification[] = [
+const notifications_student: Notification[] = [
     {
         id: 0,
         sender: "Nome",
@@ -80,7 +80,7 @@ const notifications_student: notification[] = [
     }
 ];
 
-const notifications_director: notification[] = [
+const notifications_director: Notification[] = [
     {
         id: 4,
         sender: "Nome",
@@ -115,7 +115,7 @@ const notifications_director: notification[] = [
     }
 ];
 
-const notifications: notification[] = {
+const notifications: Notification[] = {
     student: notifications_student,
     director: notifications_director
 }[type];
@@ -127,7 +127,7 @@ const updateNotification = (read: boolean, id: number) => {
     }
 };
 
-const updateNotificationState = (state: state, id: number) => {
+const updateNotificationState = (state: State, id: number) => {
     const notification = notifications.find((e) => e.id == id);
     if (notification) {
         notification.state = state;

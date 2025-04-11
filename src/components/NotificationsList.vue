@@ -20,7 +20,7 @@
             <ToggleButton left="Todos" right="Não Lidos" @changeActive="updateVisible" />
         </div>
         <div class="notifications-list">
-            <Notification
+            <NotificationItem
                 v-for="n in filteredNotifications"
                 :type="props.type"
                 :info="n"
@@ -58,24 +58,24 @@
 </style>
 
 <script setup lang="ts">
-import Notification from "../components/Notification.vue";
+import NotificationItem from "./NotificationItem.vue";
 import ToggleButton from "./ToggleButton.vue";
 import { computed, ref } from "vue";
-import { notification, state } from "../models/Notification.ts";
+import { Notification, State } from "../models/Notification.ts";
 
 const filter = ref<"left" | "right">("left");
 
 const props = defineProps<{
     type: "student" | "director";
-    notifications: notification[];
+    notifications: Notification[];
 }>();
 
 const emit = defineEmits<{
     (event: "changeRead", read: boolean, id: number): void;
-    (event: "changeState", state: state, id: number): void;
+    (event: "changeState", state: State, id: number): void;
 }>();
 
-const generateLink = (n: notification) => {
+const generateLink = (n: Notification) => {
     if (props.type == "director" && n.state == "pending") {
         return `/SolveProblems/${n.id}`;
     }
@@ -109,7 +109,7 @@ const filteredNotifications = computed(() => {
     return notifications;
 });
 
-const changeState = (state: state, id: number) => {
+const changeState = (state: State, id: number) => {
     emit("changeState", state, id);
 };
 

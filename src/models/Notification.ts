@@ -1,14 +1,14 @@
-type notification_type = "student" | "director" | "request";
+type Notification_Type = "student" | "director" | "request";
 
-type state = "pending" | "accepted" | "rejected";
+type State = "pending" | "accepted" | "rejected";
 
-type notification = {
+type Notification = {
     id: number;
     sender: string;
     content: string;
     date: Date;
     read?: boolean;
-    state?: state;
+    state?: State;
 };
 
-export { notification, state, notification_type };
+export { Notification, State, Notification_Type };

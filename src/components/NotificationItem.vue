@@ -144,20 +144,20 @@
 <script setup lang="ts">
 import IconButton from "./IconButton.vue";
 import { onMounted, ref } from "vue";
-import { notification, state, notification_type } from "../models/Notification.ts";
+import { Notification, State, Notification_Type } from "../models/Notification.ts";
 
 const bubble_elem = ref<HTMLElement>();
 const notification_elem = ref<HTMLElement>();
 
 const props = defineProps<{
-    type: notification_type;
-    info: notification;
+    type: Notification_Type;
+    info: Notification;
     link?: string;
 }>();
 
 const emit = defineEmits<{
     (event: "changeRead", read: boolean, id: number): void;
-    (event: "changeState", state: state, id: number): void;
+    (event: "changeState", state: State, id: number): void;
 }>();
 
 const getDate = () => {
