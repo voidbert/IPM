@@ -45,6 +45,7 @@ main {
 import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
 import { Notification, State } from "../models/Notification.ts";
+import { ref } from 'vue';
 
 const type: "student" | "director" = "student";
 
@@ -112,23 +113,55 @@ const notifications_director: Notification[] = [
         date: new Date("2025-04-03"),
         read: true,
         state: "accepted"
+    },
+    {
+        id: 8,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: false,
+        state: "pending"
+    },
+    {
+        id: 9,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: false,
+        state: "pending"
+    },
+    {
+        id: 10,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+        state: "pending"
+    },
+    {
+        id: 11,
+        sender: "Nome",
+        content: "Troca de turno PL4 -> PL6",
+        date: new Date("2025-04-03"),
+        read: true,
+        state: "pending"
     }
 ];
 
-const notifications: Notification[] = {
+const notifications = ref<Notification[]>({
     student: notifications_student,
     director: notifications_director
-}[type];
+}[type]);
 
 const updateNotification = (read: boolean, id: number) => {
-    const notification = notifications.find((e) => e.id == id);
+    const notification = notifications.value.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
     }
 };
 
 const updateNotificationState = (state: State, id: number) => {
-    const notification = notifications.find((e) => e.id == id);
+    const notification = notifications.value.find((e) => e.id == id);
     if (notification) {
         notification.state = state;
     }

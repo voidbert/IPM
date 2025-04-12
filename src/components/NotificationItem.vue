@@ -37,6 +37,7 @@
                 <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link="props.link" />
             </div>
+            <span v-if="props.info.state!='pending'" id="state" :class="props.info.state" />
         </div>
     </div>
 </template>
@@ -69,7 +70,7 @@
     font-size: 0.96rem;
 }
 
-.notification:hover {
+.notification:hover:not(.closed) {
     cursor: pointer;
 }
 
@@ -89,7 +90,7 @@
     mask-size: cover;
 }
 
-.director:hover {
+.director:hover:not(.closed) {
     background-color: var(--color-notification-director-hover);
     box-shadow:
         inset 2px 0 0 var(--color-notification-director-side-hover),
@@ -138,6 +139,24 @@
 
 .director:hover:not(.closed) .notification-right p {
     display: none;
+}
+
+#state {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    right: 25%;
+    background-color: var(--color-notification-icon-state);
+}
+
+#state.accepted {
+    mask-image: url("/public/icon-accept.svg");
+    mask-size: cover;
+}
+
+#state.rejected {
+    mask-image: url("/public/icon-reject.svg");
+    mask-size: cover;
 }
 </style>
 

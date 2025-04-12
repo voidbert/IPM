@@ -16,10 +16,12 @@
 
 <template>
     <div class="notifications">
+<!--
         <div class="notifications-header">
             <ToggleButton left="Todos" right="Não Lidos" @changeActive="updateVisible" />
         </div>
-        <div class="notifications-list">
+-->
+        <TransitionGroup name="notification" tag="div" class="notifications-list">
             <NotificationItem
                 v-for="n in filteredNotifications"
                 :type="props.type"
@@ -28,7 +30,7 @@
                 :link="generateLink(n)"
                 @changeRead="updateNotification"
                 @changeState="changeState" />
-        </div>
+        </TransitionGroup>
     </div>
 </template>
 
@@ -40,7 +42,7 @@
     padding: 0.5rem;
     background-color: var(--color-notifications-list);
 }
-
+/*
 .notifications-header {
     display: flex;
     flex-direction: row;
@@ -49,17 +51,21 @@
     border-bottom: 2px solid var(--color-notifications-list-header-border);
     padding: 0 1.5rem 0.5rem 1.5rem;
 }
-
+*/
 .notifications-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem 0;
 }
+
+.notification {
+  transition: transform 0.3s ease-in-out;
+}
 </style>
 
 <script setup lang="ts">
 import NotificationItem from "./NotificationItem.vue";
-import ToggleButton from "./ToggleButton.vue";
+//import ToggleButton from "./ToggleButton.vue";
 import { computed, ref } from "vue";
 import { Notification, State } from "../models/Notification.ts";
 
@@ -81,30 +87,38 @@ const generateLink = (n: Notification) => {
     }
     return undefined;
 };
-
+/*
 const updateVisible = (active: "left" | "right") => {
     filter.value = active;
 };
-
+*/
 const filteredNotifications = computed(() => {
-    let notifications = [];
+    let notifications = [...props.notifications];
     if (filter.value == "right") {
-        notifications = props.notifications.filter((n) => !n.read);
+        notifications = notifications.filter((n) => !n.read);
     } else {
-        notifications = props.notifications;
+        notifications = notifications;
     }
     notifications.sort((n1, n2) => {
-        if (n1.state == "pending" && n2.state != "pending") {
+        if (n1.read == false && n2.read == true) {
+            return -1
+        } else if (n1.read == true && n2.read == false) {
+            return 1;
+        } else if (n1.state == "pending" && n2.state != "pending") {
             return -1;
         } else if (n1.state != "pending" && n2.state == "pending") {
             return 1;
         } else if (
-            (n1.state == "pending" && n2.state == "pending") ||
-            (n1.state != "pending" && n2.state != "pending")
+            (n1.state != "pending" && n2.state != "pending") &&
+            (n1.state != n2.state)
         ) {
-            if (n1.date == n2.date) return 0;
+            return n1.state == "accepted" ? -1 : 1;
+        } else if (
+            (n1.state == n2.state)
+        ) {
+            if (n1.date == n2.date) return n1.id < n2.id ? -1 : 1;
             else return n1.date < n2.date ? 1 : -1;
-        } else return 0;
+        } else return n1.id < n2.id ? -1 : 1;
     });
     return notifications;
 });
@@ -114,10 +128,13 @@ const changeState = (state: State, id: number) => {
 };
 
 const updateNotification = (read: boolean, id: number) => {
+    emit("changeRead", read, id);
+/*
     const notification = props.notifications.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
         emit("changeRead", read, id);
     }
+*/
 };
 </script>

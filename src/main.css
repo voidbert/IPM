@@ -33,6 +33,7 @@
     --color-notification-unread: #f7f7f7;
     --color-notification-read: #ededed;
     --color-notification-closed: #00000000;
+    --color-notification-icon-state: #9e9494;
 
     --color-notifications-list: #ededed;
     --color-notifications-list-header-border: #bfbfbf;
