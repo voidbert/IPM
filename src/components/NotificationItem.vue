@@ -37,7 +37,7 @@
                 <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link="props.link" />
             </div>
-            <span v-if="props.info.state!='pending'" id="state" :class="props.info.state" />
+            <span v-if="props.type == 'director' && props.info.state != 'pending'" id="state" :class="props.info.state" />
         </div>
     </div>
 </template>

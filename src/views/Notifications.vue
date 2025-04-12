@@ -45,7 +45,7 @@ main {
 import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
 import { Notification, State } from "../models/Notification.ts";
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const type: "student" | "director" = "student";
 
@@ -148,10 +148,12 @@ const notifications_director: Notification[] = [
     }
 ];
 
-const notifications = ref<Notification[]>({
-    student: notifications_student,
-    director: notifications_director
-}[type]);
+const notifications = ref<Notification[]>(
+    {
+        student: notifications_student,
+        director: notifications_director
+    }[type]
+);
 
 const updateNotification = (read: boolean, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);
