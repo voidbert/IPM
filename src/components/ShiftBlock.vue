@@ -23,8 +23,6 @@
 <style scoped>
 .shift-block {
     display: flex;
-    width: 200px;
-    height: 142px;
     padding: 5px;
     align-items: center;
     gap: 3px;

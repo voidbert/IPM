@@ -22,7 +22,6 @@
     <Button type="action">
         <p><b>Iniciar Sessão</b></p>
     </Button>
-    <ShiftBlock :shifts_info="info"></ShiftBlock>
 </template>
 
 <style scoped>
@@ -41,28 +40,6 @@ Button {
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
-import ShiftBlock from "../components/ShiftBlock.vue";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
-const type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted" = "full";
-const info = [
-    {
-        type: type,
-        uc: "IPM",
-        name: "PL4",
-        room: "Ed. 2  0.08",
-        capacity: "20/30",
-        show_capacity: false,
-        color_nr: 1
-    },
-    {
-        type: type,
-        uc: "IPM",
-        name: "PL4",
-        room: "Ed. 2  0.08",
-        capacity: "20/30",
-        show_capacity: false,
-        color_nr: 2
-    }
-];
 </script>

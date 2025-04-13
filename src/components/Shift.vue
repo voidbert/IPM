@@ -40,17 +40,27 @@
     align-self: stretch;
     flex-shrink: 0;
     border-radius: 5px;
+    position: relative;
 }
 
 .shift p {
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     margin-left: 20%;
     margin-right: 20%;
     color: var(--color-shift-text);
 }
 
 .room-text {
+    font-size: 0.75em;
+}
+
+.capacity {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    margin-bottom: 0% !important;
+    margin-right: 0% !important;
     font-size: 0.75em;
 }
 
@@ -75,12 +85,6 @@
 .disabled-highlighted {
     border: 1px solid var(--color-shift-border);
     background: var(--color-shift-dark-grey);
-}
-
-.capacity {
-    position: relative;
-    left: 35%;
-    top: 8%;
 }
 </style>
 
