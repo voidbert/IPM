@@ -16,56 +16,42 @@
 
 <template>
     <label class="custom-checkbox">
-        <input type="checkbox" v-model="checked" ref="checkbox" @change="emitChange" />
-        <span>{{ labelText }}</span>
+        <input
+            type="checkbox"
+            class="custom-checkbox-input"
+            v-model="model"
+            :indeterminate="model === null"
+            @change="$emit('change', model as boolean | null)" />
+        <slot />
     </label>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineEmits } from "vue";
+import { defineModel, defineEmits } from "vue";
 
-const emit = defineEmits<{
-    (event: "update:checked", value: boolean): void;
+const model = defineModel<boolean | null>();
+
+defineEmits<{
+    (event: "change", value: boolean | null): void;
 }>();
-
-const props = defineProps<{
-    labelText?: string;
-    initialChecked?: boolean;
-    indeterminate?: boolean;
-}>();
-
-const checked = ref(props.initialChecked ?? false);
-const checkbox = ref<HTMLInputElement | null>(null);
-
-onMounted(() => {
-    if (checkbox.value && props.indeterminate) {
-        checkbox.value.indeterminate = true;
-        checked.value = false;
-    }
-});
-
-const emitChange = () => {
-    emit("update:checked", checked.value);
-};
 </script>
 
 <style scoped>
 .custom-checkbox {
     display: flex;
-    flex: 1;
     align-items: center;
-    color: var(--color-checkbox-text-light);
+    gap: 4px;
     cursor: pointer;
+    color: var(--color-checkbox-text-light);
 }
+
 .custom-checkbox:hover {
     color: var(--color-checkbox-text-hover);
 }
-.custom-checkbox input[type="checkbox"]:indeterminate {
-    accent-color: var(--color-checkbox-indeterminate-light);
-}
-.custom-checkbox input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+
+.custom-checkbox-input {
+    width: 1.2rem;
+    height: 1.2rem;
     accent-color: var(--color-checkbox-checked-light);
     cursor: pointer;
 }
