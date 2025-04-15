@@ -37,6 +37,11 @@ body {
     --color-text-dark: #000;
     --color-text-light: #fff;
 
+    --color-checkbox-checked-light: var(--color-uminho);
+    --color-checkbox-text-light: #000;
+    --color-checkbox-text-dark: #fff;
+    --color-checkbox-text-hover: red;
+
     transition:
         background-color 0.2s,
         color 0.2s;
