@@ -15,30 +15,28 @@
 -->
 
 <template>
-    <button class="navbar-hoverable-icon" :title="props.tooltip" />
+    <span class="warning">
+        <div class="warning-icon" />
+        <slot />
+    </span>
 </template>
 
 <style scoped>
-.navbar-hoverable-icon {
-    all: unset;
-    height: 100%;
-    aspect-ratio: 1 / 1;
+.warning {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: left;
 
-    background-color: var(--color-navbar-hoverable-icon-default);
-    mask-image: v-bind("'url(\"' + props.url + '\")'");
+    color: var(--color-uminho);
+}
+
+.warning-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    background-color: var(--color-uminho);
+    mask-image: url("/warning-icon.svg");
     mask-size: cover;
 }
-
-.navbar-hoverable-icon:hover,
-.navbar-hoverable-icon:active {
-    background: var(--color-navbar-hoverable-icon-hover);
-    transition: background-color 0.1s;
-}
 </style>
-
-<script setup lang="ts">
-const props = defineProps<{
-    url: string;
-    tooltip: string;
-}>();
-</script>
