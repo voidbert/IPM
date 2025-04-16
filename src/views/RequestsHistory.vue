@@ -17,6 +17,7 @@
 <template>
     <Navbar type="student" />
     <main>
+        <h2>Histórico</h2>
         <RequestsList :type="type" :requests="requests" id="requests" />
     </main>
 </template>
@@ -32,7 +33,6 @@ main {
 
 #requests {
     width: 80vw;
-    margin-top: 5vh;
 }
 </style>
 
