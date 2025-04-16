@@ -17,13 +17,21 @@
 <template>
     <nav>
         <div class="navbar-left">
-            <object data="/favicon.svg" id="navbar-logo-svg" />
-            <span id="navbar-logo-text">SWAP</span>
+            <ApplicationIcon />
             <NavbarLinks :links="links" />
         </div>
 
         <div class="navbar-right">
-            <NavbarHoverableIcon url="/dark-mode.svg" tooltip="Modo escuro" />
+            <NavbarHoverableIcon
+                v-if="currentTheme === 'light'"
+                @click="switchTheme()"
+                url="/dark-mode.svg"
+                tooltip="Modo escuro" />
+            <NavbarHoverableIcon
+                v-else
+                @click="switchTheme()"
+                url="/light-mode.svg"
+                tooltip="Modo claro" />
             <RouterLink
                 to="./Notifications"
                 v-if="props.type !== 'login'"
@@ -45,32 +53,22 @@ nav {
     display: flex;
     height: 4rem;
     justify-content: space-between;
-    padding: 0px 10px 0px 0px;
 
     background-color: var(--color-uminho);
+    padding: 0px 6px;
 }
 
-.navbar-left,
+.navbar-left {
+    display: flex;
+    justify-content: left;
+}
+
 .navbar-right {
     display: flex;
-    gap: 6px;
     height: 100%;
-
     align-items: center;
-}
 
-#navbar-logo-svg {
-    height: 100%;
-}
-
-#navbar-logo-text {
-    color: var(--color-navbar-text-default);
-    font-size: 1.5em;
-    font-weight: bold;
-
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
+    gap: 6px;
 }
 
 .navbar-hoverable-icon-container {
@@ -85,8 +83,10 @@ nav {
 </style>
 
 <script setup lang="ts">
+import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 import NavbarLinks from "./NavbarLinks.vue";
+import { ref } from "vue";
 
 const props = defineProps<{
     type: "login" | "student" | "director";
@@ -125,5 +125,35 @@ const links = {
     ]
 }[props.type];
 
-console.log(props.type);
+// Theme switching
+type Theme = "dark" | "light";
+
+const browserThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+const getTheme = (): Theme => {
+    let currentTheme: Theme | null = localStorage.getItem("theme") as Theme | null;
+    if (currentTheme === null) {
+        currentTheme = browserThemeQuery.matches ? "dark" : "light";
+    }
+
+    return currentTheme;
+};
+
+const updatePageAfterTheming = (theme: Theme) => {
+    document.body.className = theme;
+    currentTheme.value = theme;
+};
+
+const switchTheme = () => {
+    const newTheme = getTheme() === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+
+    updatePageAfterTheming(newTheme);
+};
+
+const currentTheme = ref<undefined | Theme>(undefined);
+updatePageAfterTheming(getTheme());
+browserThemeQuery.onchange = () => {
+    updatePageAfterTheming(getTheme());
+};
 </script>

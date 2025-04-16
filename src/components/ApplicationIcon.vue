@@ -15,30 +15,30 @@
 -->
 
 <template>
-    <button class="navbar-hoverable-icon" :title="props.tooltip" />
+    <div class="application-icon">
+        <object data="/favicon.svg" class="application-icon-svg" />
+        <span class="application-icon-text">SWAP</span>
+    </div>
 </template>
 
 <style scoped>
-.navbar-hoverable-icon {
-    all: unset;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-
-    background-color: var(--color-navbar-hoverable-icon-default);
-    mask-image: v-bind("'url(\"' + props.url + '\")'");
-    mask-size: cover;
+.application-icon {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
 }
 
-.navbar-hoverable-icon:hover,
-.navbar-hoverable-icon:active {
-    background: var(--color-navbar-hoverable-icon-hover);
-    transition: background-color 0.1s;
+.application-icon-svg {
+    height: 4rem;
+}
+
+.application-icon-text {
+    color: var(--color-navbar-text-default);
+    font-size: 1.5em;
+    font-weight: bold;
+
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
 }
 </style>
-
-<script setup lang="ts">
-const props = defineProps<{
-    url: string;
-    tooltip: string;
-}>();
-</script>
