@@ -12,7 +12,7 @@
         "format": "prettier --write src/ eslint.config.js index.html vite.config.js",
         "check-format": "prettier --check src/ eslint.config.js index.html vite.config.js",
 
-        "copy-db": "cp db.json .db-new.json",
+        "copy-db": "node db-copy.cjs",
         "serve-dev": "run-p serve-app-dev serve-db",
         "serve-preview": "run-p serve-app-preview serve-db",
         "serve-app-dev": "vite",
