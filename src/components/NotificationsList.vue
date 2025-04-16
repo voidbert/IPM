@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <div class="notifications">
+    <ol class="reset notifications">
         <TransitionGroup name="notification" tag="div" class="notifications-list">
             <NotificationItem
                 v-for="n in filteredNotifications"
@@ -26,7 +26,7 @@
                 @changeRead="updateNotification"
                 @changeState="changeState" />
         </TransitionGroup>
-    </div>
+    </ol>
 </template>
 
 <style scoped>

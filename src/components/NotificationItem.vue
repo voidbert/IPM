@@ -15,16 +15,16 @@
 -->
 
 <template>
-    <div
+    <li
         ref="notification_elem"
-        class="notification"
+        class="reset notification"
         :class="props.type"
         @click="props.type != 'request' ? changeRead() : null">
         <div class="notification-left">
             <div v-if="props.type != 'request'" class="bubble-position">
                 <div ref="bubble_elem" class="bubble" />
             </div>
-            <div v-if="props.type != 'request'" id="mail-card" />
+            <img v-if="props.type != 'request'" class="reset" id="mail-card" />
             <p>{{ props.info.sender }}</p>
         </div>
         <div>
@@ -37,12 +37,13 @@
                 <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link="props.link" />
             </div>
-            <span
+            <img
                 v-if="props.type == 'director' && props.info.state != 'pending'"
                 id="state"
+                class="reset"
                 :class="props.info.state" />
         </div>
-    </div>
+    </li>
 </template>
 
 <style scoped>

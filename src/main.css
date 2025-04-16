@@ -67,3 +67,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.reset {
+    all: unset;
+}

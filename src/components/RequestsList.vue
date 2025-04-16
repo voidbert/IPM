@@ -15,9 +15,9 @@
 -->
 
 <template>
-    <div class="requests">
+    <ol class="reset requests">
         <NotificationItem v-for="r in sortedRequests" type="request" :info="r" :key="r.id" />
-    </div>
+    </ol>
 </template>
 
 <style scoped>

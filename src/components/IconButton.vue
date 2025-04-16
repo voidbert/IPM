@@ -15,11 +15,11 @@
 -->
 
 <template>
-    <div class="button">
+    <button class="reset button">
         <RouterLink v-if="props.link" :to="props.link" />
         <!-- Redirect -->
-        <div class="icon" :class="type" />
-    </div>
+        <img class="reset icon" :class="type" />
+    </button>
 </template>
 
 <style scoped>

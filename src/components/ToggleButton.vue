@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <div class="toggle-button">
+    <button class="reset toggle-button">
         <div ref="left_elem" class="toggle-left active">
             <span @click="changeActive('left')"
                 ><b>{{ props.left }}</b></span
@@ -26,7 +26,7 @@
                 ><b>{{ props.right }}</b></span
             >
         </div>
-    </div>
+    </button>
 </template>
 
 <style scoped>
