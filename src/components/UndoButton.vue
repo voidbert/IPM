@@ -17,7 +17,7 @@
 
 <template>
     <div class="undo-button-container" role="button" @click="emit('undo')">
-        <img src="/undo-button.svg" alt="Desfazer" class="undo-button-icon" />
+        <div class="undo-button-icon" />
         <span class="undo-button-label">Desfazer</span>
     </div>
 </template>
@@ -39,6 +39,17 @@ const emit = defineEmits<{
     color: var(--color-undo-button-text);
 
     gap: 0.3rem;
+}
+
+.undo-button-icon {
+    width: 1rem;
+    height: 1rem;
+
+    background-color: var(--color-undo-button-text);
+    mask-image: url('/undo-button.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
 }
 
 .undo-button-container:hover {
