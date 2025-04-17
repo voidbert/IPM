@@ -43,10 +43,12 @@ defineEmits<{
     gap: 4px;
     cursor: pointer;
     color: var(--color-checkbox-text-light);
+    flex: 1;
 }
 
 .custom-checkbox:hover {
     color: var(--color-checkbox-text-hover);
+    filter: brightness(1.5) saturate(2);
 }
 
 .custom-checkbox-input {

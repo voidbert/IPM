@@ -22,6 +22,9 @@
     <Button type="action">
         <p><b>Iniciar Sessão</b></p>
     </Button>
+    <p>
+        <ShiftSelector></ShiftSelector>
+    </p>
 </template>
 
 <style scoped>
@@ -42,4 +45,5 @@ Button {
 import Navbar from "../components/Navbar.vue";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
+import ShiftSelector from "../components/ShiftSelector.vue";
 </script>
