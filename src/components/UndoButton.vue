@@ -46,7 +46,7 @@ const emit = defineEmits<{
     height: 1rem;
 
     background-color: var(--color-undo-button-text);
-    mask-image: url('/undo-button.svg');
+    mask-image: url("/undo-button.svg");
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;
