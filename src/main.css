@@ -22,9 +22,8 @@ body {
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
-    --color-toast-text-default: #ffffff;
+    --color-toast-text-default: #fff;
 
-    --color-searchbar-border: #b9b9b9;
     --color-dropdown-background: #fff;
     --color-dropdown-text: #000;
     --color-dropdown-border: #ccc;
@@ -41,15 +40,23 @@ body {
     --color-checkbox-text-light: #000;
     --color-checkbox-text-dark: #fff;
     --color-checkbox-text-hover: red;
+}
 
+body,
+body * {
     transition:
         background-color 0.2s,
         color 0.2s;
 }
 
 body[class="light"] {
-    --color-body-background: #fff;
+    --color-body-background: #eee;
     --color-body-foreground: #000;
+
+    --color-text-input-background: --var(--color-body-background);
+    --color-text-input-foreground: --var(--color-body-foreground);
+    --color-text-input-placeholder: #888;
+    --color-text-input-border: #bbb;
 
     --color-student-name: #555;
     --color-student-profile-picture-fallback: #aaa;
@@ -58,6 +65,11 @@ body[class="light"] {
 body[class="dark"] {
     --color-body-background: #111;
     --color-body-foreground: #eee;
+
+    --color-text-input-background: #222;
+    --color-text-input-foreground: --var(--color-body-foreground);
+    --color-text-input-placeholder: #888;
+    --color-text-input-border: #888;
 }
 
 /* Base app style */

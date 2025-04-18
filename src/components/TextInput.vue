@@ -17,7 +17,11 @@
 <template>
     <div class="text-input-container">
         <div v-if="props.type == 'search'" class="search-logo-svg" />
-        <input type="text" :class="props.type" :placeholder="props.placeholder" />
+        <input
+            :type="props.type == 'password' ? 'password' : 'text'"
+            :class="[props.type, 'text-input']"
+            v-model="model"
+            :placeholder="props.placeholder" />
     </div>
 </template>
 
@@ -28,13 +32,18 @@
     margin: 6px;
 }
 
-.text-input-container input {
+.text-input {
     box-sizing: border-box;
     width: 100%;
     height: 2rem;
 
-    border: 2px solid var(--color-searchbar-border);
-    background: var(--color-body-background);
+    border: 2px solid var(--color-text-input-border);
+    background-color: var(--color-text-input-background);
+    color: var(--color-text-input-foreground);
+}
+
+.text-input::placeholder {
+    color: var(--color-text-input-placeholder);
 }
 
 .search {
@@ -43,7 +52,8 @@
     padding-left: 0.5rem;
 }
 
-.text-input {
+.text,
+.password {
     border-radius: 5px;
     padding: 0.5rem;
 }
@@ -55,16 +65,19 @@
     right: 0.25rem;
     top: 0.25rem;
 
-    background-color: var(--color-searchbar-border);
+    background-color: var(--color-text-input-border);
     mask: url("/search.svg");
     mask-size: cover;
 }
 </style>
 
 <script setup lang="ts">
+import { defineModel } from "vue";
+
+const model = defineModel<string>();
+
 const props = defineProps<{
-    type: "text-input" | "search";
+    type: "text" | "password" | "search";
     placeholder: string;
 }>();
-console.log(props.type);
 </script>
