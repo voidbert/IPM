@@ -35,28 +35,28 @@ body {
 
     --color-text-dark: #000;
     --color-text-light: #fff;
-
-    --color-checkbox-checked-light: var(--color-uminho);
-    --color-checkbox-text-light: #000;
-    --color-checkbox-text-dark: #fff;
-    --color-checkbox-text-hover: red;
 }
 
 body,
 body * {
     transition:
         background-color 0.2s,
-        color 0.2s;
+        color 0.2s,
+        --color-checkbox-unchecked 0.2s;
 }
 
 body[class="light"] {
-    --color-body-background: #eee;
+    --color-body-background: #fff;
     --color-body-foreground: #000;
 
     --color-text-input-background: --var(--color-body-background);
     --color-text-input-foreground: --var(--color-body-foreground);
     --color-text-input-placeholder: #888;
     --color-text-input-border: #bbb;
+
+    --color-checkbox-unchecked: 100%;
+    --color-checkbox-checked: var(--color-uminho);
+    --color-checkbox-foreground: var(--color-body-foreground);
 
     --color-student-name: #555;
     --color-student-profile-picture-fallback: #aaa;
@@ -70,6 +70,16 @@ body[class="dark"] {
     --color-text-input-foreground: --var(--color-body-foreground);
     --color-text-input-placeholder: #888;
     --color-text-input-border: #888;
+
+    --color-checkbox-unchecked: 13.333%;
+    --color-checkbox-checked: var(--color-uminho);
+    --color-checkbox-foreground: var(--color-body-foreground);
+}
+
+@property --color-checkbox-unchecked {
+    syntax: "<percentage>";
+    initial-value: 100%;
+    inherits: true;
 }
 
 /* Base app style */

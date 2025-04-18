@@ -26,6 +26,27 @@
     </label>
 </template>
 
+<style scoped>
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    color: var(--color-checkbox-foreground);
+}
+
+.custom-checkbox-input {
+    width: 1.2rem;
+    height: 1.2rem;
+
+    accent-color: var(--color-checkbox-checked);
+}
+
+.custom-checkbox-input:not(:checked) {
+    filter: brightness(var(--color-checkbox-unchecked));
+}
+</style>
+
 <script setup lang="ts">
 import { defineModel, defineEmits } from "vue";
 
@@ -35,24 +56,3 @@ defineEmits<{
     (event: "change", value: boolean | null): void;
 }>();
 </script>
-
-<style scoped>
-.custom-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    color: var(--color-checkbox-text-light);
-}
-
-.custom-checkbox:hover {
-    color: var(--color-checkbox-text-hover);
-}
-
-.custom-checkbox-input {
-    width: 1.2rem;
-    height: 1.2rem;
-    accent-color: var(--color-checkbox-checked-light);
-    cursor: pointer;
-}
-</style>
