@@ -28,13 +28,6 @@ body {
     --color-dropdown-text: #000;
     --color-dropdown-border: #ccc;
     --color-dropdown-icon: #666;
-
-    --color-button-action: var(--color-uminho);
-    --color-button-disabled: #808080;
-    --color-button-cancel: #f2f2f2;
-
-    --color-text-dark: #000;
-    --color-text-light: #fff;
 }
 
 body,
@@ -49,14 +42,21 @@ body[class="light"] {
     --color-body-background: #fff;
     --color-body-foreground: #000;
 
-    --color-text-input-background: --var(--color-body-background);
-    --color-text-input-foreground: --var(--color-body-foreground);
-    --color-text-input-placeholder: #888;
-    --color-text-input-border: #bbb;
+    --color-button-background-action: var(--color-uminho);
+    --color-button-background-cancel: #ddd;
+    --color-button-background-disabled: #888;
+    --color-button-foreground-action: #fff;
+    --color-button-foreground-cancel: #000;
+    --color-button-foreground-disabled: #000;
 
     --color-checkbox-unchecked: 100%;
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
+
+    --color-text-input-background: --var(--color-body-background);
+    --color-text-input-foreground: --var(--color-body-foreground);
+    --color-text-input-placeholder: #888;
+    --color-text-input-border: #bbb;
 
     --color-student-name: #555;
     --color-student-profile-picture-fallback: #aaa;
@@ -66,14 +66,21 @@ body[class="dark"] {
     --color-body-background: #111;
     --color-body-foreground: #eee;
 
-    --color-text-input-background: #222;
-    --color-text-input-foreground: --var(--color-body-foreground);
-    --color-text-input-placeholder: #888;
-    --color-text-input-border: #888;
+    --color-button-background-action: var(--color-uminho);
+    --color-button-background-cancel: #222;
+    --color-button-background-disabled: #888;
+    --color-button-foreground-action: #fff;
+    --color-button-foreground-cancel: #fff;
+    --color-button-foreground-disabled: #000;
 
     --color-checkbox-unchecked: 13.333%;
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
+
+    --color-text-input-background: #222;
+    --color-text-input-foreground: --var(--color-body-foreground);
+    --color-text-input-placeholder: #888;
+    --color-text-input-border: #888;
 }
 
 @property --color-checkbox-unchecked {
