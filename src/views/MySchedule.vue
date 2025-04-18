@@ -16,15 +16,25 @@
 
 <template>
     <Navbar type="student" />
-    <main>Hello, world!</main>
+    <main>
+        <h3>Clique num turno para mais informação</h3>
+        <WeeklySchedule id="schedule"></WeeklySchedule>
+    </main>
 </template>
 
 <style scoped>
 main {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+#schedule {
+    width: 80vw;
 }
 </style>
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import WeeklySchedule from "../components/WeeklySchedule.vue";
 </script>
