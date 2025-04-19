@@ -15,30 +15,30 @@
 -->
 
 <template>
-    <div class="week-schedule">
-         <div class="hours-column">
-             <div class="empty-hour header-cell"><span>h</span></div>
-             <div class="hour-cell" v-for="h in hours_string"><span>{{ h }}h00</span></div>
-         </div>
-         <div class="week-columns">
-             <div class="day-column" v-for="d in days">
-                 <div class="day-header header-cell"><span>{{ d }}</span></div>
-                     <div class="shift-block" v-for="(sb, index) in week_schedule[d]"
-                          :key="index"
-                          :style="{top: `calc(2rem + ${(sb.from - 8) * 7.92}%)`,
-                                   height: `calc(((100% - (2rem)) / 12) * ${sb.to - sb.from})`}"
-                          >
-                         <span v-for="s in sb.shifts">{{ s.name }}</span>
-                     </div>
-                     <div class="day-cells" v-for="h in hours">
-                         <div class="day-cell">
-                             <div class="day-cell-time-slot"><span>-</span></div>
-                             <div class="day-cell-time-slot"><span>-</span></div>
-                         </div>
-                     </div>
-             </div>
-         </div>
-     </div>
+    <table class="reset week-schedule">
+        <thead class="reset hours-column">
+            <tr class="reset empty-hour header-cell"><td>h</td></tr>
+            <tr class="reset hour-cell" v-for="h in hours_string"><td>{{ h }}h00</td></tr>
+        </thead>
+        <tbody class="reset week-columns">
+            <table class="reset day-column" v-for="d in days">
+                <thead class="reset day-header header-cell"><tr>{{ d }}</tr></thead>
+                    <li class="reset shift-block" v-for="(sb, index) in props.week_schedule[d]"
+                         :key="index"
+                         :style="{top: `calc(2rem + ${(sb.from - 8) * 7.92}%)`,
+                                  height: `calc(((100% - (2rem)) / 12) * ${sb.to - sb.from})`}"
+                         >
+                        <span v-for="s in sb.shifts">{{ s.name }}</span>
+                    </li>
+                    <tr class="reset day-cells" v-for="h in hours">
+                        <td class="reset day-cell">
+                            <div class="day-cell-time-slot"><span>-</span></div>
+                            <div class="day-cell-time-slot"><span>-</span></div>
+                        </td>
+                    </tr>
+            </table>
+        </tbody>
+    </table>
 </template>
 
 <style scoped>
