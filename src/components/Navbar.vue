@@ -86,44 +86,47 @@ nav {
 import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 import NavbarLinks from "./NavbarLinks.vue";
-import { ref } from "vue";
+
+import { ref, computed } from "vue";
 
 const props = defineProps<{
     type: "login" | "student" | "director";
 }>();
 
 // Setup navbar links
-const links = {
-    login: [],
-    student: [
-        {
-            name: "O meu Horário",
-            url: "/MySchedule"
-        },
-        {
-            name: "Horário Completo",
-            url: "/CompleteSchedule"
-        },
-        {
-            name: "Histórico de Pedidos",
-            url: "/RequestsHistory"
-        }
-    ],
-    director: [
-        {
-            name: "Resolver Problemas",
-            url: "/SolveProblems"
-        },
-        {
-            name: "Gerir Turnos",
-            url: "/ManageShifts"
-        },
-        {
-            name: "Publicar Horários",
-            url: "/PublishSchedules"
-        }
-    ]
-}[props.type];
+const links = computed(() => {
+    return {
+        login: [],
+        student: [
+            {
+                name: "O meu Horário",
+                url: "/MySchedule"
+            },
+            {
+                name: "Horário Completo",
+                url: "/CompleteSchedule"
+            },
+            {
+                name: "Histórico de Pedidos",
+                url: "/RequestsHistory"
+            }
+        ],
+        director: [
+            {
+                name: "Resolver Problemas",
+                url: "/SolveProblems"
+            },
+            {
+                name: "Gerir Turnos",
+                url: "/ManageShifts"
+            },
+            {
+                name: "Publicar Horários",
+                url: "/PublishSchedules"
+            }
+        ]
+    }[props.type];
+});
 
 // Theme switching
 type Theme = "dark" | "light";

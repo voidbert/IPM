@@ -15,7 +15,6 @@
 -->
 
 <template>
-    <Navbar type="login" />
     <main>
         <form class="login-form">
             <h1 class="page-title">Iniciar Sessão</h1>
@@ -92,7 +91,6 @@ Button {
 <script setup lang="ts">
 import Button from "../components/Button.vue";
 import Checkbox from "../components/Checkbox.vue";
-import Navbar from "../components/Navbar.vue";
 import TextInput from "../components/TextInput.vue";
 import Warning from "../components/Warning.vue";
 

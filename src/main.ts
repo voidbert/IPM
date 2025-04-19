@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { createApp } from "vue";
-import { RouteRecordSingleView, createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 import App from "./App.vue";
 import "./main.css";
@@ -22,31 +22,45 @@ import LoginPage from "./views/LoginPage.vue";
 import MySchedule from "./views/MySchedule.vue";
 import SolveProblems from "./views/SolveProblems.vue";
 
-// Dynamically set up routes based only on the name of the pages
-const pages = [LoginPage, MySchedule, SolveProblems];
-const routes: RouteRecordSingleView[] = pages.map((page) => {
-    const name = page.__name;
-    const path = "/" + name;
+// Set up routes
+export {};
+declare module "vue-router" {
+    interface RouteMeta {
+        navbarType: "login" | "student" | "director";
+    }
+}
 
-    return {
-        path: path,
-        name: name,
-        component: page
-    };
-});
-
-routes.push({
-    path: "/",
-    name: "Index",
-    component: LoginPage
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        {
+            path: "/",
+            name: "LoginPage",
+            component: LoginPage,
+            meta: {
+                navbarType: "login"
+            }
+        },
+        {
+            path: "/MySchedule",
+            name: "MySchedule",
+            component: MySchedule,
+            meta: {
+                navbarType: "student"
+            }
+        },
+        {
+            path: "/SolveProblems",
+            name: "SolveProblems",
+            component: SolveProblems,
+            meta: {
+                navbarType: "director"
+            }
+        }
+    ]
 });
 
 // Run application
-const router = createRouter({
-    history: createWebHistory(),
-    routes: Object.values(routes)
-});
-
 const app = createApp(App);
 app.use(router);
 app.mount("#app");

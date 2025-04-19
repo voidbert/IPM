@@ -15,9 +15,24 @@
 -->
 
 <template>
+    <Navbar :type="navbarType as 'login' | 'student' | 'director'" />
     <RouterView />
 </template>
 
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import Navbar from "./components/Navbar.vue";
+
+import { ref } from "vue";
+import { RouterView, useRouter, useRoute } from "vue-router";
+
+// Prepare navbar
+const router = useRouter();
+const route = useRoute();
+
+router.isReady().then(() => {
+    console.log(route.meta.navbarType);
+    navbarType.value = route.meta.navbarType;
+});
+
+const navbarType = ref("login");
 </script>
