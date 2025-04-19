@@ -38,6 +38,7 @@
 .custom-checkbox-input {
     width: 1.2rem;
     height: 1.2rem;
+    margin-left: 0px;
 
     accent-color: var(--color-checkbox-checked);
 }
@@ -48,8 +49,6 @@
 </style>
 
 <script setup lang="ts">
-import { defineModel, defineEmits } from "vue";
-
 const model = defineModel<boolean | null>();
 
 defineEmits<{

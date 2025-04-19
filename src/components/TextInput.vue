@@ -29,7 +29,6 @@
 .text-input-container {
     position: relative;
     display: block;
-    margin: 6px;
 }
 
 .text-input {
@@ -37,7 +36,7 @@
     width: 100%;
     height: 2rem;
 
-    border: 2px solid var(--color-text-input-border);
+    border: 1px solid var(--color-text-input-border);
     background-color: var(--color-text-input-background);
     color: var(--color-text-input-foreground);
 }
@@ -72,8 +71,6 @@
 </style>
 
 <script setup lang="ts">
-import { defineModel } from "vue";
-
 const model = defineModel<string>();
 
 const props = defineProps<{

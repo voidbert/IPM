@@ -60,6 +60,7 @@ main {
     width: 25rem;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
 .page-title {
