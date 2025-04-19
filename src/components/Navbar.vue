@@ -23,13 +23,13 @@
 
         <div class="navbar-right">
             <NavbarHoverableIcon
-                v-if="currentTheme === 'light'"
-                @click="switchTheme()"
+                v-if="themeStore.theme === 'light'"
+                @click="themeStore.change()"
                 url="/dark-mode.svg"
                 tooltip="Modo escuro" />
             <NavbarHoverableIcon
                 v-else
-                @click="switchTheme()"
+                @click="themeStore.change()"
                 url="/light-mode.svg"
                 tooltip="Modo claro" />
             <RouterLink
@@ -87,7 +87,9 @@ import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 import NavbarLinks from "./NavbarLinks.vue";
 
-import { ref, computed } from "vue";
+import { useThemeStore } from "../stores/theme.ts";
+
+import { computed } from "vue";
 
 const props = defineProps<{
     type: "login" | "student" | "director";
@@ -129,34 +131,5 @@ const links = computed(() => {
 });
 
 // Theme switching
-type Theme = "dark" | "light";
-
-const browserThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-const getTheme = (): Theme => {
-    let currentTheme: Theme | null = localStorage.getItem("theme") as Theme | null;
-    if (currentTheme === null) {
-        currentTheme = browserThemeQuery.matches ? "dark" : "light";
-    }
-
-    return currentTheme;
-};
-
-const updatePageAfterTheming = (theme: Theme) => {
-    document.body.className = theme;
-    currentTheme.value = theme;
-};
-
-const switchTheme = () => {
-    const newTheme = getTheme() === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-
-    updatePageAfterTheming(newTheme);
-};
-
-const currentTheme = ref<undefined | Theme>(undefined);
-updatePageAfterTheming(getTheme());
-browserThemeQuery.onchange = () => {
-    updatePageAfterTheming(getTheme());
-};
+const themeStore = useThemeStore();
 </script>

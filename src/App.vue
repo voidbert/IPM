@@ -15,12 +15,14 @@
 -->
 
 <template>
-    <Navbar :type="navbarType as 'login' | 'student' | 'director'" />
+    <Navbar :type="navbarType" />
     <RouterView />
 </template>
 
 <script setup lang="ts">
 import Navbar from "./components/Navbar.vue";
+
+import { useThemeStore } from "./stores/theme.ts";
 
 import { ref } from "vue";
 import { RouterView, useRouter, useRoute } from "vue-router";
@@ -29,10 +31,12 @@ import { RouterView, useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
+const navbarType = ref<"login" | "student" | "director">("login");
 router.isReady().then(() => {
-    console.log(route.meta.navbarType);
     navbarType.value = route.meta.navbarType;
 });
 
-const navbarType = ref("login");
+// Theme switching
+const themeStore = useThemeStore();
+document.body.className = themeStore.theme;
 </script>

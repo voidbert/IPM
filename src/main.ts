@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -62,5 +64,10 @@ const router = createRouter({
 
 // Run application
 const app = createApp(App);
+const pinia = createPinia();
+
+pinia.use(piniaPluginPersistedstate);
+
 app.use(router);
+app.use(pinia);
 app.mount("#app");
