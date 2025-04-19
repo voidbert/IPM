@@ -25,15 +25,13 @@ import Navbar from "./components/Navbar.vue";
 import { useThemeStore } from "./stores/theme.ts";
 
 import { ref } from "vue";
-import { RouterView, useRouter, useRoute } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
 
 // Prepare navbar
 const router = useRouter();
-const route = useRoute();
-
 const navbarType = ref<"login" | "student" | "director">("login");
-router.isReady().then(() => {
-    navbarType.value = route.meta.navbarType;
+router.beforeEach((to) => {
+    navbarType.value = to.meta.navbarType;
 });
 
 // Theme switching
