@@ -94,6 +94,7 @@ import Checkbox from "../components/Checkbox.vue";
 import TextInput from "../components/TextInput.vue";
 import Warning from "../components/Warning.vue";
 
+import { useLoginStore } from "../stores/login.ts";
 import { User } from "../models/User.ts";
 
 import { ref } from "vue";
@@ -110,11 +111,14 @@ const resetWarning = () => {
     wrongCredentials.value = false;
 };
 
+const loginStore = useLoginStore();
 const login = async (e: FormDataEvent) => {
     e.preventDefault();
-    // router.push('LoginPage');
+
     const user = await User.tryAuthenticate(email.value.toLowerCase(), password.value);
     if (user) {
+        loginStore.login(email.value, password.value, rememberUser.value);
+
         switch (user.type) {
             case "student":
                 router.replace("/MySchedule");

@@ -24,11 +24,14 @@ import LoginPage from "./views/LoginPage.vue";
 import MySchedule from "./views/MySchedule.vue";
 import SolveProblems from "./views/SolveProblems.vue";
 
+import { useLoginStore } from "./stores/login.ts";
+import { User } from "./models/User.ts";
+
 // Set up routes
 export {};
 declare module "vue-router" {
     interface RouteMeta {
-        navbarType: "login" | "student" | "director";
+        userType: "login" | "student" | "director";
     }
 }
 
@@ -40,7 +43,7 @@ const router = createRouter({
             name: "LoginPage",
             component: LoginPage,
             meta: {
-                navbarType: "login"
+                userType: "login"
             }
         },
         {
@@ -48,7 +51,7 @@ const router = createRouter({
             name: "MySchedule",
             component: MySchedule,
             meta: {
-                navbarType: "student"
+                userType: "student"
             }
         },
         {
@@ -56,13 +59,13 @@ const router = createRouter({
             name: "SolveProblems",
             component: SolveProblems,
             meta: {
-                navbarType: "director"
+                userType: "director"
             }
         }
     ]
 });
 
-// Run application
+// Prepare application
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -70,4 +73,32 @@ pinia.use(piniaPluginPersistedstate);
 
 app.use(router);
 app.use(pinia);
+
+// Authorization
+const loginStore = useLoginStore();
+router.beforeEach(async (to) => {
+    const email = loginStore.email;
+    const password = loginStore.password;
+
+    if (email && password) {
+        const user = await User.tryAuthenticate(email, password);
+
+        if (!user) {
+            loginStore.logout();
+            return "/";
+        } else if (user.type === to.meta.userType) {
+            return true;
+        } else if (user.type === "student") {
+            return "/MySchedule";
+        } else if (user.type === "director") {
+            return "/SolveProblems";
+        }
+    } else if (to.name !== "LoginPage") {
+        return "/";
+    }
+
+    return true;
+});
+
+// Run application
 app.mount("#app");

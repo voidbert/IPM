@@ -38,12 +38,11 @@
                 class="navbar-hoverable-icon-container">
                 <NavbarHoverableIcon url="/notifications.svg" tooltip="Notificações" />
             </RouterLink>
-            <RouterLink
-                to="/"
+            <NavbarHoverableIcon
                 v-if="props.type !== 'login'"
-                class="navbar-hoverable-icon-container">
-                <NavbarHoverableIcon url="/log-out.svg" tooltip="Terminar sessão" />
-            </RouterLink>
+                @click="logout()"
+                url="/log-out.svg"
+                tooltip="Terminar sessão" />
         </div>
     </nav>
 </template>
@@ -88,8 +87,10 @@ import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 import NavbarLinks from "./NavbarLinks.vue";
 
 import { useThemeStore } from "../stores/theme.ts";
+import { useLoginStore } from "../stores/login.ts";
 
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     type: "login" | "student" | "director";
@@ -132,4 +133,12 @@ const links = computed(() => {
 
 // Theme switching
 const themeStore = useThemeStore();
+
+// Session control
+const router = useRouter();
+const loginStore = useLoginStore();
+const logout = () => {
+    loginStore.logout();
+    router.replace("/");
+};
 </script>

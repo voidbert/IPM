@@ -31,7 +31,7 @@ import { RouterView, useRouter } from "vue-router";
 const router = useRouter();
 const navbarType = ref<"login" | "student" | "director">("login");
 router.beforeEach((to) => {
-    navbarType.value = to.meta.navbarType;
+    navbarType.value = to.meta.userType;
 });
 
 // Theme switching
