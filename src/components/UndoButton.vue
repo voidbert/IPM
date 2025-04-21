@@ -1,6 +1,5 @@
 <!--
-    Copyright 2025 Ana Oliveira, Humberto Gomes, Inês Marques,
-    Rafael Vilas Boas, Sara Lopes
+    Copyright 2025 Ana Oliveira, Humberto Gomes, Inês Marques, Rafael Vilas Boas, Sara Lopes
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,13 +15,21 @@
 -->
 
 <template>
-    <div class="undo-button-container" role="button" @click="emit('undo')">
+    <div
+        class="undo-button-container"
+        role="button"
+        @click="!disabled && emit('undo')"
+        :class="{ disabled }">
         <div class="undo-button-icon" />
         <span class="undo-button-label">Desfazer</span>
     </div>
 </template>
 
 <script setup lang="ts">
+defineProps<{
+    disabled?: boolean;
+}>();
+
 const emit = defineEmits<{
     (e: "undo"): void;
 }>();
@@ -39,6 +46,7 @@ const emit = defineEmits<{
     color: var(--color-undo-button-text);
 
     gap: 0.3rem;
+    transition: color 0.2s ease;
 }
 
 .undo-button-icon {
@@ -50,9 +58,23 @@ const emit = defineEmits<{
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;
+    transition: background-color 0.2s ease;
 }
 
-.undo-button-container:hover {
-    opacity: 0.5;
+.undo-button-container:not(.disabled):hover {
+    color: var(--color-undo-button-hover);
+}
+
+.undo-button-container:not(.disabled):hover .undo-button-icon {
+    background-color: var(--color-undo-button-hover);
+}
+
+.undo-button-container.disabled {
+    cursor: not-allowed;
+    color: var(--color-undo-button-disabled);
+}
+
+.undo-button-container.disabled .undo-button-icon {
+    background-color: var(--color-undo-button-disabled);
 }
 </style>
