@@ -78,6 +78,10 @@ body[class="light"] {
 
     --color-student-name: #555;
     --color-student-profile-picture-fallback: #aaa;
+
+    --color-undo-button-disabled: #bbb;
+    --color-undo-button-regular: #333;
+    --color-undo-button-hover: #555;
 }
 
 body[class="dark"] {
@@ -99,6 +103,10 @@ body[class="dark"] {
     --color-text-input-foreground: --var(--color-body-foreground);
     --color-text-input-placeholder: #888;
     --color-text-input-border: #888;
+
+    --color-undo-button-disabled: #333;
+    --color-undo-button-regular: #ddd;
+    --color-undo-button-hover: #fff;
 }
 
 @property --color-checkbox-unchecked {
