@@ -15,60 +15,50 @@
 -->
 
 <template>
-    <button :class="type">
+    <button
+        :class="props.type"
+        :title="props.type == 'disabled' ? props.reasonDisabled : undefined"
+        :disabled="props.type === 'disabled'">
         <slot />
     </button>
 </template>
 
 <style scoped>
 button {
+    width: 100%;
+    min-width: max-content;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border: none;
     border-radius: 0.3em;
-    padding: 1.2rem 1.2rem;
-    width: 100%;
-    height: 100%;
+    padding: 0.6rem 0.6rem;
+
+    color: v-bind(`var(--color-button-foreground-${props.type}) `);
+    background-color: v-bind(`var(--color-button-background-${props.type}) `);
+
+    font-weight: bold;
     transition: filter 0.1s linear;
-    min-width: max-content;
-}
-
-.action {
-    color: var(--color-text-light);
-    background-color: var(--color-button-action);
-}
-
-.disabled {
-    color: var(--color-text-light);
-    background-color: var(--color-button-disabled);
-}
-
-.light {
-    color: var(--color-text-dark);
-    background-color: var(--color-button-cancel);
 }
 
 .action:hover {
     filter: brightness(140%) saturate(0.8);
 }
 
-.disabled:hover {
-    cursor: not-allowed;
-}
-
-.light:hover {
+.cancel:hover {
     filter: brightness(80%);
 }
 
-:hover:not(.disabled) {
-    cursor: pointer;
-    transition: filter 0.1s linear;
+.disabled:hover {
+    cursor: not-allowed;
 }
 </style>
 
 <script setup lang="ts">
-defineProps<{
-    type: "action" | "disabled" | "light";
+const props = defineProps<{
+    type: "action" | "cancel" | "disabled";
+    reasonDisabled?: string;
 }>();
 </script>
