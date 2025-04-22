@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import pluginVue from "eslint-plugin-vue";
-import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
-import skipFormatting from "@vue/eslint-config-prettier/skip-formatting";
+export const fetchJson = async (
+    path: string,
+    method: string = "GET",
+    body: any = undefined
+): Promise<any> => {
+    const response = await fetch("http://localhost:3000" + path, {
+        method: method,
+        body: JSON.stringify(body)
+    });
 
-export default defineConfigWithVueTs(
-    pluginVue.configs["flat/essential"],
-    vueTsConfigs.recommended,
-    skipFormatting,
-    {
-        name: "app/files-to-lint",
-        files: ["**/*.{ts,vue}"],
-        rules: {
-            "vue/multi-word-component-names": "off",
-            "@typescript-eslint/no-explicit-any": "off"
-        }
+    if (!response.ok) {
+        throw new Error("JSON-server response NOK");
     }
-);
+
+    return response.json();
+};

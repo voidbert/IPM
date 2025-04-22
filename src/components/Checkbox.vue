@@ -15,50 +15,43 @@
 -->
 
 <template>
-    <button
-        :class="props.type"
-        :title="props.type == 'disabled' ? props.reasonDisabled : undefined"
-        :disabled="props.type === 'disabled'">
+    <label class="custom-checkbox">
+        <input
+            type="checkbox"
+            class="custom-checkbox-input"
+            v-model="model"
+            :indeterminate="model === null"
+            @change="$emit('change', model as boolean | null)" />
         <slot />
-    </button>
+    </label>
 </template>
 
 <style scoped>
-button {
-    width: 100%;
-    min-width: max-content;
-
+.custom-checkbox {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 4px;
 
-    border: none;
-    border-radius: 0.3em;
-    padding: 0.6rem 0.6rem;
-
-    color: v-bind(`var(--color-button-foreground-${props.type}) `);
-    background-color: v-bind(`var(--color-button-background-${props.type}) `);
-
-    font-weight: bold;
-    transition: filter 0.1s linear;
+    color: var(--color-checkbox-foreground);
 }
 
-.action:hover {
-    filter: brightness(140%) saturate(0.8);
+.custom-checkbox-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-left: 0px;
+
+    accent-color: var(--color-checkbox-checked);
 }
 
-.cancel:hover {
-    filter: brightness(80%);
-}
-
-.disabled:hover {
-    cursor: not-allowed;
+.custom-checkbox-input:not(:checked) {
+    filter: brightness(var(--color-checkbox-unchecked));
 }
 </style>
 
 <script setup lang="ts">
-const props = defineProps<{
-    type: "action" | "cancel" | "disabled";
-    reasonDisabled?: string;
+const model = defineModel<boolean | null>();
+
+defineEmits<{
+    (event: "change", value: boolean | null): void;
 }>();
 </script>

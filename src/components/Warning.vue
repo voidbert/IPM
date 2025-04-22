@@ -15,13 +15,28 @@
 -->
 
 <template>
-    <main>Hello, world!</main>
+    <span class="warning">
+        <div class="warning-icon" />
+        <slot />
+    </span>
 </template>
 
 <style scoped>
-main {
-    padding: 10px;
+.warning {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: left;
+
+    color: var(--color-uminho);
+}
+
+.warning-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    background-color: var(--color-uminho);
+    mask-image: url("/warning-icon.svg");
+    mask-size: cover;
 }
 </style>
-
-<script setup lang="ts"></script>

@@ -23,13 +23,13 @@
 
         <div class="navbar-right">
             <NavbarHoverableIcon
-                v-if="currentTheme === 'light'"
-                @click="switchTheme()"
+                v-if="themeStore.theme === 'light'"
+                @click="themeStore.change()"
                 url="/dark-mode.svg"
                 tooltip="Modo escuro" />
             <NavbarHoverableIcon
                 v-else
-                @click="switchTheme()"
+                @click="themeStore.change()"
                 url="/light-mode.svg"
                 tooltip="Modo claro" />
             <RouterLink
@@ -38,12 +38,11 @@
                 class="navbar-hoverable-icon-container">
                 <NavbarHoverableIcon url="/notifications.svg" tooltip="Notificações" />
             </RouterLink>
-            <RouterLink
-                to="/"
+            <NavbarHoverableIcon
                 v-if="props.type !== 'login'"
-                class="navbar-hoverable-icon-container">
-                <NavbarHoverableIcon url="/log-out.svg" tooltip="Terminar sessão" />
-            </RouterLink>
+                @click="logout()"
+                url="/log-out.svg"
+                tooltip="Terminar sessão" />
         </div>
     </nav>
 </template>
@@ -86,74 +85,60 @@ nav {
 import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 import NavbarLinks from "./NavbarLinks.vue";
-import { ref } from "vue";
+
+import { useThemeStore } from "../stores/theme.ts";
+import { useLoginStore } from "../stores/login.ts";
+
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     type: "login" | "student" | "director";
 }>();
 
 // Setup navbar links
-const links = {
-    login: [],
-    student: [
-        {
-            name: "O meu Horário",
-            url: "/MySchedule"
-        },
-        {
-            name: "Horário Completo",
-            url: "/CompleteSchedule"
-        },
-        {
-            name: "Histórico de Pedidos",
-            url: "/RequestsHistory"
-        }
-    ],
-    director: [
-        {
-            name: "Resolver Problemas",
-            url: "/SolveProblems"
-        },
-        {
-            name: "Gerir Turnos",
-            url: "/ManageShifts"
-        },
-        {
-            name: "Publicar Horários",
-            url: "/PublishSchedules"
-        }
-    ]
-}[props.type];
+const links = computed(() => {
+    return {
+        login: [],
+        student: [
+            {
+                name: "O meu Horário",
+                url: "/MySchedule"
+            },
+            {
+                name: "Horário Completo",
+                url: "/CompleteSchedule"
+            },
+            {
+                name: "Histórico de Pedidos",
+                url: "/RequestsHistory"
+            }
+        ],
+        director: [
+            {
+                name: "Resolver Problemas",
+                url: "/SolveProblems"
+            },
+            {
+                name: "Gerir Turnos",
+                url: "/ManageShifts"
+            },
+            {
+                name: "Publicar Horários",
+                url: "/PublishSchedules"
+            }
+        ]
+    }[props.type];
+});
 
 // Theme switching
-type Theme = "dark" | "light";
+const themeStore = useThemeStore();
 
-const browserThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-const getTheme = (): Theme => {
-    let currentTheme: Theme | null = localStorage.getItem("theme") as Theme | null;
-    if (currentTheme === null) {
-        currentTheme = browserThemeQuery.matches ? "dark" : "light";
-    }
-
-    return currentTheme;
-};
-
-const updatePageAfterTheming = (theme: Theme) => {
-    document.body.className = theme;
-    currentTheme.value = theme;
-};
-
-const switchTheme = () => {
-    const newTheme = getTheme() === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-
-    updatePageAfterTheming(newTheme);
-};
-
-const currentTheme = ref<undefined | Theme>(undefined);
-updatePageAfterTheming(getTheme());
-browserThemeQuery.onchange = () => {
-    updatePageAfterTheming(getTheme());
+// Session control
+const router = useRouter();
+const loginStore = useLoginStore();
+const logout = () => {
+    loginStore.logout();
+    router.replace("/");
 };
 </script>

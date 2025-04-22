@@ -15,9 +15,26 @@
 -->
 
 <template>
+    <Navbar :type="navbarType" />
     <RouterView />
 </template>
 
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import Navbar from "./components/Navbar.vue";
+
+import { useThemeStore } from "./stores/theme.ts";
+
+import { ref } from "vue";
+import { RouterView, useRouter } from "vue-router";
+
+// Prepare navbar
+const router = useRouter();
+const navbarType = ref<"login" | "student" | "director">("login");
+router.beforeEach((to) => {
+    navbarType.value = to.meta.userType;
+});
+
+// Theme switching
+const themeStore = useThemeStore();
+document.body.className = themeStore.theme;
 </script>
