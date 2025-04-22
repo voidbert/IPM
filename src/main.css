@@ -28,6 +28,24 @@ body {
     --color-dropdown-text: #000;
     --color-dropdown-border: #ccc;
     --color-dropdown-icon: #666;
+
+    --color-shift-text: hsla(0, 0%, 0%, 0.5);
+    --color-shift-border: rgba(0, 0, 0, 0.1);
+    --color-shift-grey: #dcdcdc;
+    --color-shift-dark-grey: #959595;
+
+    --color-shift-1: #f5a3a3;
+    --color-shift-1-bright: #f07575;
+    --color-shift-2: #a3bdf5;
+    --color-shift-2-bright: #759cf0;
+    --color-shift-3: #a6f5a3;
+    --color-shift-3-bright: #7af075;
+    --color-shift-4: #f5a3e4;
+    --color-shift-4-bright: #f075d7;
+    --color-shift-5: #f5f3a3;
+    --color-shift-5-bright: #f0ee75;
+    --color-shift-6: #a3f5f1;
+    --color-shift-6-bright: #75f0ea;
 }
 
 body,
