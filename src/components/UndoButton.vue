@@ -15,37 +15,36 @@
 -->
 
 <template>
-    <div
-        class="undo-button-container"
-        role="button"
-        @click="!disabled && emit('undo')"
-        :class="{ disabled }">
+    <button class="undo-button" :disabled="props.disabled">
         <div class="undo-button-icon" />
-        <span class="undo-button-label">Desfazer</span>
-    </div>
+        Desfazer
+    </button>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-    disabled?: boolean;
-}>();
-
-const emit = defineEmits<{
-    (e: "undo"): void;
-}>();
+const props = withDefaults(
+    defineProps<{
+        disabled?: boolean;
+    }>(),
+    {
+        disabled: false
+    }
+);
 </script>
 
 <style scoped>
-.undo-button-container {
+.undo-button {
+    all: unset;
+
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--color-undo-button-text);
-
+    justify-content: left;
     gap: 0.3rem;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    color: var(--button-color);
     transition: color 0.2s ease;
 }
 
@@ -53,28 +52,22 @@ const emit = defineEmits<{
     width: 1rem;
     height: 1rem;
 
-    background-color: var(--color-undo-button-text);
+    background-color: var(--button-color);
     mask-image: url("/undo-button.svg");
-    mask-repeat: no-repeat;
     mask-position: center;
-    mask-size: contain;
+    mask-size: cover;
     transition: background-color 0.2s ease;
 }
 
-.undo-button-container:not(.disabled):hover {
-    color: var(--color-undo-button-hover);
+.undo-button:not(:disabled) {
+    --button-color: var(--color-undo-button-regular);
 }
 
-.undo-button-container:not(.disabled):hover .undo-button-icon {
-    background-color: var(--color-undo-button-hover);
+.undo-button:disabled {
+    --button-color: var(--color-undo-button-disabled);
 }
 
-.undo-button-container.disabled {
-    cursor: not-allowed;
-    color: var(--color-undo-button-disabled);
-}
-
-.undo-button-container.disabled .undo-button-icon {
-    background-color: var(--color-undo-button-disabled);
+.undo-button:not(:disabled):hover {
+    --button-color: var(--color-undo-button-hover);
 }
 </style>
