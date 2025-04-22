@@ -16,7 +16,11 @@
 
 <template>
     <div class="shift-block">
-        <Shift v-for="shift in props.shifts_info" :key="shift.name" :shift_info="shift"></Shift>
+        <Shift
+            v-for="shift in props.shifts_info"
+            :key="shift.name"
+            :shift_info="shift"
+            :block_height="props.block_height"></Shift>
     </div>
 </template>
 
@@ -27,6 +31,7 @@
     align-items: center;
     gap: 3px;
     flex-shrink: 0;
+    height: 120px;
 }
 </style>
 
@@ -41,6 +46,9 @@ const props = defineProps<{
         room: string;
         capacity: string;
         show_capacity: boolean;
+        start: number;
+        end: number;
     }[];
+    block_height: number;
 }>();
 </script>

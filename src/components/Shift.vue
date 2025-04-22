@@ -15,10 +15,11 @@
 -->
 
 <template>
-    <div
+    <button
         class="shift"
         :class="props.shift_info.type"
         :style="style"
+        :title="tooltip"
         @mouseenter="hover = true"
         @mouseleave="hover = false">
         <p>{{ props.shift_info.uc }}</p>
@@ -27,20 +28,23 @@
         <p v-if="props.shift_info.show_capacity" class="capacity">
             {{ props.shift_info.capacity }}
         </p>
-    </div>
+    </button>
 </template>
 
 <style scoped>
 .shift {
+    all: unset;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex: 1 0 0;
+    flex: 1 1 0;
+    min-width: 0;
     align-self: stretch;
-    flex-shrink: 0;
     border-radius: 5px;
     position: relative;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .shift p {
@@ -99,22 +103,28 @@ const props = defineProps<{
         room: string;
         capacity: string;
         show_capacity: boolean;
+        start: number;
+        end: number;
     };
+    block_height: number;
 }>();
 const hover = ref(false);
+const tooltip = computed(() => {
+    return `${props.shift_info.uc} Turno ${props.shift_info.name}`;
+});
 const style = computed(() => {
     if (props.shift_info.type == "full" && !hover.value) {
-        return `background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else if (props.shift_info.type == "full") {
-        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "full-pressed") {
-        return `background: var(--color-shift-${props.shift_info.color_nr});`;
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr});`;
     } else if (props.shift_info.type == "border" && !hover.value) {
-        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "border") {
-        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else {
-        return "";
+        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%;`;
     }
 });
 </script>
