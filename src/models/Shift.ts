@@ -1,17 +1,18 @@
 type Day = "Segunda" | "Terça" | "Quarta" | "Quinta" | "Sexta";
 
-interface Shift {
+interface ShiftType {
     start: number;
     end: number;
     name: string;
 }
 
-interface ShiftBlock {
+interface ShiftBlockType {
     from: number;
     to: number;
-    shifts: Shift[];
+    divisions: number;
+    shifts: ShiftType[];
 }
 
-type WeekSchedule = Record<Day, ShiftBlock[]>;
+type WeekSchedule = Record<Day, ShiftBlockType[]>;
 
-export { WeekSchedule, ShiftBlock, Shift, Day };
+export { WeekSchedule, ShiftBlockType, ShiftType, Day };

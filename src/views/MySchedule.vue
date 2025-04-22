@@ -18,7 +18,7 @@
     <Navbar type="student" />
     <main>
         <h3>Clique num turno para mais informação</h3>
-        <WeeklySchedule :week_schedule="week_schedule" id="schedule"></WeeklySchedule>
+        <WeeklySchedule :week_schedule="week_schedule" id="schedule" />
     </main>
 </template>
 
@@ -38,12 +38,14 @@ main {
 import Navbar from "../components/Navbar.vue";
 import WeeklySchedule from "../components/WeeklySchedule.vue";
 import { WeekSchedule } from "../models/Shift.ts";
+import { ref } from "vue";
 
-const week_schedule: WeekSchedule = {
+const week_schedule = ref<WeekSchedule>({
     Segunda: [
         {
             "from": 8,
             "to": 10,
+            "divisions": 3,
             "shifts": [
                 {
                     "start": 0,
@@ -56,8 +58,8 @@ const week_schedule: WeekSchedule = {
                     "name": "Shift 2"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 1,
+                    "end": 3,
                     "name": "Shift 3"
                 }
             ]
@@ -65,6 +67,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 10,
             "to": 12,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -81,6 +84,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 13,
             "to": 15,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -94,6 +98,7 @@ const week_schedule: WeekSchedule = {
     {
             "from": 9,
             "to": 11,
+            "divisions": 3,
             "shifts": [
                 {
                     "start": 0,
@@ -101,13 +106,13 @@ const week_schedule: WeekSchedule = {
                     "name": "Shift 7"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 1,
+                    "end": 3,
                     "name": "Shift 8"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 1,
+                    "end": 3,
                     "name": "Shift 9"
                 }
             ]
@@ -115,6 +120,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 11,
             "to": 13,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -131,6 +137,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 14,
             "to": 16,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -144,6 +151,7 @@ const week_schedule: WeekSchedule = {
     {
             "from": 11,
             "to": 13,
+            "divisions": 4,
             "shifts": [
                 {
                     "start": 0,
@@ -151,13 +159,13 @@ const week_schedule: WeekSchedule = {
                     "name": "Shift 13"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 1,
+                    "end": 3,
                     "name": "Shift 14"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 2,
+                    "end": 4,
                     "name": "Shift 15"
                 }
             ]
@@ -165,6 +173,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 14,
             "to": 16,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -181,6 +190,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 16,
             "to": 18,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -194,6 +204,7 @@ const week_schedule: WeekSchedule = {
     {
             "from": 8,
             "to": 10,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -215,6 +226,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 10,
             "to": 12,
+            "divisions": 3,
             "shifts": [
                 {
                     "start": 0,
@@ -222,8 +234,8 @@ const week_schedule: WeekSchedule = {
                     "name": "Shift 22"
                 },
                 {
-                    "start": 0,
-                    "end": 2,
+                    "start": 1,
+                    "end": 3,
                     "name": "Shift 23"
                 }
             ]
@@ -231,6 +243,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 14,
             "to": 16,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -244,6 +257,7 @@ const week_schedule: WeekSchedule = {
     {
             "from": 8,
             "to": 10,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -265,6 +279,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 10,
             "to": 12,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -281,6 +296,7 @@ const week_schedule: WeekSchedule = {
         {
             "from": 13,
             "to": 15,
+            "divisions": 2,
             "shifts": [
                 {
                     "start": 0,
@@ -290,6 +306,6 @@ const week_schedule: WeekSchedule = {
             ]
         }
     ],
-}
+});
 
 </script>
