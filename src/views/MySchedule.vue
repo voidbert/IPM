@@ -15,7 +15,6 @@
 -->
 
 <template>
-    <Navbar type="student" />
     <main>Hello, world!</main>
 </template>
 
@@ -25,6 +24,4 @@ main {
 }
 </style>
 
-<script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
-</script>
+<script setup lang="ts"></script>

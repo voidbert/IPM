@@ -15,42 +15,40 @@
 -->
 
 <template>
-    <label class="custom-checkbox">
-        <input
-            type="checkbox"
-            class="custom-checkbox-input"
-            v-model="model"
-            :indeterminate="model === null"
-            @change="$emit('change', model as boolean | null)" />
-        <slot />
-    </label>
+    <div class="shift-block">
+        <Shift
+            v-for="shift in props.shifts_info"
+            :key="shift.name"
+            :shift_info="shift"
+            :block_height="props.block_height"></Shift>
+    </div>
 </template>
 
 <style scoped>
-.custom-checkbox {
+.shift-block {
     display: flex;
+    padding: 5px;
     align-items: center;
-    gap: 4px;
-    flex: 1;
-    color: var(--color-checkbox-foreground);
+    gap: 3px;
+    flex-shrink: 0;
+    height: 120px;
 }
-
-.custom-checkbox-input {
-    width: 1.2rem;
-    height: 1.2rem;
-    margin-left: 0px;
-
-    accent-color: var(--color-checkbox-checked);
-}
-
-.custom-checkbox-input:not(:checked) {
-    filter: brightness(var(--color-checkbox-unchecked));
 </style>
 
 <script setup lang="ts">
-const model = defineModel<boolean | null>();
-
-defineEmits<{
-    (event: "change", value: boolean | null): void;
+import Shift from "./Shift.vue";
+const props = defineProps<{
+    shifts_info: {
+        type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
+        color_nr: number;
+        uc: string;
+        name: string;
+        room: string;
+        capacity: string;
+        show_capacity: boolean;
+        start: number;
+        end: number;
+    }[];
+    block_height: number;
 }>();
 </script>
