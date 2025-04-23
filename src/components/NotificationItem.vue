@@ -25,7 +25,7 @@
                 <div ref="bubble_elem" class="bubble" />
             </div>
             <img v-if="props.type != 'request'" class="reset" id="mail-card" />
-            <p>{{ props.info.sender }}</p>
+            <p>{{ props.info.from }}</p>
         </div>
         <div>
             <p>{{ props.info.content }}</p>
@@ -37,17 +37,19 @@
                 <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link="props.link" />
             </div>
-            <img
-                v-if="props.type == 'director' && props.info.state != 'pending'"
+            <object
+                v-if="(props.type == 'director' && props.info.state != 'pending') || props.type == 'request'"
                 id="state"
                 class="reset"
-                :class="props.info.state" />
+                :class="props.info.state"
+                :title="tooltip" />
         </div>
     </li>
 </template>
 
 <style scoped>
 .notification {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -162,18 +164,23 @@
     mask-image: url("/public/icon-reject.svg");
     mask-size: cover;
 }
+
+#state.pending {
+    mask-image: url("/public/icon-hour-glass.svg");
+    mask-size: cover;
+}
 </style>
 
 <script setup lang="ts">
 import IconButton from "./IconButton.vue";
-import { onMounted, ref } from "vue";
-import { Notification, State, Notification_Type } from "../models/Notification.ts";
+import { onMounted, ref, computed } from "vue";
+import { Notification, State, NotificationType } from "../models/Notification.ts";
 
 const bubble_elem = ref<HTMLElement>();
 const notification_elem = ref<HTMLElement>();
 
 const props = defineProps<{
-    type: Notification_Type;
+    type: NotificationType;
     info: Notification;
     link?: string;
 }>();
@@ -218,6 +225,14 @@ const changeRead = () => {
     emit("changeRead", true, props.info.id);
     display();
 };
+
+const tooltip = computed(() => {
+    let result = "";
+    if (props.info.state == "accepted") result = "Aceite";
+    else if (props.info.state == "rejected") result = "Rejeitado";
+    else if (props.info.state == "pending") result = "Pendente";
+    return result;
+})
 
 const display = () => {
     if (

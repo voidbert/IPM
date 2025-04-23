@@ -36,6 +36,7 @@
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
     background-color: var(--color-notifications-list);
+    overflow-y: auto;
 }
 
 .notifications-list {
@@ -45,16 +46,14 @@
 }
 
 .notification {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 </style>
 
 <script setup lang="ts">
 import NotificationItem from "./NotificationItem.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { Notification, State } from "../models/Notification.ts";
-
-const filter = ref<"left" | "right">("left");
 
 const props = defineProps<{
     type: "student" | "director";
@@ -75,11 +74,6 @@ const generateLink = (n: Notification) => {
 
 const filteredNotifications = computed(() => {
     let notifications = [...props.notifications];
-    if (filter.value == "right") {
-        notifications = notifications.filter((n) => !n.read);
-    } else {
-        notifications = notifications;
-    }
     notifications.sort((n1, n2) => {
         if (n1.read == false && n2.read == true) {
             return -1;

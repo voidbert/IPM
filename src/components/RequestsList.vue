@@ -30,27 +30,32 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem 0;
+    overflow-y: auto;
 }
 </style>
 
 <script setup lang="ts">
 import NotificationItem from "./NotificationItem.vue";
 import { computed } from "vue";
+import { Notification } from "../models/Notification.ts";
 
 const props = defineProps<{
-    requests: {
-        id: number;
-        sender: string;
-        content: string;
-        date: Date;
-    }[];
+    requests: Notification[];
 }>();
 
 const sortedRequests = computed(() => {
     const requests = props.requests;
     return requests.sort((r1, r2) => {
-        if (r1.date == r2.date) return 0;
-        else return r1.date < r2.date ? 1 : -1;
+        if (r1.state == "pending" && r2.state != "pending") {
+            return -1;
+        } else if (r1.state != "pending" && r2.state == "pending") {
+            return 1;
+        } else if (r1.state != "pending" && r2.state != "pending" && r1.state != r2.state) {
+            return r1.state == "accepted" ? -1 : 1;
+        } else if (r1.state == r2.state) {
+            if (r1.date == r2.date) return r1.id < r2.id ? -1 : 1;
+            else return r1.date < r2.date ? 1 : -1;
+        } else return r1.id < r2.id ? -1 : 1;
     });
 });
 </script>

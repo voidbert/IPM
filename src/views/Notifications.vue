@@ -34,6 +34,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 100%;
+    overflow: hidden;
 }
 
 #notifications {
@@ -49,123 +50,55 @@ import { ref } from "vue";
 
 const type: "student" | "director" = "student";
 
+const maxType: number = 3;
+
 // Example data, change later
-const notifications_student: Notification[] = [
-    {
-        id: 0,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
-        read: false
-    },
-    {
-        id: 1,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
-        read: false
-    },
-    {
-        id: 2,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true
-    },
-    {
-        id: 3,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true
-    }
-];
+const notifications = ref<Notification[]>([]);
 
-const notifications_director: Notification[] = [
-    {
-        id: 4,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
-        read: false,
-        state: "pending"
-    },
-    {
-        id: 5,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date(),
-        read: false,
-        state: "pending"
-    },
-    {
-        id: 6,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true,
-        state: "pending"
-    },
-    {
-        id: 7,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true,
-        state: "accepted"
-    },
-    {
-        id: 8,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: false,
-        state: "pending"
-    },
-    {
-        id: 9,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: false,
-        state: "pending"
-    },
-    {
-        id: 10,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true,
-        state: "pending"
-    },
-    {
-        id: 11,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03"),
-        read: true,
-        state: "pending"
-    }
-];
-
-const notifications = ref<Notification[]>(
-    {
-        student: notifications_student,
-        director: notifications_director
-    }[type]
-);
-
-const updateNotification = (read: boolean, id: number) => {
+const updateNotification = async (read: boolean, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);
     if (notification) {
         notification.read = read;
     }
+    await Notification.setNotificationRead(id, read);
 };
 
-const updateNotificationState = (state: State, id: number) => {
+const updateNotificationState = async (state: State, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);
     if (notification) {
         notification.state = state;
     }
+    await Notification.setNotificationState(id, state);
 };
+
+const fetchNotifications = async () => {
+    let allNotifications: Notification[] = [];
+    if (type == "student") {
+        allNotifications = await Notification.getUserNotifications(1);
+    }
+    else if (type == "director") {
+        allNotifications = await Notification.getUserNotifications(2);
+        let typeShift = 0;
+        let typeRoom = 0;
+        allNotifications.forEach(n => {
+            if (n.exchange === "shift" && n.state === "pending") typeShift += 1;
+            else if (n.exchange === "room" && n.state === "pending") typeRoom += 1;
+        });
+        if (typeShift > maxType) {
+            allNotifications = allNotifications.filter(n => !(n.exchange === "shift" && n.state === "pending"));
+            console.log(allNotifications);
+            const notificationGroup = new Notification(2, "Sistema", `Tem ${typeShift} pedidos de troca de turno`, new Date(), false, "pending", "shift")
+            allNotifications.push(notificationGroup)
+        }
+        if (typeRoom > maxType) {
+            allNotifications = allNotifications.filter(n => !(n.exchange === "room" && n.state === "pending"));
+            const notificationGroup = new Notification(2, "Sistema", `Tem ${typeRoom} pedidos de troca de sala`, new Date(), false, "pending", "room")
+            allNotifications.push(notificationGroup)
+        }
+    }
+    notifications.value = allNotifications;
+};
+
+fetchNotifications();
+
 </script>

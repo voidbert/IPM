@@ -3,5 +3,145 @@
         {
             "id": "A104348"
         }
+    ],
+    "users": [
+        {
+        "id": 1,
+        "email": "1@uminho.pt",
+        "password": "1",
+        "name": "Aluno",
+        "type": "student",
+        "profilePicture": null,
+        "number": null,
+        "specialStatus": false,
+        "enrollments": [],
+        "schedule": []
+        },
+        {
+        "id": 2,
+        "email": "2@uminho.pt",
+        "password": "2",
+        "name": "Diretor",
+        "type": "director",
+        "profilePicture": null,
+        "number": null,
+        "specialStatus": false,
+        "enrollments": [],
+        "schedule": []
+        }
+    ],
+    "notifications": [
+        {
+            "id": 0,
+            "to": 1,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false
+        },
+        {
+            "id": 1,
+            "to": 1,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false
+        },
+        {
+            "id": 2,
+            "to": 1,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true
+        },
+        {
+            "id": 3,
+            "to": 1,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true
+        },
+        {
+            "id": 4,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+        },
+        {
+            "id": 5,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+        },
+        {
+            "id": 6,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de turno PL4 -> PL6",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true,
+            "state": "pending",
+            "exchange": "shift"
+        },
+        {
+            "id": 7,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de sala IPM PL4",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true,
+            "state": "accepted",
+            "exchange": "room"
+        },
+        {
+            "id": 8,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de sala IPM PL6",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true,
+            "state": "rejected",
+            "exchange": "room"
+        },
+        {
+            "id": 9,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de sala IPM T",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "room"
+        },
+        {
+            "id": 10,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de sala IPM PL1",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true,
+            "state": "pending",
+            "exchange": "room"
+        },
+        {
+            "id": 11,
+            "to": 2,
+            "from": "Nome",
+            "content": "Troca de sala IPM PL2",
+            "date": "2025-04-03T00:00:00.000Z",
+            "read": true,
+            "state": "pending",
+            "exchange": "room"
+        }
     ]
 }

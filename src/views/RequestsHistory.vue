@@ -29,6 +29,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 100%;
+    overflow: hidden;
 }
 
 #requests {
@@ -39,34 +40,18 @@ main {
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import RequestsList from "../components/RequestsList.vue";
+import { Notification } from "../models/Notification.ts";
+import { ref } from "vue";
 
 const type = "request";
 
 // Example data, change later
-const requests = [
-    {
-        id: 8,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date()
-    },
-    {
-        id: 9,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date()
-    },
-    {
-        id: 10,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03")
-    },
-    {
-        id: 11,
-        sender: "Nome",
-        content: "Troca de turno PL4 -> PL6",
-        date: new Date("2025-04-03")
-    }
-];
+const requests = ref<Notification[]>([]);
+
+const fetchNotifications = async () => {
+    requests.value = await Notification.getUserRequests("Nome");
+};
+
+fetchNotifications();
+
 </script>

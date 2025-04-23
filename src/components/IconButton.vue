@@ -18,7 +18,7 @@
     <button class="reset button">
         <RouterLink v-if="props.link" :to="props.link" />
         <!-- Redirect -->
-        <img class="reset icon" :class="type" />
+        <object class="reset icon" :class="type" :title="tooltip" />
     </button>
 </template>
 
@@ -67,8 +67,18 @@
 </style>
 
 <script setup lang="ts">
+import { computed } from "vue";
+
 const props = defineProps<{
     type: "accept" | "reject" | "view";
     link?: string;
 }>();
+
+const tooltip = computed(() => {
+    let result = "";
+    if (props.type == "accept") result = "Aceitar";
+    else if (props.type == "reject") result = "Rejeitar";
+    else if (props.type == "view") result = "Ir para";
+    return result;
+})
 </script>
