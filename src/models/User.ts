@@ -18,17 +18,19 @@ export type UserType = "student" | "professor" | "director";
 
 export class User {
     // Common attributes
-    public id: number;
-    public email: string;
-    public password: string;
-    public type: UserType;
-    public name: string;
-    public profilePicture: string | null;
+    id: number;
+    email: string;
+    password: string;
+    type: UserType;
+    name: string;
+    profilePicture: string | null;
 
     // Student-only attributes
     number: string | null;
+    specialStatus: boolean;
     enrollments: number[];
-    schedule: number[];
+    committedSchedule: number[];
+    directorSchedule: number[];
 
     constructor(
         id: number,
@@ -38,8 +40,10 @@ export class User {
         name: string,
         profilePicture: string | null = null,
         number: string | null = null,
+        specialStatus: boolean = false,
         enrollments: number[] = [],
-        schedule: number[] = []
+        committedSchedule: number[] = [],
+        directorSchedule: number[] = []
     ) {
         this.id = id;
         this.email = email;
@@ -48,26 +52,34 @@ export class User {
         this.name = name;
         this.profilePicture = profilePicture;
         this.number = number;
+        this.specialStatus = specialStatus;
         this.enrollments = enrollments;
-        this.schedule = schedule;
+        this.committedSchedule = committedSchedule;
+        this.directorSchedule = directorSchedule;
     }
 
     static createFromObject(userObject: any): User {
         return new User(
-            userObject["id"],
+            Number(userObject["id"]),
             userObject["email"],
             userObject["password"],
             userObject["type"],
             userObject["name"],
             userObject["profilePicture"],
             userObject["number"],
+            userObject["specialStatus"],
             userObject["enrollments"],
-            userObject["schedule"]
+            userObject["committedSchedule"],
+            userObject["directorSchedule"]
         );
     }
 
     static async tryAuthenticate(email: string, password: string): Promise<User | null> {
         const users = (await fetchJson(`/users?email=${email}&password=${password}`)) as any[];
         return users.length == 1 ? User.createFromObject(users[0]) : null;
+    }
+
+    static async getAll(): Promise<User[]> {
+        return (await fetchJson("/users")).map(User.createFromObject);
     }
 }
