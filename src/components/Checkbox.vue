@@ -26,16 +26,6 @@
     </label>
 </template>
 
-<script setup lang="ts">
-import { defineModel, defineEmits } from "vue";
-
-const model = defineModel<boolean | null>();
-
-defineEmits<{
-    (event: "change", value: boolean | null): void;
-}>();
-</script>
-
 <style scoped>
 .custom-checkbox {
     display: flex;
@@ -51,3 +41,11 @@ defineEmits<{
     accent-color: var(--color-checkbox-checked-light);
 }
 </style>
+
+<script setup lang="ts">
+const model = defineModel<boolean | null>();
+
+defineEmits<{
+    (event: "change", value: boolean | null): void;
+}>();
+</script>

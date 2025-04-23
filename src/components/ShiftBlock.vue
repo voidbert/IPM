@@ -15,50 +15,40 @@
 -->
 
 <template>
-    <button
-        :class="props.type"
-        :title="props.type == 'disabled' ? props.reasonDisabled : undefined"
-        :disabled="props.type === 'disabled'">
-        <slot />
-    </button>
+    <div class="shift-block">
+        <Shift
+            v-for="shift in props.shifts_info"
+            :key="shift.name"
+            :shift_info="shift"
+            :block_height="props.block_height"></Shift>
+    </div>
 </template>
 
 <style scoped>
-button {
-    width: 100%;
-    min-width: max-content;
-
+.shift-block {
     display: flex;
+    padding: 5px;
     align-items: center;
-    justify-content: center;
-
-    border: none;
-    border-radius: 0.3em;
-    padding: 0.6rem 0.6rem;
-
-    color: v-bind(`var(--color-button-foreground-${props.type}) `);
-    background-color: v-bind(`var(--color-button-background-${props.type}) `);
-
-    font-weight: bold;
-    transition: filter 0.1s linear;
-}
-
-.action:hover {
-    filter: brightness(140%) saturate(0.8);
-}
-
-.cancel:hover {
-    filter: brightness(80%);
-}
-
-.disabled:hover {
-    cursor: not-allowed;
+    gap: 3px;
+    flex-shrink: 0;
+    height: 120px;
 }
 </style>
 
 <script setup lang="ts">
+import Shift from "./Shift.vue";
 const props = defineProps<{
-    type: "action" | "cancel" | "disabled";
-    reasonDisabled?: string;
+    shifts_info: {
+        type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
+        color_nr: number;
+        uc: string;
+        name: string;
+        room: string;
+        capacity: string;
+        show_capacity: boolean;
+        start: number;
+        end: number;
+    }[];
+    block_height: number;
 }>();
 </script>

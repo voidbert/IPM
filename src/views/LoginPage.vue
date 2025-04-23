@@ -29,21 +29,48 @@
 
 <style scoped>
 main {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+
     padding: 10px;
 }
+
+.login-form {
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.page-title {
+    display: flex;
+    justify-content: center;
+    margin-top: 0px; /* For correct vertical centering */
+
+    font-size: 1.5rem;
+}
+
+.login-submit-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    margin-top: 1rem;
+}
+
+.warning-container {
+    display: flex;
+    flex: 2;
+}
+
 Button {
-    /* Just for testing purposes, change later */
-    position: absolute;
-    width: 10vw;
-    height: 5vh;
-    left: 50vw;
-    bottom: 30vh;
+    flex: 1;
 }
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
-import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import ShiftSelector from "../components/ShiftSelector.vue";
 
@@ -54,5 +81,4 @@ const disciplinas: Disciplinas = {
     IPM: [['T1', true], ['PL1', false], ['PL2', true]],
     CP: [['T1', false], ['PL1', true], ['PL2', true]]
 };
-
 </script>

@@ -28,4 +28,5 @@ dist
 reports/build
 
 # JSON Server
+db.json
 .db-new.json
