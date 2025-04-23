@@ -46,6 +46,8 @@ body {
     --color-shift-5-bright: #f0ee75;
     --color-shift-6: #a3f5f1;
     --color-shift-6-bright: #75f0ea;
+
+    --color-warning: var(--color-uminho);
 }
 
 body,
@@ -71,13 +73,16 @@ body[class="light"] {
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
 
+    --color-problem-student-name: #555;
+    --color-problem-description: var(--color-body-foreground);
+    --color-problem-student-profile-picture-fallback: #aaa;
+    --color-problem-active: #ccc;
+    --color-problem-hover: #eee;
+
     --color-text-input-background: --var(--color-body-background);
     --color-text-input-foreground: --var(--color-body-foreground);
     --color-text-input-placeholder: #888;
     --color-text-input-border: #bbb;
-
-    --color-student-name: #555;
-    --color-student-profile-picture-fallback: #aaa;
 
     --color-undo-button-disabled: #bbb;
     --color-undo-button-regular: #333;
@@ -98,6 +103,12 @@ body[class="dark"] {
     --color-checkbox-unchecked: 13.333%;
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
+
+    --color-problem-student-name: #aaa;
+    --color-problem-description: var(--color-body-foreground);
+    --color-problem-student-profile-picture-fallback: #555;
+    --color-problem-active: #222;
+    --color-problem-hover: #1a1a1a;
 
     --color-text-input-background: #222;
     --color-text-input-foreground: --var(--color-body-foreground);
