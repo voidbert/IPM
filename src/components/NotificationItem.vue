@@ -76,7 +76,7 @@
     font-size: 0.96rem;
 }
 
-.notification:hover:not(.closed) {
+.notification:hover:not(.closed):not(.request) {
     cursor: pointer;
 }
 
