@@ -38,8 +38,6 @@
 .custom-checkbox-input {
     width: 1.2rem;
     height: 1.2rem;
-    margin-left: 0px;
-
     accent-color: var(--color-checkbox-checked);
 }
 

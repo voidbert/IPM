@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from "vue";
+import { reactive } from "vue";
 import Checkbox from "./Checkbox.vue";
 
 type TurnoInfo = [string, boolean];
@@ -97,13 +97,13 @@ details summary {
 details:not(open) summary::before {
     content: "▶";
     transform: rotate(0deg);
-    color: black;
+    color: var(--color-checkbox-foreground);
 }
 
 details:open > summary::before {
     content: "▶";
     transform: rotate(90deg);
-    color: black;
+    color: var(--color-checkbox-foreground);
 }
 
 details summary:hover:has(.checkbox:not(:hover))::before {

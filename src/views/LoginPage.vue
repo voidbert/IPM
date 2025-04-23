@@ -42,6 +42,9 @@
                 </Button>
             </div>
         </form>
+        <p>
+            <ShiftSelector :disciplinas="disciplinas" />
+        </p>
     </main>
 </template>
 
@@ -99,7 +102,24 @@ import { User } from "../models/User.ts";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import ShiftSelector from "../components/ShiftSelector.vue";
+//apagar dps
+type TurnoInfo = [string, boolean];
+type Disciplinas = Record<string, TurnoInfo[]>;
 
+const disciplinas: Disciplinas = {
+    IPM: [
+        ["T1", true],
+        ["PL1", false],
+        ["PL2", true]
+    ],
+    CP: [
+        ["T1", false],
+        ["PL1", true],
+        ["PL2", true]
+    ]
+};
+//apagar dps
 const router = useRouter();
 
 const email = ref("");
