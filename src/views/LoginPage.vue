@@ -23,7 +23,7 @@
         <p><b>Iniciar Sessão</b></p>
     </Button>
     <p>
-        <ShiftSelector></ShiftSelector>
+        <ShiftSelector :disciplinas="disciplinas" />
     </p>
 </template>
 
@@ -46,4 +46,13 @@ import Navbar from "../components/Navbar.vue";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import ShiftSelector from "../components/ShiftSelector.vue";
+
+type TurnoInfo = [string, boolean];
+type Disciplinas = Record<string, TurnoInfo[]>;
+
+const disciplinas: Disciplinas = {
+    IPM: [['T1', true], ['PL1', false], ['PL2', true]],
+    CP: [['T1', false], ['PL1', true], ['PL2', true]]
+};
+
 </script>

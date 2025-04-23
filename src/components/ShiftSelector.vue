@@ -15,69 +15,69 @@
 -->
 
 <template>
-    <details open>
+    <div v-if="Object.keys(model).length">
+    <div v-for="(turnos, disciplina) in model" :key="disciplina">
+        <details open>
         <summary>
-            <Checkbox :model-value="true" class="checkbox">IPM</Checkbox>
+            <Checkbox
+            v-model="disciplinasSelecionadas[disciplina]"
+            :indeterminate="isIndeterminate(disciplina)"
+            @change="onDisciplinaChange(disciplina)"
+            class="checkbox"
+            >
+            {{ disciplina }}
+            </Checkbox>
         </summary>
         <ul>
-            <li>
-                <details>
-                    <summary>
-                        <Checkbox :model-value="true" class="checkbox">IPM</Checkbox>
-                    </summary>
-                    <ul>
-                        <li>
-                            <Checkbox :model-value="true">T1</Checkbox>
-                        </li>
-                        <li>
-                            <Checkbox :model-value="true">PL1</Checkbox>
-                        </li>
-                        <li>
-                            <Checkbox :model-value="true">PL2</Checkbox>
-                        </li>
-                    </ul>
-                </details>
-            </li>
-            <li>
-            <details open>
-                    <summary>
-                        <Checkbox :model-value="true" class="checkbox">IPM</Checkbox>
-                    </summary>
-                    <ul>
-                        <li>
-                            <Checkbox :model-value="true">T1</Checkbox>
-                        </li>
-                        <li>
-                            <Checkbox :model-value="true">PL1</Checkbox>
-                        </li>
-                        <li>
-                            <Checkbox :model-value="true">PL2</Checkbox>
-                        </li>
-                    </ul>
-                </details>
+            <li v-for="(turno, index) in turnos" :key="turno[0]">
+            <Checkbox
+                v-model="model[disciplina][index][1]"
+                @change="onTurnoChange(disciplina)"
+            >
+                {{ turno[0] }}
+            </Checkbox>
             </li>
         </ul>
-    </details>
-    <details open>
-        <summary>
-            <Checkbox :model-value="true" class="checkbox">CP</Checkbox>
-        </summary>
-        <ul>
-            <li>
-                <Checkbox :model-value="true">T1</Checkbox>
-            </li>
-            <li>
-                <Checkbox :model-value="true">PL1</Checkbox>
-            </li>
-            <li>
-                <Checkbox :model-value="true">PL2</Checkbox>
-            </li>
-        </ul>
-    </details>
+        </details>
+    </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-import Checkbox from './Checkbox.vue';
+    import { computed, reactive, watch } from 'vue';
+    import Checkbox from './Checkbox.vue';
+
+    type TurnoInfo = [string, boolean];
+    type Disciplinas = Record<string, TurnoInfo[]>;
+
+    const props = defineProps<{
+        disciplinas: Disciplinas;
+    }>();
+
+    const model = reactive<Disciplinas>(structuredClone(props.disciplinas));
+
+    const disciplinasSelecionadas = reactive<Record<string, boolean>>({});
+
+    for (const [disciplina, turnos] of Object.entries(model)) {
+        disciplinasSelecionadas[disciplina] = turnos.every(t => t[1]);
+    }
+
+    function isIndeterminate(disciplina: string) {
+        const turnos = model[disciplina];
+        const selecionados = turnos.filter(t => t[1]).length;
+        if(selecionados > 0 && selecionados < turnos.length) return null;
+        else return false;
+    }
+
+    function onDisciplinaChange(disciplina: string) {
+        const novoEstado = disciplinasSelecionadas[disciplina];
+        model[disciplina].forEach(t => (t[1] = novoEstado));
+    }
+
+    function onTurnoChange(disciplina: string) {
+        const turnos = model[disciplina];
+        disciplinasSelecionadas[disciplina] = turnos.every(t => t[1]);
+    }
 </script>
 
 <style scoped>
@@ -95,23 +95,22 @@ details ul {
 details summary {
     display: flex;
     align-items: center;
-    cursor: pointer;
 }
 
 details:not(open) summary::before {
     content: '▶';
     transform: rotate(0deg);
-    color: var(--color-checkbox-checked-light);
+    color: black;
 }
 
 details:open > summary::before {
     content: '▶';
     transform: rotate(90deg);
-    color: var(--color-checkbox-checked-light);
+    color: black;
 }
 
 details summary:hover:has(.checkbox:not(:hover))::before {
-    filter: brightness(1.5) saturate(2);
+    color:rgb(140, 139, 139);
 }
 
 
