@@ -16,72 +16,69 @@
 
 <template>
     <div v-if="Object.keys(model).length">
-    <div v-for="(turnos, disciplina) in model" :key="disciplina">
-        <details open>
-        <summary>
-            <Checkbox
-            v-model="disciplinasSelecionadas[disciplina]"
-            :indeterminate="isIndeterminate(disciplina)"
-            @change="onDisciplinaChange(disciplina)"
-            class="checkbox"
-            >
-            {{ disciplina }}
-            </Checkbox>
-        </summary>
-        <ul>
-            <li v-for="(turno, index) in turnos" :key="turno[0]">
-            <Checkbox
-                v-model="model[disciplina][index][1]"
-                @change="onTurnoChange(disciplina)"
-            >
-                {{ turno[0] }}
-            </Checkbox>
-            </li>
-        </ul>
-        </details>
-    </div>
+        <div v-for="(turnos, disciplina) in model" :key="disciplina">
+            <details open>
+                <summary>
+                    <Checkbox
+                        v-model="disciplinasSelecionadas[disciplina]"
+                        :indeterminate="isIndeterminate(disciplina)"
+                        @change="onDisciplinaChange(disciplina)"
+                        class="checkbox">
+                        {{ disciplina }}
+                    </Checkbox>
+                </summary>
+                <ul>
+                    <li v-for="(turno, index) in turnos" :key="turno[0]">
+                        <Checkbox
+                            v-model="model[disciplina][index][1]"
+                            @change="onTurnoChange(disciplina)">
+                            {{ turno[0] }}
+                        </Checkbox>
+                    </li>
+                </ul>
+            </details>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, reactive, watch } from 'vue';
-    import Checkbox from './Checkbox.vue';
+import { computed, reactive, watch } from "vue";
+import Checkbox from "./Checkbox.vue";
 
-    type TurnoInfo = [string, boolean];
-    type Disciplinas = Record<string, TurnoInfo[]>;
+type TurnoInfo = [string, boolean];
+type Disciplinas = Record<string, TurnoInfo[]>;
 
-    const props = defineProps<{
-        disciplinas: Disciplinas;
-    }>();
+const props = defineProps<{
+    disciplinas: Disciplinas;
+}>();
 
-    const model = reactive<Disciplinas>(structuredClone(props.disciplinas));
+const model = reactive<Disciplinas>(structuredClone(props.disciplinas));
 
-    const disciplinasSelecionadas = reactive<Record<string, boolean>>({});
+const disciplinasSelecionadas = reactive<Record<string, boolean>>({});
 
-    for (const [disciplina, turnos] of Object.entries(model)) {
-        disciplinasSelecionadas[disciplina] = turnos.every(t => t[1]);
-    }
+for (const [disciplina, turnos] of Object.entries(model)) {
+    disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
+}
 
-    function isIndeterminate(disciplina: string) {
-        const turnos = model[disciplina];
-        const selecionados = turnos.filter(t => t[1]).length;
-        if(selecionados > 0 && selecionados < turnos.length) return null;
-        else return false;
-    }
+function isIndeterminate(disciplina: string) {
+    const turnos = model[disciplina];
+    const selecionados = turnos.filter((t) => t[1]).length;
+    if (selecionados > 0 && selecionados < turnos.length) return null;
+    else return false;
+}
 
-    function onDisciplinaChange(disciplina: string) {
-        const novoEstado = disciplinasSelecionadas[disciplina];
-        model[disciplina].forEach(t => (t[1] = novoEstado));
-    }
+function onDisciplinaChange(disciplina: string) {
+    const novoEstado = disciplinasSelecionadas[disciplina];
+    model[disciplina].forEach((t) => (t[1] = novoEstado));
+}
 
-    function onTurnoChange(disciplina: string) {
-        const turnos = model[disciplina];
-        disciplinasSelecionadas[disciplina] = turnos.every(t => t[1]);
-    }
+function onTurnoChange(disciplina: string) {
+    const turnos = model[disciplina];
+    disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
+}
 </script>
 
 <style scoped>
-
 details {
     margin-left: 1em;
 }
@@ -89,7 +86,7 @@ details {
 details ul {
     list-style-type: none;
     padding-left: 2.5em;
-    margin-top: 0; 
+    margin-top: 0;
 }
 
 details summary {
@@ -98,20 +95,18 @@ details summary {
 }
 
 details:not(open) summary::before {
-    content: '▶';
+    content: "▶";
     transform: rotate(0deg);
     color: black;
 }
 
 details:open > summary::before {
-    content: '▶';
+    content: "▶";
     transform: rotate(90deg);
     color: black;
 }
 
 details summary:hover:has(.checkbox:not(:hover))::before {
-    color:rgb(140, 139, 139);
+    color: rgb(140, 139, 139);
 }
-
-
 </style>

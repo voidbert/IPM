@@ -51,8 +51,15 @@ type TurnoInfo = [string, boolean];
 type Disciplinas = Record<string, TurnoInfo[]>;
 
 const disciplinas: Disciplinas = {
-    IPM: [['T1', true], ['PL1', false], ['PL2', true]],
-    CP: [['T1', false], ['PL1', true], ['PL2', true]]
+    IPM: [
+        ["T1", true],
+        ["PL1", false],
+        ["PL2", true]
+    ],
+    CP: [
+        ["T1", false],
+        ["PL1", true],
+        ["PL2", true]
+    ]
 };
-
 </script>
