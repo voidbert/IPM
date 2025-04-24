@@ -20,6 +20,7 @@
             <details open>
                 <summary>
                     <Checkbox
+                        class="checkbox"
                         :modelValue="
                             disciplinasSelecionadas[disciplina] === true
                                 ? true

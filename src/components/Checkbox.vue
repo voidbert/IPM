@@ -44,6 +44,10 @@
 .custom-checkbox-input:not(:checked) {
     filter: brightness(var(--color-checkbox-unchecked));
 }
+
+.custom-checkbox-input:indeterminate {
+    filter: brightness(var(--color-checkbox-checked));
+}
 </style>
 
 <script setup lang="ts">
