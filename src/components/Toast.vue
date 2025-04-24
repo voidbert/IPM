@@ -22,28 +22,27 @@
                 <slot />
             </span>
 
-            <template v-if="props.type === 'success-with-undo'">
-                <span class="toast-undo-action toast-action-hover" @click="handleUndo">
-                    Desfazer
-                </span>
-            </template>
-
-            <template v-else>
-                <img
-                    src="/close.svg"
-                    class="toast-close-icon toast-action-hover"
-                    role="button"
-                    @click="model = false" />
-            </template>
+            <button
+                v-if="props.type === 'undo'"
+                class="toast-button toast-undo-action"
+                @click="handleUndo">
+                Desfazer
+            </button>
+            <button v-else class="toast-button toast-close-icon" @click="model = false" />
         </div>
     </Transition>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-    type: "success" | "success-with-undo";
-    duration?: number;
-}>();
+const props = withDefaults(
+    defineProps<{
+        type: "success" | "undo";
+        duration?: number;
+    }>(),
+    {
+        duration: 5000
+    }
+);
 
 const emit = defineEmits<{
     (e: "undo"): void;
@@ -56,11 +55,9 @@ const handleUndo = () => {
     model.value = false;
 };
 
-if (props.duration && props.duration > 0) {
-    setTimeout(() => {
-        if (model.value) model.value = false;
-    }, props.duration);
-}
+setTimeout(() => {
+    model.value = false;
+}, props.duration);
 </script>
 
 <style scoped>
@@ -69,44 +66,46 @@ if (props.duration && props.duration > 0) {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 6px;
-    font-weight: 500;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-    background-color: var(--color-uminho);
+
+    background-color: var(--color-toast-background);
     color: var(--color-toast-text-default);
+
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-.toast-message {
-    flex: 1;
-    padding-right: 1rem;
+.toast-button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: default;
+    margin-left: 1rem;
+}
+
+.toast-button:hover {
+    --color-toast-foreground: var(--color-toast-hover);
 }
 
 .toast-close-icon {
-    width: 1.6rem;
-    height: 1.6rem;
-    cursor: pointer;
-    user-select: none;
+    width: 1.5rem;
+    height: 1.5rem;
     margin-left: 1rem;
-    color: var(--color-toast-text-default);
-    pointer-events: all;
+
+    background-color: var(--color-toast-foreground);
+    mask-image: url("/close.svg");
+    mask-size: cover;
 }
 
 .toast-undo-action {
-    cursor: pointer;
     font-weight: bold;
-    margin-left: 1rem;
-}
-
-.toast-action-hover {
-    transition: all 0.2s ease;
-}
-
-.toast-action-hover:hover {
-    opacity: 0.7;
+    color: var(--color-toast-foreground);
 }
 
 .toast-slide-enter-active,
@@ -116,7 +115,6 @@ if (props.duration && props.duration > 0) {
 
 .toast-slide-enter-from,
 .toast-slide-leave-to {
-    opacity: 0;
-    transform: translate(-50%, 40px);
+    transform: translate(-50%, 6rem);
 }
 </style>

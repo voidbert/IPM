@@ -22,8 +22,6 @@ body {
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
-    --color-toast-text-default: #fff;
-
     --color-dropdown-background: #fff;
     --color-dropdown-text: #000;
     --color-dropdown-border: #ccc;
@@ -46,6 +44,10 @@ body {
     --color-shift-5-bright: #f0ee75;
     --color-shift-6: #a3f5f1;
     --color-shift-6-bright: #75f0ea;
+
+    --color-toast-background: var(--color-uminho);
+    --color-toast-foreground: #fff;
+    --color-toast-hover: #ddd;
 
     --color-warning: var(--color-uminho);
 }
