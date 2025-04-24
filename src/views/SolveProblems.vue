@@ -40,6 +40,10 @@
         <main>Hello, world!</main>
     </div>
     <div id="solve-problems-empty" v-else>Sem problemas por resolver</div>
+
+    <Toast type="success" :model-value="toastsStore.successfulSchedulePublishing">
+        Horários publicados com sucesso!
+    </Toast>
 </template>
 
 <style scoped>
@@ -85,7 +89,9 @@
 <script setup lang="ts">
 import PresentedProblem from "../components/PresentedProblem.vue";
 import TextInput from "../components/TextInput.vue";
+import Toast from "../components/Toast.vue";
 
+import { useToastsStore } from "../stores/toasts.ts";
 import { Problem } from "../models/Problem.ts";
 
 import { ref } from "vue";
@@ -121,4 +127,7 @@ const updateSideBarWidth = () => {
         fixedSideBarWidth.value = `width: ${width};`;
     }
 };
+
+// Toast
+const toastsStore = useToastsStore();
 </script>

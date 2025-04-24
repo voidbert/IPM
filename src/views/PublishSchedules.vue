@@ -142,10 +142,12 @@ import Button from "../components/Button.vue";
 import Popup from "../components/Popup.vue";
 import PresentedProblem from "../components/PresentedProblem.vue";
 
+import { useToastsStore } from "../stores/toasts.ts";
 import { Problem } from "../models/Problem.ts";
 import { User } from "../models/User.ts";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 // Problem list
 const allProblems = ref<Problem[]>([]);
@@ -163,8 +165,12 @@ const decideToShowConfirmation = () => {
     }
 };
 
+const router = useRouter();
+const toastsStore = useToastsStore();
 const publishSchedules = () => {
     User.publishSchedules();
-    confirmationVisible.value = false;
+
+    toastsStore.successfulSchedulePublishing = true;
+    router.replace("/SolveProblems");
 };
 </script>
