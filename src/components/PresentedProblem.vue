@@ -43,8 +43,9 @@
     gap: 0.5rem;
 
     font-size: 0.8rem;
+    border-radius: 0.5rem;
 
-    transition: background-color 0.1s;
+    transition: background-color 0.1s color 0.2s;
 }
 
 .problem.active {

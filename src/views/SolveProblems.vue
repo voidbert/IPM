@@ -24,31 +24,28 @@
                 v-on:update:modelValue="updateSideBarWidth" />
 
             <div id="solve-problems-sidebar-problems">
-                <template v-for="(problem, i) in allProblems" :key="i">
+                <div
+                    class="solve-problems-problem-container"
+                    v-for="(problem, i) in allProblems"
+                    :key="i">
                     <PresentedProblem
                         v-if="mustShowProblem(problem)"
                         :active="i === activeProblem"
                         :problem="problem"
                         @click="activeProblem = i" />
-                </template>
+                </div>
             </div>
         </aside>
 
         <main>Hello, world!</main>
     </div>
-    <div id="solve-problems-empty" v-else>Sem problemas a resolver</div>
+    <div id="solve-problems-empty" v-else>Sem problemas por resolver</div>
 </template>
 
 <style scoped>
 #solve-problems-page-container,
 #solve-problems-empty {
-    /*
-        Hardcoded, because relative units won't work with overflow behavior:
-         - 100vh - Height of the page
-         - 4rem  - height of the navbar
-         - 1rem  - Padding (0.5rem * 2)
-    */
-    height: calc(100vh - 4rem - 1rem);
+    flex: 1 0 0;
 }
 
 #solve-problems-page-container {
@@ -59,7 +56,6 @@
 }
 
 #solve-problems-sidebar {
-    height: 100%;
     display: flex;
     flex-direction: column;
 
@@ -67,12 +63,15 @@
 }
 
 #solve-problems-sidebar-problems {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+
     overflow: hidden scroll;
     padding-right: 1rem;
 }
 
-#solve-problems-sidebar-problems > * {
-    border-radius: 0.5rem;
+.solve-problems-problem-container > * {
     padding: 0.5rem;
 }
 
