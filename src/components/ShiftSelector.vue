@@ -20,10 +20,19 @@
             <details open>
                 <summary>
                     <Checkbox
-                        v-model="disciplinasSelecionadas[disciplina]"
-                        :indeterminate="isIndeterminate(disciplina)"
-                        @change="onDisciplinaChange(disciplina)"
-                        class="checkbox">
+                        :modelValue="
+                            disciplinasSelecionadas[disciplina] === true
+                                ? true
+                                : isIndeterminate(disciplina) === null
+                                  ? null
+                                  : false
+                        "
+                        @change="
+                            (val) => {
+                                disciplinasSelecionadas[disciplina] = val === true;
+                                onDisciplinaChange(disciplina);
+                            }
+                        ">
                         {{ disciplina }}
                     </Checkbox>
                 </summary>
@@ -67,12 +76,14 @@ for (const [disciplina, turnos] of Object.entries(model)) {
     disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
 }
 
-function isIndeterminate(disciplina: string) {
+function isIndeterminate(disciplina: string): boolean | null {
     const turnos = model[disciplina];
     if (!turnos) return false;
 
     const selecionados = turnos.filter((t) => t[1]).length;
-    return selecionados > 0 && selecionados < turnos.length ? null : false;
+    if (selecionados === 0) return false;
+    if (selecionados === turnos.length) return false;
+    return null; // <-- aqui é o segredo!
 }
 
 function onDisciplinaChange(disciplina: string) {
