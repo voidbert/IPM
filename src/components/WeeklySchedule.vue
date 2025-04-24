@@ -149,7 +149,7 @@ const getBlockHeight = (shiftBlock: ShiftBlockType): number => {
 const getShiftsFromBlock = (shiftBlock: ShiftBlockType): any[] => {
     let shifts: any[] = [];
     shiftBlock.shifts.forEach(s => {
-        return {
+        shifts.push({
             type: "full",
             color_nr: 1,
             uc: "IPM",
@@ -159,7 +159,7 @@ const getShiftsFromBlock = (shiftBlock: ShiftBlockType): any[] => {
             show_capacity: 0,
             start: s.start,
             end: s.end,
-        }
+        })
     })
     return shifts;
 }
