@@ -23,6 +23,7 @@ import "./main.css";
 import LoginPage from "./views/LoginPage.vue";
 import MySchedule from "./views/MySchedule.vue";
 import SolveProblems from "./views/SolveProblems.vue";
+import PublishSchedules from "./views/PublishSchedules.vue";
 
 import { useLoginStore } from "./stores/login.ts";
 import { User } from "./models/User.ts";
@@ -58,6 +59,21 @@ const router = createRouter({
             path: "/SolveProblems",
             name: "SolveProblems",
             component: SolveProblems,
+            meta: {
+                userType: "director"
+            },
+            children: [
+                {
+                    path: ":problem",
+                    component: SolveProblems
+                }
+            ],
+            props: true
+        },
+        {
+            path: "/PublishSchedules",
+            name: "PublishSchedules",
+            component: PublishSchedules,
             meta: {
                 userType: "director"
             }

@@ -79,6 +79,23 @@ export class User {
         return users.length == 1 ? User.createFromObject(users[0]) : null;
     }
 
+    static async publishSchedules(): Promise<void> {
+        const users = (await fetchJson("/users")) as any[];
+
+        Promise.all(
+            users
+                .filter(
+                    (user) =>
+                        JSON.stringify(user.committedSchedule) !==
+                        JSON.stringify(user.directorSchedule)
+                )
+                .map((user) => {
+                    user.committedSchedule = user.directorSchedule;
+                    return fetchJson(`/users/${user.id}`, "PUT", user);
+                })
+        );
+    }
+
     static async getAll(): Promise<User[]> {
         return (await fetchJson("/users")).map(User.createFromObject);
     }

@@ -90,6 +90,10 @@ import { Problem } from "../models/Problem.ts";
 
 import { ref } from "vue";
 
+const props = defineProps<{
+    problem?: string; // Must be a number casted to string (router limitations)
+}>();
+
 // Sidebar
 const allProblems = ref<Problem[]>([]);
 Problem.getAll().then((problems) => {
@@ -97,7 +101,7 @@ Problem.getAll().then((problems) => {
 });
 
 const problemSearch = ref("");
-const activeProblem = ref(0);
+const activeProblem = ref(Number(props.problem) || 0);
 const mustShowProblem = (problem: Problem) => {
     const searchString = problemSearch.value.toLowerCase();
     return (
