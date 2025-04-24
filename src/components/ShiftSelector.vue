@@ -30,8 +30,15 @@
                 <ul>
                     <li v-for="(turno, index) in turnos" :key="turno[0]">
                         <Checkbox
-                            v-model="model[disciplina][index][1]"
-                            @change="onTurnoChange(disciplina)">
+                            :modelValue="model[disciplina]?.[index]?.[1] ?? false"
+                            @update:modelValue="
+                                (val) => {
+                                    if (model[disciplina] && model[disciplina][index]) {
+                                        model[disciplina][index][1] = val ?? false;
+                                        onTurnoChange(disciplina);
+                                    }
+                                }
+                            ">
                             {{ turno[0] }}
                         </Checkbox>
                     </li>
@@ -62,18 +69,24 @@ for (const [disciplina, turnos] of Object.entries(model)) {
 
 function isIndeterminate(disciplina: string) {
     const turnos = model[disciplina];
+    if (!turnos) return false;
+
     const selecionados = turnos.filter((t) => t[1]).length;
-    if (selecionados > 0 && selecionados < turnos.length) return null;
-    else return false;
+    return selecionados > 0 && selecionados < turnos.length ? null : false;
 }
 
 function onDisciplinaChange(disciplina: string) {
+    const turnos = model[disciplina]!;
+    if (!turnos) return;
+
     const novoEstado = disciplinasSelecionadas[disciplina];
-    model[disciplina].forEach((t) => (t[1] = novoEstado));
+    turnos.forEach((t) => (t[1] = novoEstado === true));
 }
 
 function onTurnoChange(disciplina: string) {
     const turnos = model[disciplina];
+    if (!turnos) return;
+
     disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
 }
 </script>
