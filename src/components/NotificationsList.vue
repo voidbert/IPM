@@ -21,7 +21,7 @@
                 v-for="n in filteredNotifications"
                 :type="props.type"
                 :info="n"
-                :name="props.usersInfo[`${n.id}`]?.name ?? 'Sistema'"
+                :name="props.usersInfo[`${n.from}`]?.name ?? 'Sistema'"
                 :key="n.id"
                 :link="generateLink(n)"
                 @changeRead="updateNotification"
@@ -70,7 +70,7 @@ const emit = defineEmits<{
 
 const generateLink = (n: Notification) => {
     if (props.type == "director" && n.state == "pending") {
-        return `/SolveProblems/${n.id}`;
+        return n.id < 0 ? `/SolveProblems` : `/SolveProblems/${n.id}`;
     }
     return undefined;
 };

@@ -16,7 +16,7 @@
 
 <template>
     <ol class="reset requests">
-        <NotificationItem v-for="r in sortedRequests" type="request" :info="r" :key="r.id" />
+        <NotificationItem v-for="r in sortedRequests" type="request" :info="r" :name="props.usersInfo[`${r.to}`]?.name ?? 'Sistema'" :key="r.id" />
     </ol>
 </template>
 
@@ -38,13 +38,15 @@
 import NotificationItem from "./NotificationItem.vue";
 import { computed } from "vue";
 import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
 const props = defineProps<{
     requests: Notification[];
+    usersInfo: Record<number,User>
 }>();
 
 const sortedRequests = computed(() => {
-    const requests = props.requests;
+    const requests = [...props.requests];
     return requests.sort((r1, r2) => {
         if (r1.state == "pending" && r2.state != "pending") {
             return -1;

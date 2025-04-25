@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <button class="reset button">
+    <button class="reset button" :class="props.disabled ? 'disabled' : ''">
         <RouterLink v-if="props.link" :to="props.link" />
         <!-- Redirect -->
         <span class="reset icon" :class="type" :title="tooltip" />
@@ -34,12 +34,21 @@
     transition: background-color 0.1s linear;
 }
 
-.button:hover {
+.button:hover:not(.disabled) {
     background-color: var(--color-icon-button-hover);
 }
 
-.button:hover .icon {
+.button:hover:not(.disabled) .icon {
     background-color: var(--color-icon-button-icon-hover);
+}
+
+.disabled {
+    cursor: default;
+    background-color: var(--color-icon-button-disabled);
+}
+
+.disabled .icon {
+    background-color: var(--color-icon-button-icon-disabled);
 }
 
 .icon {
@@ -71,6 +80,7 @@ import { computed } from "vue";
 
 const props = defineProps<{
     type: "accept" | "reject" | "view";
+    disabled: boolean;
     link?: string;
 }>();
 

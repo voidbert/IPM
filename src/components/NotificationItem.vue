@@ -33,9 +33,9 @@
         <div class="notification-right">
             <p>{{ getDate() }}</p>
             <div v-if="props.type == 'director' && props.info.state == 'pending'" class="buttons">
-                <IconButton type="accept" @click="acceptAction" />
-                <IconButton type="reject" @click="rejectAction" />
-                <IconButton type="view" :link="props.link" />
+                <IconButton type="accept" @click="acceptAction" :disabled="props.name=='Sistema'" />
+                <IconButton type="reject" @click="rejectAction" :disabled="props.name=='Sistema'" />
+                <IconButton type="view" :link="props.link" :disabled="false" />
             </div>
             <span
                 v-if="(props.type == 'director' && props.info.state != 'pending') || props.type == 'request'"
@@ -234,13 +234,17 @@ const setClosed = () => {
 };
 
 const acceptAction = () => {
-    emit("changeState", "accepted", props.info.id);
-    setClosed();
+    if (props.name != 'Sistema') {
+        emit("changeState", "accepted", props.info.id);
+        setClosed();
+    }
 };
 
 const rejectAction = () => {
-    emit("changeState", "rejected", props.info.id);
-    setClosed();
+    if (props.name != 'Sistema') {
+        emit("changeState", "rejected", props.info.id);
+        setClosed();
+    }
 };
 
 const changeRead = () => {

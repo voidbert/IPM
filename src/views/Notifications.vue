@@ -18,7 +18,7 @@
     <main>
         <h2>Notificações</h2>
         <NotificationsList
-            :type="loginStore.user.type"
+            :type="loginStore.user.type ?? ''"
             :notifications="notifications"
             :usersInfo="usersInfo"
             id="notifications"
@@ -62,7 +62,9 @@ const updateNotification = async (read: boolean, id: number) => {
     if (notification) {
         notification.read = read;
     }
-    await Notification.setNotificationRead(id, read);
+    if (id >= 0) {
+        await Notification.setNotificationRead(id, read);
+    }
 };
 
 const updateNotificationState = async (state: State, id: number) => {
@@ -88,7 +90,6 @@ const fetchNotifications = async () => {
         });
         if (typeShift > maxType) {
             allNotifications = allNotifications.filter(n => !(n.exchange === "shift" && n.state === "pending"));
-            console.log(allNotifications);
             const notificationGroup = new Notification(2, -1, `Tem ${typeShift} pedidos de troca de turno`, new Date(), false, "pending", "shift")
             allNotifications.push(notificationGroup)
         }
@@ -104,7 +105,7 @@ const fetchNotifications = async () => {
 
 const fetchUsersInfo = async () => {
     let usersIds: number[] = [];
-    notifications.value.forEach(n => {if (n.id > 0) usersIds.push(n.from)});
+    notifications.value.forEach(n => {if (n.from > 0 && !usersIds.includes(n.from)) usersIds.push(n.from)});
     usersInfo.value = await User.getUsersPublicInfo(usersIds);
 }
 

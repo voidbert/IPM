@@ -17,7 +17,7 @@
 <template>
     <main>
         <h2>Histórico</h2>
-        <RequestsList :type="type" :requests="requests" id="requests" />
+        <RequestsList :type="type" :requests="requests" :usersInfo="usersInfo" id="requests" />
     </main>
 </template>
 
@@ -41,18 +41,27 @@ import RequestsList from "../components/RequestsList.vue";
 import { Notification } from "../models/Notification.ts";
 import { ref } from "vue";
 import { useLoginStore } from "../stores/login.ts";
+import { User } from "../models/User.ts";
 
 const loginStore = useLoginStore();
 
 const type = "request";
 
-// Example data, change later
 const requests = ref<Notification[]>([]);
 
-const fetchNotifications = async () => {
+const usersInfo = ref<Record<number,User>>({});
+
+const fetchRequests = async () => {
     requests.value = await Notification.getUserRequests(loginStore.user.id);
+    await fetchUsersInfo();
 };
 
-fetchNotifications();
+const fetchUsersInfo = async () => {
+    let usersIds: number[] = [];
+    requests.value.forEach(r => {if (r.to > 0 && !usersIds.includes(r.to)) usersIds.push(r.to)});
+    usersInfo.value = await User.getUsersPublicInfo(usersIds);
+}
+
+fetchRequests();
 
 </script>

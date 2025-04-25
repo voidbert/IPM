@@ -10107,7 +10107,7 @@
         "id": 1002,
         "email": "2",
         "password": "2",
-        "name": "Estudante",
+        "name": "Diretor",
         "type": "director",
         "profilePicture": null,
         "number": "A2",
@@ -11517,6 +11517,50 @@
             "read": true,
             "state": "pending",
             "exchange": "room"
+        },
+        {
+            "id": 12,
+            "to": 1002,
+            "from": 1001,
+            "content": "Troca de turno PL4 -> PL6  asd sa",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+
+        },
+        {
+            "id": 13,
+            "to": 1002,
+            "from": 1001,
+            "content": "Troca de turno PL4 -> PL6  asd sa",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+
+        },
+        {
+            "id": 14,
+            "to": 1002,
+            "from": 1001,
+            "content": "Troca de turno PL4 -> PL6  asd sa",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+
+        },
+        {
+            "id": 15,
+            "to": 1002,
+            "from": 1001,
+            "content": "Troca de turno PL4 -> PL6  asd sa",
+            "date": "2025-04-20T15:32:00.000Z",
+            "read": false,
+            "state": "pending",
+            "exchange": "shift"
+
         }
-    ]
+      ]
 }

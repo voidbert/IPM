@@ -73,6 +73,8 @@ body {
     --color-icon-button-hover: #993337;
     --color-icon-button-icon: #ad8585;
     --color-icon-button-icon-hover: #faf4f4;
+    --color-icon-button-disabled: #d6cdcd;
+    --color-icon-button-icon-disabled: #cbbaba;
 }
 
 body,
