@@ -36,6 +36,10 @@ export class Course {
         );
     }
 
+    static async getById(course: number): Promise<Course> {
+        return Course.createFromObject(await fetchJson(`/courses/${course}`));
+    }
+
     static async getAll(): Promise<Course[]> {
         return (await fetchJson("/courses")).map(Course.createFromObject);
     }

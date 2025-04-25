@@ -28,3 +28,15 @@ export const fetchJson = async (
 
     return response.json();
 };
+
+export const formatDayOfWeek = (day: number) => {
+    return `${day + 2}ª feira`;
+};
+
+export const formatTime = (time: number) => {
+    const hour = Math.floor(time);
+    const minute = (time - hour) * 60;
+    const hourString = String(hour).padStart(2, "0");
+    const minuteString = String(minute).padStart(2, "0");
+    return `${hourString}:${minuteString}`;
+};

@@ -96,6 +96,10 @@ export class User {
         );
     }
 
+    static async getById(user: number): Promise<User> {
+        return User.createFromObject(await fetchJson(`/users/${user}`));
+    }
+
     static async getAll(): Promise<User[]> {
         return (await fetchJson("/users")).map(User.createFromObject);
     }

@@ -63,6 +63,10 @@ export class Shift {
         );
     }
 
+    static async getById(shift: number): Promise<Shift> {
+        return Shift.createFromObject(await fetchJson(`/shifts/${shift}`));
+    }
+
     static async getAll(): Promise<Shift[]> {
         return (await fetchJson("/shifts")).map(Shift.createFromObject);
     }
