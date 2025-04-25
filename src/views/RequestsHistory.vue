@@ -49,7 +49,7 @@ const type = "request";
 
 const requests = ref<Notification[]>([]);
 
-const usersInfo = ref<Record<number,User>>({});
+const usersInfo = ref<Record<number, User>>({});
 
 const fetchRequests = async () => {
     requests.value = await Notification.getUserRequests(loginStore.user.id);
@@ -57,11 +57,12 @@ const fetchRequests = async () => {
 };
 
 const fetchUsersInfo = async () => {
-    let usersIds: number[] = [];
-    requests.value.forEach(r => {if (r.to > 0 && !usersIds.includes(r.to)) usersIds.push(r.to)});
+    const usersIds: number[] = [];
+    requests.value.forEach((r) => {
+        if (r.to > 0 && !usersIds.includes(r.to)) usersIds.push(r.to);
+    });
     usersInfo.value = await User.getUsersPublicInfo(usersIds);
-}
+};
 
 fetchRequests();
-
 </script>

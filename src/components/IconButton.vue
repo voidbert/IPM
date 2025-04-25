@@ -90,5 +90,5 @@ const tooltip = computed(() => {
     else if (props.type == "reject") result = "Rejeitar";
     else if (props.type == "view") result = "Ir para";
     return result;
-})
+});
 </script>

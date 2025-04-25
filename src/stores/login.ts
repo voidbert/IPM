@@ -14,7 +14,7 @@
 
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { User } from "../models/User.ts"
+import { User } from "../models/User.ts";
 
 const usePersistentLoginStore = defineStore(
     "loginPersistent",
@@ -53,7 +53,7 @@ export const useLoginStore = defineStore(
         const logout = () => {
             temporaryEmail.value = null;
             temporaryPassword.value = null;
-            user.value = User.createFromObject({})
+            user.value = User.createFromObject({});
             persistent.email = null;
             persistent.password = null;
         };

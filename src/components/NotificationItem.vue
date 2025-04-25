@@ -33,12 +33,21 @@
         <div class="notification-right">
             <p>{{ getDate() }}</p>
             <div v-if="props.type == 'director' && props.info.state == 'pending'" class="buttons">
-                <IconButton type="accept" @click="acceptAction" :disabled="props.name=='Sistema'" />
-                <IconButton type="reject" @click="rejectAction" :disabled="props.name=='Sistema'" />
+                <IconButton
+                    type="accept"
+                    @click="acceptAction"
+                    :disabled="props.name == 'Sistema'" />
+                <IconButton
+                    type="reject"
+                    @click="rejectAction"
+                    :disabled="props.name == 'Sistema'" />
                 <IconButton type="view" :link="props.link" :disabled="false" />
             </div>
             <span
-                v-if="(props.type == 'director' && props.info.state != 'pending') || props.type == 'request'"
+                v-if="
+                    (props.type == 'director' && props.info.state != 'pending') ||
+                    props.type == 'request'
+                "
                 id="state"
                 class="reset"
                 :class="props.info.state"
@@ -234,14 +243,14 @@ const setClosed = () => {
 };
 
 const acceptAction = () => {
-    if (props.name != 'Sistema') {
+    if (props.name != "Sistema") {
         emit("changeState", "accepted", props.info.id);
         setClosed();
     }
 };
 
 const rejectAction = () => {
-    if (props.name != 'Sistema') {
+    if (props.name != "Sistema") {
         emit("changeState", "rejected", props.info.id);
         setClosed();
     }
@@ -258,7 +267,7 @@ const tooltip = computed(() => {
     else if (props.info.state == "rejected") result = "Rejeitado";
     else if (props.info.state == "pending") result = "Pendente";
     return result;
-})
+});
 
 const display = () => {
     if (

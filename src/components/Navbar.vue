@@ -128,7 +128,7 @@ const links = computed(() => {
                 url: "/PublishSchedules"
             }
         ],
-        professor: [],
+        professor: []
     }[props.type];
 });
 

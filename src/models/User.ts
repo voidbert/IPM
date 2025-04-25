@@ -72,21 +72,21 @@ export class User {
     }
 
     static async getUsersPublicInfo(ids: number[]): Promise<Record<number, User>> {
-        let usersPublic:Record<number,User> = {};
+        const usersPublic: Record<number, User> = {};
         if (ids.length > 0) {
             let query = `/users?id=${ids.pop()}`;
-            ids.forEach(id => query += `&id=${id}`)
-            const usersPrivate = await fetchJson(query, "GET") as any[];
-            usersPrivate.forEach(u => {
+            ids.forEach((id) => (query += `&id=${id}`));
+            const usersPrivate = (await fetchJson(query, "GET")) as any[];
+            usersPrivate.forEach((u) => {
                 usersPublic[u["id"]] = User.createFromObject({
-                    "id": u["id"],
-                    "email": u["email"],
-                    "type": u["type"],
-                    "name": u["name"],
-                    "profilePicture": u["profilePicture"],
-                    "number": u["number"]
-                })
-            })
+                    id: u["id"],
+                    email: u["email"],
+                    type: u["type"],
+                    name: u["name"],
+                    profilePicture: u["profilePicture"],
+                    number: u["number"]
+                });
+            });
         }
         return usersPublic;
     }

@@ -23,7 +23,7 @@ export type State = "pending" | "accepted" | "rejected";
 export class Notification {
     // Common attributes
     public id: number;
-    public to : number;
+    public to: number;
     public from: number;
     public content: string;
     public date: Date;
@@ -36,14 +36,14 @@ export class Notification {
     public state?: State;
 
     constructor(
-        to : number,
+        to: number,
         from: number,
         content: string,
         date: Date | string,
         read: boolean | undefined = undefined,
         state: State | undefined = undefined,
         exchange: ExchangeType = "none",
-        id: number = -1,
+        id: number = -1
     ) {
         this.id = id;
         this.to = to;
@@ -74,13 +74,13 @@ export class Notification {
 
     static async getUserNotifications(userId: number): Promise<Notification[]> {
         const notifications = (await fetchJson(`/notifications?to=${userId}`)) as any[];
-        return notifications.map(notification => Notification.createFromObject(notification));
+        return notifications.map((notification) => Notification.createFromObject(notification));
     }
 
     static async getUserRequests(userId: number): Promise<Notification[]> {
         const requests = (await fetchJson(`/notifications?from=${userId}`)) as any[];
-        const filteredRequests = requests.filter(request => !(request.state === undefined))
-        return filteredRequests.map(request => Notification.createFromObject(request));
+        const filteredRequests = requests.filter((request) => !(request.state === undefined));
+        return filteredRequests.map((request) => Notification.createFromObject(request));
     }
 
     static async setNotificationRead(id: number, read: boolean): Promise<Notification> {
@@ -103,16 +103,13 @@ export class Notification {
         let notification: Notification;
         if (type === "student") {
             notification = new Notification(to, from, content, date, false);
-        }
-        else if (type === "director") {
+        } else if (type === "director") {
             notification = new Notification(to, from, content, date, false, "pending");
-        }
-        else if (type === "request") {
+        } else if (type === "request") {
             notification = new Notification(to, from, content, date);
-        }
-        else {
+        } else {
             throw new Error(`Invalid notification type: ${type}`);
         }
         return await fetchJson(`/notifications`, "POST", notification);
     }
-};
+}

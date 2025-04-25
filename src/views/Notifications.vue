@@ -55,7 +55,7 @@ const maxType: number = 3;
 
 const notifications = ref<Notification[]>([]);
 
-const usersInfo = ref<Record<number,User>>({});
+const usersInfo = ref<Record<number, User>>({});
 
 const updateNotification = async (read: boolean, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);
@@ -79,24 +79,43 @@ const fetchNotifications = async () => {
     let allNotifications: Notification[] = [];
     if (loginStore.user.type == "student") {
         allNotifications = await Notification.getUserNotifications(loginStore.user.id);
-    }
-    else if (loginStore.user.type == "director") {
+    } else if (loginStore.user.type == "director") {
         allNotifications = await Notification.getUserNotifications(loginStore.user.id);
         let typeShift = 0;
         let typeRoom = 0;
-        allNotifications.forEach(n => {
+        allNotifications.forEach((n) => {
             if (n.exchange === "shift" && n.state === "pending") typeShift += 1;
             else if (n.exchange === "room" && n.state === "pending") typeRoom += 1;
         });
         if (typeShift > maxType) {
-            allNotifications = allNotifications.filter(n => !(n.exchange === "shift" && n.state === "pending"));
-            const notificationGroup = new Notification(2, -1, `Tem ${typeShift} pedidos de troca de turno`, new Date(), false, "pending", "shift")
-            allNotifications.push(notificationGroup)
+            allNotifications = allNotifications.filter(
+                (n) => !(n.exchange === "shift" && n.state === "pending")
+            );
+            const notificationGroup = new Notification(
+                2,
+                -1,
+                `Tem ${typeShift} pedidos de troca de turno`,
+                new Date(),
+                false,
+                "pending",
+                "shift"
+            );
+            allNotifications.push(notificationGroup);
         }
         if (typeRoom > maxType) {
-            allNotifications = allNotifications.filter(n => !(n.exchange === "room" && n.state === "pending"));
-            const notificationGroup = new Notification(2, -1, `Tem ${typeRoom} pedidos de troca de sala`, new Date(), false, "pending", "room")
-            allNotifications.push(notificationGroup)
+            allNotifications = allNotifications.filter(
+                (n) => !(n.exchange === "room" && n.state === "pending")
+            );
+            const notificationGroup = new Notification(
+                2,
+                -1,
+                `Tem ${typeRoom} pedidos de troca de sala`,
+                new Date(),
+                false,
+                "pending",
+                "room"
+            );
+            allNotifications.push(notificationGroup);
         }
     }
     notifications.value = allNotifications;
@@ -104,11 +123,12 @@ const fetchNotifications = async () => {
 };
 
 const fetchUsersInfo = async () => {
-    let usersIds: number[] = [];
-    notifications.value.forEach(n => {if (n.from > 0 && !usersIds.includes(n.from)) usersIds.push(n.from)});
+    const usersIds: number[] = [];
+    notifications.value.forEach((n) => {
+        if (n.from > 0 && !usersIds.includes(n.from)) usersIds.push(n.from);
+    });
     usersInfo.value = await User.getUsersPublicInfo(usersIds);
-}
+};
 
 fetchNotifications();
-
 </script>

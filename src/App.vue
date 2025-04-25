@@ -33,7 +33,9 @@ const router = useRouter();
 const navbarType = ref<"login" | "student" | "director" | "professor">("login");
 const loginStore = useLoginStore();
 router.beforeEach((to) => {
-    navbarType.value = to.meta.userType.includes(loginStore.user.type) ? loginStore.user.type : "login";
+    navbarType.value = to.meta.userType.includes(loginStore.user.type)
+        ? loginStore.user.type
+        : "login";
 });
 
 // Theme switching

@@ -76,7 +76,7 @@ const generateLink = (n: Notification) => {
 };
 
 const filteredNotifications = computed(() => {
-    let notifications = [...props.notifications];
+    const notifications = [...props.notifications];
     notifications.sort((n1, n2) => {
         if (n1.read == false && n2.read == true) {
             return -1;
