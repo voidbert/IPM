@@ -102,6 +102,10 @@ export class Room {
         });
     }
 
+    static async getById(room: number): Promise<Room> {
+        return Room.createFromObject(await fetchJson(`/rooms/${room}`));
+    }
+
     static async getAllWithMinimumCapacity(capacity: number): Promise<Room[]> {
         return (await fetchJson(`/rooms?capacity_gte=${capacity}`)).map(Room.createFromObject);
     }

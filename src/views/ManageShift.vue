@@ -17,6 +17,8 @@
 <template>
     <main id="manage-shift-page-container">
         <div id="manage-shift-info" v-if="shift && course && professor">
+            <Button id="manage-shift-back" type="cancel">Voltar</Button>
+
             <h1>{{ course.shortName }} – {{ shift.type }}{{ shift.number }}</h1>
             <h2>
                 {{ formatDayOfWeek(shift.day) }}, {{ formatTime(shift.start) }} –
@@ -30,20 +32,57 @@
                 label="Sala"
                 :options="roomNames" />
         </div>
+
+        <div id="manage-shift-management-container">
+            <div id="manage-shift-management">
+                <div id="manage-shift-first-row">
+                    <span
+                        id="manage-shift-attendence"
+                        v-if="shift"
+                        :class="
+                            allStudents.length >= shiftCapacity
+                                ? 'manage-shift-attendence-over'
+                                : ''
+                        ">
+                        Lotação: {{ allStudents.length }} / {{ shiftCapacity }}
+                        <span class="manage-shift-person-icon" />
+                    </span>
+                    <Button id="manage-shift-add-student" type="action">Adicionar aluno</Button>
+                </div>
+                <TextInput
+                    type="search"
+                    placeholder="Pesquisar"
+                    v-model="studentsSearch"
+                    v-on:update:modelValue="updateStudentListWidth" />
+
+                <div id="manage-shift-students" :style="fixedStudentListWidth">
+                    <PresentedStudent
+                        v-for="(student, i) in shownStudents"
+                        :key="i"
+                        :student="student" />
+                </div>
+            </div>
+        </div>
     </main>
 </template>
 
 <style scoped>
 #manage-shift-page-container {
-    padding: 0.5rem;
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
 }
 
 #manage-shift-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
 
-    padding: 1rem;
+    gap: 0.5rem;
+}
+
+#manage-shift-back {
+    width: 10rem;
+    margin-bottom: 1rem !important;
 }
 
 #manage-shift-info > * {
@@ -57,10 +96,62 @@
 #manage-shift-room-dropdown {
     margin-top: 1rem;
 }
+
+#manage-shift-management-container {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+#manage-shift-management {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+
+    gap: 1rem;
+}
+
+#manage-shift-first-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#manage-shift-attendence {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.manage-shift-attendence-over {
+    color: var(--color-uminho);
+    --color-body-foreground: var(--color-uminho);
+}
+
+.manage-shift-person-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+
+    background-color: var(--color-body-foreground);
+    mask-image: url("/person-no-circle.svg");
+    mask-size: cover;
+}
+
+#manage-shift-add-student {
+    width: 10rem;
+}
+
+#manage-shift-students {
+    display: flex;
+    flex-direction: column;
+}
 </style>
 
 <script setup lang="ts">
+import Button from "../components/Button.vue";
 import DropdownMenu from "../components/DropdownMenu.vue";
+import PresentedStudent from "../components/PresentedStudent.vue";
+import TextInput from "../components/TextInput.vue";
 
 import { formatDayOfWeek, formatTime } from "../models/Utils.ts";
 import { Course } from "../models/Course.ts";
@@ -68,7 +159,7 @@ import { AvailableRoom, Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
 
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps<{
     shiftId: string; // Must be a number casted to string (router limitations)
@@ -82,15 +173,37 @@ const rooms = ref<AvailableRoom[]>([]);
 const roomNames = ref<string[]>([]);
 const selectedRoom = ref(0);
 
+// Student list
+const shiftCapacity = ref(0);
+
+const allStudents = ref<User[]>([]);
+const studentsSearch = ref("");
+const shownStudents = computed(() => {
+    return allStudents.value.filter((student) =>
+        student.name.toLowerCase().includes(studentsSearch.value.toLowerCase())
+    );
+});
+
+// Load page state
 Shift.getById(Number(props.shiftId)).then((s) => {
     shift.value = s;
 
-    Course.getById(shift.value.course).then((c) => {
+    Course.getById(shift.value.course).then(async (c) => {
         course.value = c;
+        if ((shift.value as Shift).type === "T") {
+            const shiftRoom = await Room.getById((shift.value as Shift).room);
+            shiftCapacity.value = shiftRoom.capacity;
+        } else {
+            shiftCapacity.value = course.value.practicalShiftCapacity;
+        }
     });
 
     User.getById(shift.value.professor).then((p) => {
         professor.value = p;
+    });
+
+    User.getAll().then((us) => {
+        allStudents.value = us.filter((u) => u.directorSchedule.includes(Number(props.shiftId)));
     });
 });
 
@@ -114,4 +227,15 @@ Room.getAlternatives(Number(props.shiftId)).then(async (alternatives) => {
         })
     );
 });
+
+// Always keep the student list's width the same, despite the elements actually being shown
+const fixedStudentListWidth = ref("");
+const updateStudentListWidth = () => {
+    if (!fixedStudentListWidth.value) {
+        const width = getComputedStyle(
+            document.getElementById("manage-shift-students") as HTMLElement
+        ).width;
+        fixedStudentListWidth.value = `width: ${width};`;
+    }
+};
 </script>
