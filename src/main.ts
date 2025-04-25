@@ -22,6 +22,7 @@ import "./main.css";
 
 import LoginPage from "./views/LoginPage.vue";
 import MySchedule from "./views/MySchedule.vue";
+import ManageShift from "./views/ManageShift.vue";
 import SolveProblems from "./views/SolveProblems.vue";
 import PublishSchedules from "./views/PublishSchedules.vue";
 
@@ -68,6 +69,15 @@ const router = createRouter({
                     component: SolveProblems
                 }
             ],
+            props: true
+        },
+        {
+            path: "/ManageShift/:shiftId",
+            name: "ManageShift",
+            component: ManageShift,
+            meta: {
+                userType: "director"
+            },
             props: true
         },
         {
