@@ -15,71 +15,70 @@
 -->
 
 <template>
-    <div class="dropdown-wrapper">
-        <label :for="props.id" class="dropdown-label">{{ props.label }}</label>
+    <label class="dropdown-menu-label">
+        {{ props.label }}
 
-        <div class="select-container">
-            <select :id="props.id" v-model="model" class="dropdown-select" @change="removeFocus">
-                <option v-for="option in props.options" :key="option" :value="option">
+        <div class="dropdown-menu-select-container">
+            <select class="dropdown-menu-select" v-model="model">
+                <option v-for="(option, i) in props.options" :key="i" :value="i">
                     {{ option }}
                 </option>
             </select>
-
-            <object data="/expand-more.svg" type="image/svg+xml" class="dropdown-icon" />
+            <div class="dropdown-menu-arrow" />
         </div>
-    </div>
+    </label>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
     label: string;
     options: string[];
-    id?: string;
 }>();
 
-const model = defineModel({ type: String });
-
-function removeFocus(event: Event) {
-    (event.target as HTMLSelectElement).blur();
-}
+const model = defineModel({ type: Number });
 </script>
 
 <style scoped>
-.dropdown-wrapper {
+.dropdown-menu-label {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    width: 100%;
-    max-width: 400px;
+    gap: 0.5rem;
 }
 
-.dropdown-label {
-    font-weight: 400;
-}
-
-.select-container {
+.dropdown-menu-select-container {
     position: relative;
+    width: fit-content;
 }
 
-.dropdown-select {
-    width: 100%;
+.dropdown-menu-select {
+    all: unset;
+
     padding: 0.5rem 2.5rem 0.5rem 0.75rem;
     border: 1px solid var(--color-dropdown-border);
     border-radius: 6px;
+
     font-size: 1rem;
+
     background-color: var(--color-dropdown-background);
     color: var(--color-dropdown-text);
-    appearance: none;
-    line-height: 1.5;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.dropdown-icon {
+.dropdown-menu-arrow {
     position: absolute;
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
+
     width: 1.5rem;
     height: 1.5rem;
+
+    background-color: var(--color-dropdown-icon);
+    mask-image: url("/expand-more.svg");
+    mask-size: cover;
+
     pointer-events: none;
 }
 </style>

@@ -22,11 +22,6 @@ body {
     --color-navbar-hoverable-icon-default: #fff;
     --color-navbar-hoverable-icon-hover: #ddd;
 
-    --color-dropdown-background: #fff;
-    --color-dropdown-text: #000;
-    --color-dropdown-border: #ccc;
-    --color-dropdown-icon: #666;
-
     --color-shift-text: hsla(0, 0%, 0%, 0.5);
     --color-shift-border: rgba(0, 0, 0, 0.1);
     --color-shift-grey: #dcdcdc;
@@ -75,6 +70,11 @@ body[class="light"] {
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
 
+    --color-dropdown-background: var(--color-body-background);
+    --color-dropdown-text: var(--color-body-foreground);
+    --color-dropdown-border: #bbb;
+    --color-dropdown-icon: #444;
+
     --color-problem-student-name: #555;
     --color-problem-description: var(--color-body-foreground);
     --color-problem-student-profile-picture-fallback: #aaa;
@@ -105,6 +105,11 @@ body[class="dark"] {
     --color-checkbox-unchecked: 13.333%;
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
+
+    --color-dropdown-background: #222;
+    --color-dropdown-text: var(--color-body-foreground);
+    --color-dropdown-border: #444;
+    --color-dropdown-icon: #444;
 
     --color-problem-student-name: #aaa;
     --color-problem-description: var(--color-body-foreground);
