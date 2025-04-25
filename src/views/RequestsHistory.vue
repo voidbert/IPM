@@ -15,7 +15,6 @@
 -->
 
 <template>
-    <Navbar type="student" />
     <main>
         <h2>Histórico</h2>
         <RequestsList :type="type" :requests="requests" id="requests" />
@@ -38,10 +37,12 @@ main {
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import RequestsList from "../components/RequestsList.vue";
 import { Notification } from "../models/Notification.ts";
 import { ref } from "vue";
+import { useLoginStore } from "../stores/login.ts";
+
+const loginStore = useLoginStore();
 
 const type = "request";
 
@@ -49,7 +50,7 @@ const type = "request";
 const requests = ref<Notification[]>([]);
 
 const fetchNotifications = async () => {
-    requests.value = await Notification.getUserRequests("Nome");
+    requests.value = await Notification.getUserRequests(loginStore.user.id);
 };
 
 fetchNotifications();

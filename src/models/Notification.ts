@@ -14,7 +14,7 @@
 
 import { fetchJson } from "./Utils.ts";
 
-export type NotificationType = "student" | "director" | "request";
+export type NotificationType = "student" | "director" | "request" | "professor";
 
 export type ExchangeType = "shift" | "room" | "none";
 
@@ -24,7 +24,7 @@ export class Notification {
     // Common attributes
     public id: number;
     public to : number;
-    public from: string;
+    public from: number;
     public content: string;
     public date: Date;
     public exchange: ExchangeType;
@@ -37,7 +37,7 @@ export class Notification {
 
     constructor(
         to : number,
-        from: string,
+        from: number,
         content: string,
         date: Date | string,
         read: boolean | undefined = undefined,
@@ -77,7 +77,7 @@ export class Notification {
         return notifications.map(notification => Notification.createFromObject(notification));
     }
 
-    static async getUserRequests(userId: string): Promise<Notification[]> {
+    static async getUserRequests(userId: number): Promise<Notification[]> {
         const requests = (await fetchJson(`/notifications?from=${userId}`)) as any[];
         const filteredRequests = requests.filter(request => !(request.state === undefined))
         return filteredRequests.map(request => Notification.createFromObject(request));
@@ -95,7 +95,7 @@ export class Notification {
 
     static async addNotification(
         to: number,
-        from: string,
+        from: number,
         content: string,
         type: NotificationType
     ): Promise<Notification> {

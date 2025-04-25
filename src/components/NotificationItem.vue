@@ -25,9 +25,9 @@
                 <div ref="bubble_elem" class="bubble" />
             </div>
             <img v-if="props.type != 'request'" class="reset" id="mail-card" />
-            <p>{{ props.info.from }}</p>
+            <p>{{ props.name }}</p>
         </div>
-        <div>
+        <div class="notification-content">
             <p>{{ props.info.content }}</p>
         </div>
         <div class="notification-right">
@@ -37,7 +37,7 @@
                 <IconButton type="reject" @click="rejectAction" />
                 <IconButton type="view" :link="props.link" />
             </div>
-            <object
+            <span
                 v-if="(props.type == 'director' && props.info.state != 'pending') || props.type == 'request'"
                 id="state"
                 class="reset"
@@ -51,10 +51,11 @@
 .notification {
     position: relative;
     display: flex;
+    height: 2rem;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 0.4rem 1.6rem;
+    padding: 1rem 1.6rem;
     font-weight: 500;
     font-size: 0.8rem;
     box-shadow: 0px 2px 4px var(--color-notification-shadow);
@@ -65,11 +66,22 @@
         box-shadow 0.1s linear;
 }
 
+.notification p {
+    margin: 0;
+    max-height: 2rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.notification p::-webkit-scrollbar {
+    display: none;
+}
+
 .notification > div {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
 }
 
 .notification > div > p:first-child {
@@ -82,13 +94,22 @@
 
 .notification-left {
     gap: 0 0.5rem;
+    width: 30%;
+    justify-content: start;
+}
+
+.notification-content {
+    width: 40%;
+    justify-content: flex-start;
 }
 
 .notification-right {
     width: 5rem;
+    justify-content: end;
 }
 
 #mail-card {
+    flex-shrink: 0;
     width: 2rem;
     height: 2rem;
     background-color: var(--color-notification-card);
@@ -182,6 +203,7 @@ const notification_elem = ref<HTMLElement>();
 const props = defineProps<{
     type: NotificationType;
     info: Notification;
+    name: string;
     link?: string;
 }>();
 

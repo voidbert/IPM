@@ -15,12 +15,12 @@
 -->
 
 <template>
-    <Navbar type="student" />
     <main>
         <h2>Notificações</h2>
         <NotificationsList
-            :type="type"
+            :type="loginStore.user.type"
             :notifications="notifications"
+            :usersInfo="usersInfo"
             id="notifications"
             @changeRead="updateNotification"
             @changeState="updateNotificationState" />
@@ -43,17 +43,19 @@ main {
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import NotificationsList from "../components/NotificationsList.vue";
 import { Notification, State } from "../models/Notification.ts";
 import { ref } from "vue";
+import { useLoginStore } from "../stores/login.ts";
+import { User } from "../models/User.ts";
 
-const type: "student" | "director" = "student";
+const loginStore = useLoginStore();
 
 const maxType: number = 3;
 
-// Example data, change later
 const notifications = ref<Notification[]>([]);
+
+const usersInfo = ref<Record<number,User>>({});
 
 const updateNotification = async (read: boolean, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);
@@ -73,11 +75,11 @@ const updateNotificationState = async (state: State, id: number) => {
 
 const fetchNotifications = async () => {
     let allNotifications: Notification[] = [];
-    if (type == "student") {
-        allNotifications = await Notification.getUserNotifications(1);
+    if (loginStore.user.type == "student") {
+        allNotifications = await Notification.getUserNotifications(loginStore.user.id);
     }
-    else if (type == "director") {
-        allNotifications = await Notification.getUserNotifications(2);
+    else if (loginStore.user.type == "director") {
+        allNotifications = await Notification.getUserNotifications(loginStore.user.id);
         let typeShift = 0;
         let typeRoom = 0;
         allNotifications.forEach(n => {
@@ -87,17 +89,24 @@ const fetchNotifications = async () => {
         if (typeShift > maxType) {
             allNotifications = allNotifications.filter(n => !(n.exchange === "shift" && n.state === "pending"));
             console.log(allNotifications);
-            const notificationGroup = new Notification(2, "Sistema", `Tem ${typeShift} pedidos de troca de turno`, new Date(), false, "pending", "shift")
+            const notificationGroup = new Notification(2, -1, `Tem ${typeShift} pedidos de troca de turno`, new Date(), false, "pending", "shift")
             allNotifications.push(notificationGroup)
         }
         if (typeRoom > maxType) {
             allNotifications = allNotifications.filter(n => !(n.exchange === "room" && n.state === "pending"));
-            const notificationGroup = new Notification(2, "Sistema", `Tem ${typeRoom} pedidos de troca de sala`, new Date(), false, "pending", "room")
+            const notificationGroup = new Notification(2, -1, `Tem ${typeRoom} pedidos de troca de sala`, new Date(), false, "pending", "room")
             allNotifications.push(notificationGroup)
         }
     }
     notifications.value = allNotifications;
+    await fetchUsersInfo();
 };
+
+const fetchUsersInfo = async () => {
+    let usersIds: number[] = [];
+    notifications.value.forEach(n => {if (n.id > 0) usersIds.push(n.from)});
+    usersInfo.value = await User.getUsersPublicInfo(usersIds);
+}
 
 fetchNotifications();
 

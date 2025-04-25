@@ -18,7 +18,7 @@
     <button class="reset button">
         <RouterLink v-if="props.link" :to="props.link" />
         <!-- Redirect -->
-        <object class="reset icon" :class="type" :title="tooltip" />
+        <span class="reset icon" :class="type" :title="tooltip" />
     </button>
 </template>
 

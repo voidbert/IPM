@@ -21,6 +21,7 @@
                 v-for="n in filteredNotifications"
                 :type="props.type"
                 :info="n"
+                :name="props.usersInfo[`${n.id}`]?.name ?? 'Sistema'"
                 :key="n.id"
                 :link="generateLink(n)"
                 @changeRead="updateNotification"
@@ -54,10 +55,12 @@
 import NotificationItem from "./NotificationItem.vue";
 import { computed } from "vue";
 import { Notification, State } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
 const props = defineProps<{
-    type: "student" | "director";
+    type: "student" | "director" | "professor";
     notifications: Notification[];
+    usersInfo: Record<number, User>;
 }>();
 
 const emit = defineEmits<{
