@@ -101,11 +101,6 @@ h2 {
     all: unset;
 }
 
-.publish-schedules-problem-link > * {
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-}
-
 #publish-schedules-buttons-container {
     display: flex;
     gap: 1rem;

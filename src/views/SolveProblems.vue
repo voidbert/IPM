@@ -75,10 +75,6 @@
     padding-right: 1rem;
 }
 
-.solve-problems-problem-container > * {
-    padding: 0.5rem;
-}
-
 #solve-problems-empty {
     display: flex;
     align-items: center;

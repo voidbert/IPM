@@ -34,13 +34,14 @@
 
 <style scoped>
 .problem {
-    width: 100%;
     height: 4.5rem;
 
     display: flex;
     justify-content: left;
     align-items: center;
+
     gap: 0.5rem;
+    padding: 0.5rem;
 
     font-size: 0.8rem;
     border-radius: 0.5rem;
