@@ -15,61 +15,56 @@
 -->
 
 <template>
-    <main>
+    <main id="publish-schedules">
         <div id="publish-schedules-title-container">
             <h1>Publicar Horários</h1>
-            <h2 v-if="allProblems.length > 0">Problemas por resolver</h2>
+            <h2 v-if="problems.length > 0">Problemas por resolver</h2>
         </div>
 
-        <div id="publish-schedules-problems" v-if="allProblems.length > 0">
-            <RouterLink
-                class="publish-schedules-problem-link"
-                :to="`/SolveProblems/${i}`"
-                v-for="(problem, i) in allProblems"
-                :key="i">
-                <PresentedProblem :active="false" :problem="problem" />
-            </RouterLink>
+        <div id="publish-schedules-problems" v-if="problems.length > 0">
+            <PresentedProblem
+                v-for="(problem, i) in problems"
+                :key="i"
+                @click="router.push(`/SolveProblems/${i}`)"
+                :problem="problem" />
         </div>
-        <template v-else>
-            <h1>Publicar Horários</h1>
-            <h2>Sem problemas por resolver</h2>
-        </template>
+        <h2 v-else>Sem problemas por resolver</h2>
 
         <div id="publish-schedules-buttons-container">
-            <RouterLink class="publish-schedules-button-link" to="SolveProblems">
-                <Button type="action">Resolver Problemas</Button>
-            </RouterLink>
-            <Button type="action" @click="decideToShowConfirmation()"> Publicar Horários </Button>
+            <Button @click="router.push('/SolveProblems')">Resolver Problemas</Button>
+            <Button @click="decideToShowConfirmation()">Publicar Horários</Button>
         </div>
     </main>
 
     <Popup v-model="confirmationVisible">
         <div id="publish-schedules-popup-content">
-            <div id="publish-schedules-popup-question">
-                <span>Tem a certeza que deseja publicar os horários?</span>
-                <span>Ainda há problemas por resolver</span>
+            <div id="publish-schedules-popup-questions">
+                <span class="publish-schedules-popup-question">
+                    Tem a certeza que deseja publicar os horários?
+                </span>
+                <span class="publish-schedules-popup-question">
+                    Ainda há problemas por resolver e não há como reverter esta ação.
+                </span>
             </div>
 
             <div id="publish-schedules-popup-confirmation">
                 <Button type="cancel" @click="confirmationVisible = false">Não</Button>
-                <Button type="action" @click="publishSchedules">Sim</Button>
+                <Button @click="publishSchedules">Sim</Button>
             </div>
         </div>
     </Popup>
 </template>
 
 <style scoped>
-main {
+#publish-schedules {
     display: flex;
     flex: 1 0 0;
-
-    min-height: 0;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 
-    padding: 2rem;
-    gap: 1rem;
+    padding: 2em;
+    gap: 1em;
 }
 
 #publish-schedules-title-container {
@@ -77,28 +72,22 @@ main {
     flex-direction: column;
     align-items: center;
 
-    gap: 1rem;
+    gap: 1em;
 }
 
 h1 {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     margin: 0px;
 }
 
 h2 {
-    font-size: 1rem;
+    font-size: 1em;
     margin: 0px;
 }
 
 #publish-schedules-problems {
-    width: fit-content;
+    flex: 1 0 0;
     overflow: hidden scroll;
-    padding-right: 1rem;
-}
-
-.publish-schedules-problem-link,
-.publish-schedules-button-link {
-    all: unset;
 }
 
 #publish-schedules-buttons-container {
@@ -106,16 +95,12 @@ h2 {
     gap: 1rem;
 }
 
-#publish-schedules-buttons-container > * {
-    width: fit-content;
-}
-
 #publish-schedules-popup-content {
     display: flex;
     flex-direction: column;
 }
 
-#publish-schedules-popup-question {
+#publish-schedules-popup-questions {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -124,11 +109,19 @@ h2 {
     gap: 0.5rem;
 }
 
+.publish-schedules-popup-question {
+    text-align: center;
+}
+
 #publish-schedules-popup-confirmation {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
+}
+
+#publish-schedules-popup-confirmation > * {
+    width: 8em;
 }
 </style>
 
@@ -138,22 +131,22 @@ import Popup from "../components/Popup.vue";
 import PresentedProblem from "../components/PresentedProblem.vue";
 
 import { useToastsStore } from "../stores/toasts.ts";
+import { Business } from "../models/Business.ts";
 import { Problem } from "../models/Problem.ts";
-import { User } from "../models/User.ts";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Problem list
-const allProblems = ref<Problem[]>([]);
-Problem.getAll().then((problems) => {
-    allProblems.value = problems;
+const problems = ref<Problem[]>([]);
+Business.getProblems().then((ps) => {
+    problems.value = ps;
 });
 
 // Popup
 const confirmationVisible = ref(false);
 const decideToShowConfirmation = () => {
-    if (allProblems.value.length > 0) {
+    if (problems.value.length > 0) {
         confirmationVisible.value = true;
     } else {
         publishSchedules();
@@ -162,10 +155,9 @@ const decideToShowConfirmation = () => {
 
 const router = useRouter();
 const toastsStore = useToastsStore();
-const publishSchedules = () => {
-    User.publishSchedules();
-
+const publishSchedules = async () => {
+    await Business.publishSchedules();
     toastsStore.successfulSchedulePublishing = true;
-    router.replace("/SolveProblems");
+    router.push("/SolveProblems");
 };
 </script>

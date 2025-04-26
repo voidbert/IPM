@@ -17,20 +17,20 @@
 <template>
     <main id="manage-shift-page-container">
         <div id="manage-shift-info" v-if="shift && course && professor">
-            <Button id="manage-shift-back" type="cancel">Voltar</Button>
+            <Button id="manage-shift-back-button" type="cancel" @click="router.go(-1)">
+                Voltar
+            </Button>
 
             <h1>{{ course.shortName }} – {{ shift.type }}{{ shift.number }}</h1>
-            <h2>
-                {{ formatDayOfWeek(shift.day) }}, {{ formatTime(shift.start) }} –
-                {{ formatTime(shift.end) }}
-            </h2>
+            <h2>{{ shift.prettyDay }}, {{ shift.prettyStart }} – {{ shift.prettyEnd }}</h2>
             <h3>Docente: {{ professor.name }}</h3>
 
             <DropdownMenu
                 id="manage-shift-room-dropdown"
-                v-model="selectedRoom"
                 label="Sala"
-                :options="roomNames" />
+                :options="roomNames"
+                v-model="selectedRoom"
+                v-on:update:modelValue="changeRoom()" />
         </div>
 
         <div id="manage-shift-management-container">
@@ -40,14 +40,12 @@
                         id="manage-shift-attendence"
                         v-if="shift"
                         :class="
-                            allStudents.length >= shiftCapacity
-                                ? 'manage-shift-attendence-over'
-                                : ''
+                            allStudents.length > shiftCapacity ? 'manage-shift-attendence-over' : ''
                         ">
                         Lotação: {{ allStudents.length }} / {{ shiftCapacity }}
                         <span class="manage-shift-person-icon" />
                     </span>
-                    <Button id="manage-shift-add-student" type="action">Adicionar aluno</Button>
+                    <Button id="manage-shift-add-student">Adicionar aluno</Button>
                 </div>
                 <TextInput
                     type="search"
@@ -55,7 +53,7 @@
                     v-model="studentsSearch"
                     v-on:update:modelValue="updateStudentListWidth" />
 
-                <div id="manage-shift-students" :style="fixedStudentListWidth">
+                <div id="manage-shift-students">
                     <PresentedStudent
                         v-for="(student, i) in shownStudents"
                         :key="i"
@@ -69,18 +67,17 @@
 <style scoped>
 #manage-shift-page-container {
     display: flex;
+    flex: 1 0 0;
     padding: 1rem;
-    gap: 1rem;
 }
 
 #manage-shift-info {
     display: flex;
     flex-direction: column;
-
     gap: 0.5rem;
 }
 
-#manage-shift-back {
+#manage-shift-back-button {
     width: 10rem;
     margin-bottom: 1rem !important;
 }
@@ -90,11 +87,8 @@
 }
 
 #manage-shift-info > h3 {
-    font-weight: 400;
-}
-
-#manage-shift-room-dropdown {
-    margin-top: 1rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
 }
 
 #manage-shift-management-container {
@@ -106,8 +100,6 @@
 #manage-shift-management {
     display: flex;
     flex-direction: column;
-    width: fit-content;
-
     gap: 1rem;
 }
 
@@ -124,8 +116,8 @@
 }
 
 .manage-shift-attendence-over {
-    color: var(--color-uminho);
     --color-body-foreground: var(--color-uminho);
+    color: var(--color-body-foreground);
 }
 
 .manage-shift-person-icon {
@@ -142,8 +134,13 @@
 }
 
 #manage-shift-students {
+    width: v-bind(fixedStudentListWidth);
+
     display: flex;
     flex-direction: column;
+    flex: 1 0 0;
+
+    overflow: hidden scroll;
 }
 </style>
 
@@ -153,13 +150,14 @@ import DropdownMenu from "../components/DropdownMenu.vue";
 import PresentedStudent from "../components/PresentedStudent.vue";
 import TextInput from "../components/TextInput.vue";
 
-import { formatDayOfWeek, formatTime } from "../models/Utils.ts";
+import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
 import { AvailableRoom, Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
 
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     shiftId: string; // Must be a number casted to string (router limitations)
@@ -173,6 +171,16 @@ const rooms = ref<AvailableRoom[]>([]);
 const roomNames = ref<string[]>([]);
 const selectedRoom = ref(0);
 
+const router = useRouter();
+
+const changeRoom = () => {
+    if (shift.value && rooms.value.length > 0) {
+        const room = rooms.value[selectedRoom.value] as AvailableRoom;
+        shift.value.room = room.room.id;
+        shift.value.update();
+    }
+};
+
 // Student list
 const shiftCapacity = ref(0);
 
@@ -185,57 +193,59 @@ const shownStudents = computed(() => {
 });
 
 // Load page state
-Shift.getById(Number(props.shiftId)).then((s) => {
+Shift.getById(Number(props.shiftId)).then(async (s) => {
+    if (!s) return;
     shift.value = s;
 
-    Course.getById(shift.value.course).then(async (c) => {
-        course.value = c;
-        if ((shift.value as Shift).type === "T") {
-            const shiftRoom = await Room.getById((shift.value as Shift).room);
-            shiftCapacity.value = shiftRoom.capacity;
-        } else {
-            shiftCapacity.value = course.value.practicalShiftCapacity;
-        }
-    });
+    const [rawCourse, rawRoom, allUsers] = await Promise.all([
+        Course.getById(shift.value.course),
+        Room.getById(shift.value.room),
+        User.getAll()
+    ]);
 
-    User.getById(shift.value.professor).then((p) => {
-        professor.value = p;
-    });
+    course.value = rawCourse as Course;
 
-    User.getAll().then((us) => {
-        allStudents.value = us.filter((u) => u.directorSchedule.includes(Number(props.shiftId)));
-    });
+    const shiftRoom = rawRoom as Room;
+    if ((shift.value as Shift).type === "T") {
+        shiftCapacity.value = shiftRoom.capacity;
+    } else {
+        shiftCapacity.value = Math.min(shiftRoom.capacity, course.value.practicalShiftCapacity);
+    }
+
+    professor.value = allUsers.find((u) => u.id === (shift.value as Shift).professor) as User;
+    allStudents.value = allUsers.filter((u) => u.directorSchedule.includes(Number(props.shiftId)));
 });
 
-Room.getAlternatives(Number(props.shiftId)).then(async (alternatives) => {
+Business.getAlternativeRooms(Number(props.shiftId)).then(async (alternatives) => {
     rooms.value = alternatives;
-    roomNames.value = await Promise.all(
-        rooms.value.map(async (availableRoom) => {
-            const name = availableRoom.room.name;
-            const capacity = availableRoom.room.capacity;
-            const emoji = String.fromCodePoint(0x1f465);
 
-            if (availableRoom.replaces && availableRoom.replaces.id !== Number(props.shiftId)) {
-                const course = await Course.getById(availableRoom.replaces.course);
-                const courseName = course.shortName;
-                const shiftName = `${availableRoom.replaces.type}${availableRoom.replaces.number}`;
+    const courses = await Course.getAll();
+    roomNames.value = rooms.value.map((availableRoom) => {
+        const name = availableRoom.room.name;
+        const capacity = availableRoom.room.capacity;
+        const emoji = String.fromCodePoint(0x1f465);
 
-                return `${name} (${capacity} ${emoji}) - trocar com ${courseName} ${shiftName}`;
-            } else {
-                return `${name} (${capacity} ${emoji})`;
-            }
-        })
-    );
+        if (availableRoom.replaces && availableRoom.replaces.id !== Number(props.shiftId)) {
+            const course = courses.find(
+                (c) => c.id === (availableRoom.replaces as Shift).course
+            ) as Course;
+            const courseName = course.shortName;
+            const shiftName = `${availableRoom.replaces.type}${availableRoom.replaces.number}`;
+
+            return `${name} (${capacity} ${emoji}) - trocar com ${courseName} ${shiftName}`;
+        } else {
+            return `${name} (${capacity} ${emoji})`;
+        }
+    });
 });
 
 // Always keep the student list's width the same, despite the elements actually being shown
-const fixedStudentListWidth = ref("");
+const fixedStudentListWidth = ref("auto");
 const updateStudentListWidth = () => {
     if (!fixedStudentListWidth.value) {
-        const width = getComputedStyle(
+        fixedStudentListWidth.value = getComputedStyle(
             document.getElementById("manage-shift-students") as HTMLElement
         ).width;
-        fixedStudentListWidth.value = `width: ${width};`;
     }
 };
 </script>

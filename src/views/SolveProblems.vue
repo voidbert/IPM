@@ -16,7 +16,7 @@
 
 <template>
     <div id="solve-problems-page-container" v-if="allProblems.length > 0">
-        <aside id="solve-problems-sidebar" :style="fixedSideBarWidth">
+        <aside id="solve-problems-sidebar">
             <TextInput
                 type="search"
                 placeholder="Pesquisar"
@@ -41,7 +41,7 @@
     </div>
     <div id="solve-problems-empty" v-else>Sem problemas por resolver</div>
 
-    <Toast type="success" :model-value="toastsStore.successfulSchedulePublishing">
+    <Toast :model-value="toastsStore.successfulSchedulePublishing">
         Horários publicados com sucesso!
     </Toast>
 </template>
@@ -55,24 +55,24 @@
 #solve-problems-page-container {
     display: flex;
 
-    padding: 0.5rem;
-    gap: 1rem;
+    padding: 0.5em;
+    gap: 1em;
 }
 
 #solve-problems-sidebar {
+    width: v-bind(fixedSideBarWidth);
     display: flex;
     flex-direction: column;
 
-    gap: 0.5rem;
+    gap: 0.5em;
 }
 
 #solve-problems-sidebar-problems {
     display: flex;
-    flex-direction: column;
     flex: 1 0 0;
+    flex-direction: column;
 
     overflow: hidden scroll;
-    padding-right: 1rem;
 }
 
 #solve-problems-empty {
@@ -88,6 +88,7 @@ import TextInput from "../components/TextInput.vue";
 import Toast from "../components/Toast.vue";
 
 import { useToastsStore } from "../stores/toasts.ts";
+import { Business } from "../models/Business.ts";
 import { Problem } from "../models/Problem.ts";
 
 import { ref } from "vue";
@@ -98,7 +99,7 @@ const props = defineProps<{
 
 // Sidebar
 const allProblems = ref<Problem[]>([]);
-Problem.getAll().then((problems) => {
+Business.getProblems().then((problems) => {
     allProblems.value = problems;
 });
 
@@ -114,13 +115,12 @@ const mustShowProblem = (problem: Problem) => {
 };
 
 // Always keep the side bar's width the same, despite the elements actually being shown
-const fixedSideBarWidth = ref("");
+const fixedSideBarWidth = ref("auto");
 const updateSideBarWidth = () => {
-    if (!fixedSideBarWidth.value) {
-        const width = getComputedStyle(
+    if (fixedSideBarWidth.value === "auto") {
+        fixedSideBarWidth.value = getComputedStyle(
             document.getElementById("solve-problems-sidebar") as HTMLElement
         ).width;
-        fixedSideBarWidth.value = `width: ${width};`;
     }
 };
 
