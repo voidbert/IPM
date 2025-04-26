@@ -39,10 +39,8 @@
                     <span
                         id="manage-shift-attendence"
                         v-if="shift"
-                        :class="
-                            allStudents.length > shiftCapacity ? 'manage-shift-attendence-over' : ''
-                        ">
-                        Lotação: {{ allStudents.length }} / {{ shiftCapacity }}
+                        :class="attendence > shiftCapacity ? 'manage-shift-attendence-over' : ''">
+                        Lotação: {{ attendence }} / {{ shiftCapacity }}
                         <span class="manage-shift-person-icon" />
                     </span>
                     <Button id="manage-shift-add-student">Adicionar aluno</Button>
@@ -57,7 +55,9 @@
                     <PresentedStudent
                         v-for="(student, i) in shownStudents"
                         :key="i"
-                        :student="student" />
+                        type="remove"
+                        :student="student"
+                        @act="removeStudent(student.id)" />
                 </div>
             </div>
         </div>
@@ -187,10 +187,36 @@ const shiftCapacity = ref(0);
 const allStudents = ref<User[]>([]);
 const studentsSearch = ref("");
 const shownStudents = computed(() => {
-    return allStudents.value.filter((student) =>
-        student.name.toLowerCase().includes(studentsSearch.value.toLowerCase())
+    return allStudents.value.filter(
+        (student) =>
+            student.directorSchedule.includes(Number(props.shiftId)) &&
+            student.name.toLowerCase().includes(studentsSearch.value.toLowerCase())
     );
 });
+
+const attendence = computed(() => {
+    return allStudents.value.filter((student) =>
+        student.directorSchedule.includes(Number(props.shiftId))
+    ).length;
+});
+
+const removeStudent = async (id: number) => {
+    const student = allStudents.value.find((s) => s.id === id) as User;
+    student.directorSchedule = student.directorSchedule.filter(
+        (s) => s !== (shift.value as Shift).id
+    );
+    student.update();
+};
+
+// Always keep the student list's width the same, despite the elements actually being shown
+const fixedStudentListWidth = ref("auto");
+const updateStudentListWidth = () => {
+    if (fixedStudentListWidth.value === "auto") {
+        fixedStudentListWidth.value = getComputedStyle(
+            document.getElementById("manage-shift-students") as HTMLElement
+        ).width;
+    }
+};
 
 // Load page state
 Shift.getById(Number(props.shiftId)).then(async (s) => {
@@ -213,7 +239,7 @@ Shift.getById(Number(props.shiftId)).then(async (s) => {
     }
 
     professor.value = allUsers.find((u) => u.id === (shift.value as Shift).professor) as User;
-    allStudents.value = allUsers.filter((u) => u.directorSchedule.includes(Number(props.shiftId)));
+    allStudents.value = allUsers;
 });
 
 Business.getAlternativeRooms(Number(props.shiftId)).then(async (alternatives) => {
@@ -238,14 +264,4 @@ Business.getAlternativeRooms(Number(props.shiftId)).then(async (alternatives) =>
         }
     });
 });
-
-// Always keep the student list's width the same, despite the elements actually being shown
-const fixedStudentListWidth = ref("auto");
-const updateStudentListWidth = () => {
-    if (!fixedStudentListWidth.value) {
-        fixedStudentListWidth.value = getComputedStyle(
-            document.getElementById("manage-shift-students") as HTMLElement
-        ).width;
-    }
-};
 </script>

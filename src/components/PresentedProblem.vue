@@ -16,8 +16,12 @@
 
 <template>
     <div
-        :class="props.active ? 'problem active' : 'problem'"
-        tabindex="0"
+        :class="{
+            problem: true,
+            'problem-active': props.active,
+            'problem-interactive': !props.interactive
+        }"
+        :tabindex="props.interactive ? 0 : -1"
         @keyup.enter="$emit('click')">
         <img
             v-if="props.problem.student.profilePicture"
@@ -50,11 +54,11 @@
     cursor: default;
 }
 
-.problem.active {
+.problem-active {
     background-color: var(--color-problem-active);
 }
 
-.problem:not(.active):hover {
+.problem:not(.problem-active):not(.problem-interactive):hover {
     background-color: var(--color-problem-hover);
 }
 
@@ -97,9 +101,11 @@ const props = withDefaults(
     defineProps<{
         problem: Problem;
         active?: boolean;
+        interactive?: boolean;
     }>(),
     {
-        active: false
+        active: false,
+        interactive: true
     }
 );
 </script>
