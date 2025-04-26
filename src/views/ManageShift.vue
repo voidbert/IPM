@@ -39,28 +39,26 @@
                     <span
                         id="manage-shift-attendence"
                         v-if="shift"
-                        :class="attendence > shiftCapacity ? 'manage-shift-attendence-over' : ''">
-                        Lotação: {{ attendence }} / {{ shiftCapacity }}
-                        <span class="manage-shift-person-icon" />
+                        :class="{
+                            'manage-shift-attendence-over': shiftStudents.length > shiftCapacity
+                        }">
+                        Lotação: {{ shiftStudents.length }} / {{ shiftCapacity }}
+                        <span id="manage-shift-person-icon" />
                     </span>
-                    <Button id="manage-shift-add-student">Adicionar aluno</Button>
+                    <Button id="manage-shift-add-student" @click="popupVisible = true">
+                        Adicionar aluno
+                    </Button>
                 </div>
-                <TextInput
-                    type="search"
-                    placeholder="Pesquisar"
-                    v-model="studentsSearch"
-                    v-on:update:modelValue="updateStudentListWidth" />
-
-                <div id="manage-shift-students">
-                    <PresentedStudent
-                        v-for="(student, i) in shownStudents"
-                        :key="i"
-                        type="remove"
-                        :student="student"
-                        @act="removeStudent(student.id)" />
-                </div>
+                <StudentList :students="shiftStudents" type="remove" @act="removeStudent" />
             </div>
         </div>
+
+        <Popup v-model="popupVisible">
+            <div id="manage-shift-management-popup-content">
+                <h1 id="manage-shift-management-popup-title">Adicionar aluno</h1>
+                <StudentList :students="otherStudents" type="add" @act="addStudent" />
+            </div>
+        </Popup>
     </main>
 </template>
 
@@ -68,18 +66,18 @@
 #manage-shift-page-container {
     display: flex;
     flex: 1 0 0;
-    padding: 1rem;
+    padding: 1em;
 }
 
 #manage-shift-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.5em;
 }
 
 #manage-shift-back-button {
-    width: 10rem;
-    margin-bottom: 1rem !important;
+    width: 10em;
+    margin-bottom: 1em !important;
 }
 
 #manage-shift-info > * {
@@ -88,7 +86,7 @@
 
 #manage-shift-info > h3 {
     font-weight: normal;
-    margin-bottom: 1rem;
+    margin-bottom: 1em;
 }
 
 #manage-shift-management-container {
@@ -100,7 +98,7 @@
 #manage-shift-management {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1em;
 }
 
 #manage-shift-first-row {
@@ -112,7 +110,7 @@
 #manage-shift-attendence {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.5em;
 }
 
 .manage-shift-attendence-over {
@@ -120,9 +118,9 @@
     color: var(--color-body-foreground);
 }
 
-.manage-shift-person-icon {
-    width: 1.3rem;
-    height: 1.3rem;
+#manage-shift-person-icon {
+    width: 1.3em;
+    height: 1.3em;
 
     background-color: var(--color-body-foreground);
     mask-image: url("/person-no-circle.svg");
@@ -130,25 +128,28 @@
 }
 
 #manage-shift-add-student {
-    width: 10rem;
+    width: 10em;
 }
 
-#manage-shift-students {
-    width: v-bind(fixedStudentListWidth);
-
+#manage-shift-management-popup-content {
+    height: 80vh;
     display: flex;
     flex-direction: column;
-    flex: 1 0 0;
+    gap: 1em;
+}
 
-    overflow: hidden scroll;
+#manage-shift-management-popup-title {
+    margin: 0px;
+    font-size: 1.5em;
+    text-align: center;
 }
 </style>
 
 <script setup lang="ts">
 import Button from "../components/Button.vue";
 import DropdownMenu from "../components/DropdownMenu.vue";
-import PresentedStudent from "../components/PresentedStudent.vue";
-import TextInput from "../components/TextInput.vue";
+import Popup from "../components/Popup.vue";
+import StudentList from "../components/StudentList.vue";
 
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
@@ -183,45 +184,53 @@ const changeRoom = () => {
 
 // Student list
 const shiftCapacity = ref(0);
-
 const allStudents = ref<User[]>([]);
-const studentsSearch = ref("");
-const shownStudents = computed(() => {
-    return allStudents.value.filter(
-        (student) =>
-            student.directorSchedule.includes(Number(props.shiftId)) &&
-            student.name.toLowerCase().includes(studentsSearch.value.toLowerCase())
-    );
-});
 
-const attendence = computed(() => {
-    return allStudents.value.filter((student) =>
-        student.directorSchedule.includes(Number(props.shiftId))
-    ).length;
-});
+const shiftStudents = computed(() =>
+    allStudents.value.filter((user) => user.directorSchedule.includes(Number(props.shiftId)))
+);
 
-const removeStudent = async (id: number) => {
-    const student = allStudents.value.find((s) => s.id === id) as User;
+const removeStudent = async (student: User) => {
     student.directorSchedule = student.directorSchedule.filter(
         (s) => s !== (shift.value as Shift).id
     );
-    student.update();
+    await student.update();
 };
 
-// Always keep the student list's width the same, despite the elements actually being shown
-const fixedStudentListWidth = ref("auto");
-const updateStudentListWidth = () => {
-    if (fixedStudentListWidth.value === "auto") {
-        fixedStudentListWidth.value = getComputedStyle(
-            document.getElementById("manage-shift-students") as HTMLElement
-        ).width;
+// Popup
+const allShifts = ref<Shift[]>([]);
+const popupVisible = ref(false);
+
+const otherStudents = computed(() =>
+    allStudents.value.filter(
+        (user) =>
+            user.enrollments.includes((course.value as Course).id) &&
+            !user.directorSchedule.includes(Number(props.shiftId))
+    )
+);
+
+const addStudent = async (student: User) => {
+    const replacingShift = student.directorSchedule.find((shiftId) => {
+        const shiftObj = allShifts.value.find((s) => s.id === shiftId) as Shift;
+        return (
+            shiftObj.course === (course.value as Course).id &&
+            shiftObj.type === (shift.value as Shift).type
+        );
+    });
+
+    if (replacingShift !== undefined) {
+        student.directorSchedule = student.directorSchedule.filter((s) => s !== replacingShift);
     }
+
+    student.directorSchedule.push((shift.value as Shift).id);
+    await student.update();
+    popupVisible.value = false;
 };
 
 // Load page state
-Shift.getById(Number(props.shiftId)).then(async (s) => {
-    if (!s) return;
-    shift.value = s;
+Shift.getAll().then(async (ss) => {
+    allShifts.value = ss;
+    shift.value = ss.find((s) => s.id === Number(props.shiftId)) as Shift;
 
     const [rawCourse, rawRoom, allUsers] = await Promise.all([
         Course.getById(shift.value.course),
