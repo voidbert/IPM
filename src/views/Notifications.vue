@@ -44,18 +44,19 @@ main {
 
 <script setup lang="ts">
 import NotificationsList from "../components/NotificationsList.vue";
+
 import { Notification, State } from "../models/Notification.ts";
-import { ref } from "vue";
-import { useLoginStore } from "../stores/login.ts";
 import { User } from "../models/User.ts";
+
+import { useLoginStore } from "../stores/login.ts";
+
+import { ref } from "vue";
 
 const loginStore = useLoginStore();
 
-const maxType: number = 3;
-
 const notifications = ref<Notification[]>([]);
-
 const usersInfo = ref<Record<number, User>>({});
+const maxType: number = 3;
 
 const updateNotification = async (read: boolean, id: number) => {
     const notification = notifications.value.find((e) => e.id == id);

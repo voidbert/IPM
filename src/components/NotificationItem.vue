@@ -41,7 +41,9 @@
                     type="reject"
                     @click="rejectAction"
                     :disabled="props.name == 'Sistema'" />
-                <IconButton type="view" :link="props.link" :disabled="false" />
+                <RouterLink :to="props.link ? props.link : '/Notifications'">
+                    <IconButton type="view" :disabled="false" />
+                </RouterLink>
             </div>
             <span
                 v-if="
@@ -203,8 +205,10 @@
 
 <script setup lang="ts">
 import IconButton from "./IconButton.vue";
-import { onMounted, ref, computed } from "vue";
+
 import { Notification, State, NotificationType } from "../models/Notification.ts";
+
+import { onMounted, ref, computed } from "vue";
 
 const bubble_elem = ref<HTMLElement>();
 const notification_elem = ref<HTMLElement>();

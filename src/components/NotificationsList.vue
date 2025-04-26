@@ -53,9 +53,11 @@
 
 <script setup lang="ts">
 import NotificationItem from "./NotificationItem.vue";
-import { computed } from "vue";
+
 import { Notification, State } from "../models/Notification.ts";
 import { User } from "../models/User.ts";
+
+import { computed } from "vue";
 
 const props = defineProps<{
     type: "student" | "director" | "professor";

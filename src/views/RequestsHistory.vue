@@ -38,18 +38,19 @@ main {
 
 <script setup lang="ts">
 import RequestsList from "../components/RequestsList.vue";
+
 import { Notification } from "../models/Notification.ts";
-import { ref } from "vue";
-import { useLoginStore } from "../stores/login.ts";
 import { User } from "../models/User.ts";
+
+import { useLoginStore } from "../stores/login.ts";
+
+import { ref } from "vue";
 
 const loginStore = useLoginStore();
 
-const type = "request";
-
 const requests = ref<Notification[]>([]);
-
 const usersInfo = ref<Record<number, User>>({});
+const type = "request";
 
 const fetchRequests = async () => {
     requests.value = await Notification.getUserRequests(loginStore.user.id);

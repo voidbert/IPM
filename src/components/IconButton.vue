@@ -16,8 +16,6 @@
 
 <template>
     <button class="reset button" :class="props.disabled ? 'disabled' : ''">
-        <RouterLink v-if="props.link" :to="props.link" />
-        <!-- Redirect -->
         <span class="reset icon" :class="type" :title="tooltip" />
     </button>
 </template>
@@ -81,7 +79,6 @@ import { computed } from "vue";
 const props = defineProps<{
     type: "accept" | "reject" | "view";
     disabled: boolean;
-    link?: string;
 }>();
 
 const tooltip = computed(() => {
