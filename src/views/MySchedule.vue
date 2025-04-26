@@ -15,7 +15,6 @@
 -->
 
 <template>
-    <Navbar type="student" />
     <main>
         <h3>Clique num turno para mais informação</h3>
         <WeeklySchedule :shifts="shifts" id="schedule" />
