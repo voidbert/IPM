@@ -23,13 +23,17 @@
         <tbody class="reset week-columns">
                 <table class="reset day-column" v-for="d in days">
                     <thead class="reset day-header header-cell center"><tr>{{ d }}</tr></thead>
-                        <li class="reset shift-block center" v-for="(sb, index) in props.week_schedule[d]"
-                            :key="index"
-                            :style="{top: `calc(2rem + ${(sb.from - 8) * 7.92}%)`,
-                                    height: `calc(((100% - (2rem)) / 12) * ${sb.to - sb.from})`}"
+                        <li class="reset shift-block center" v-for="[l, w, s] in props.shifts"
+                            :key="s.id"
+                            :style="{top: `calc(2rem + ${(s.start - 8) * 7.92}%)`,
+                                     left: `${l*100}%`,
+                                     height: `calc(((100% - (2rem)) / 12) * ${s.end - s.start})`,
+                                     width: `${w*100}%`}"
                             >
+                            <ShiftItem
+                                :shift_info="getShiftInfo(s)" />
 <!--                            <span v-for="s in sb.shifts" :key="s.name">{{ s.name }}</span>-->
-                            <ShiftBlock :shifts_info="getShiftsFromBlock(sb)" :block_height="getBlockHeight(sb)" />
+<!--                            <ShiftBlock :shifts_info="getShiftsFromBlock(sb)" :block_height="getBlockHeight(sb)" />-->
                         </li>
                         <tr class="reset day-cells center" v-for="h in hours">
                             <td class="reset day-cell">
@@ -84,7 +88,7 @@
             .shift-block {
                 position: absolute;
                 width: 100%;
-                padding: 0.5rem;
+                padding: 0.2rem;
                 box-sizing: border-box;
             }
 .header-cell {
@@ -127,41 +131,41 @@
 </style>
 
 <script setup lang="ts">
-import { WeekSchedule, Day, ShiftBlockType } from "../models/Shift.ts";
-import ShiftBlock from "./ShiftBlock.vue";
+import { Shift, ShiftInfo } from "../models/Shift.ts";
+import ShiftItem from "./ShiftItem.vue";
+
+type Day = "Segunda" | "Terça" | "Quarta" | "Quinta" | "Sexta";
 
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 const hours_string = hours.map(e => e.toString().padStart(2, "0"));
 const days : Day[] = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 
 const props = defineProps<{
-    week_schedule: WeekSchedule;
+    shifts: ShiftInfo[];
 }>();
 
-const getBlockHeight = (shiftBlock: ShiftBlockType): number => {
-    let max = 0;
-    shiftBlock.shifts.forEach(s => {
-        if (s.end > max) max = s.end;
-    })
-    return max;
-}
-
-const getShiftsFromBlock = (shiftBlock: ShiftBlockType): any[] => {
-    let shifts: any[] = [];
-    shiftBlock.shifts.forEach(s => {
-        shifts.push({
-            type: "full",
-            color_nr: 1,
-            uc: "IPM",
-            name: s.name,
-            room: "0.08",
-            capacity: "45/50",
-            show_capacity: 0,
-            start: s.start,
-            end: s.end,
-        })
-    })
-    return shifts;
+const getShiftInfo = (s: Shift): {
+    type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
+    color_nr: number;
+    uc: string;
+    name: string;
+    room: string;
+    capacity: string;
+    show_capacity: boolean;
+    start: number;
+    end: number;
+} => {
+    return {
+        type: "full",
+        color_nr: 1,
+        uc: s.course.toString(),
+        name: s.type + s.number,
+        room: s.room.toString(),
+        capacity: "0/0",
+        show_capacity: true,
+        start: s.start,
+        end: s.end
+    }
 }
 
 </script>

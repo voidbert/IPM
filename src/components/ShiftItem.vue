@@ -106,7 +106,6 @@ const props = defineProps<{
         start: number;
         end: number;
     };
-    block_height: number;
 }>();
 const hover = ref(false);
 const tooltip = computed(() => {
@@ -114,17 +113,17 @@ const tooltip = computed(() => {
 });
 const style = computed(() => {
     if (props.shift_info.type == "full" && !hover.value) {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `background: var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else if (props.shift_info.type == "full") {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
+        return `background: var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "full-pressed") {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; background: var(--color-shift-${props.shift_info.color_nr});`;
+        return `background: var(--color-shift-${props.shift_info.color_nr});`;
     } else if (props.shift_info.type == "border" && !hover.value) {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
+        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset; cursor: pointer;`;
     } else if (props.shift_info.type == "border") {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%; border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
+        return `border: 5px solid var(--color-shift-${props.shift_info.color_nr}-bright); box-shadow: 0px -2px 0px 0px var(--color-shift-${props.shift_info.color_nr}-bright) inset;`;
     } else {
-        return `top: ${(props.shift_info.start / props.block_height) * 100}%; height: ${((props.shift_info.end + 1 - props.shift_info.start) / props.block_height) * 100}%;`;
+        return ``;
     }
 });
 </script>

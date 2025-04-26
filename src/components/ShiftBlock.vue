@@ -31,12 +31,12 @@
     align-items: center;
     gap: 3px;
     flex-shrink: 0;
-    height: 120px;
+    height: 100%;
 }
 </style>
 
 <script setup lang="ts">
-import Shift from "./Shift.vue";
+import Shift from "./ShiftItem.vue";
 const props = defineProps<{
     shifts_info: {
         type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
