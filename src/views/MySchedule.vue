@@ -34,7 +34,6 @@ main {
 </style>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import WeeklySchedule from "../components/WeeklySchedule.vue";
 import { ShiftInfo } from "../models/Shift.ts";
 import { ref } from "vue";
