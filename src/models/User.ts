@@ -58,7 +58,7 @@ export class User {
         this.directorSchedule = directorSchedule;
     }
 
-    static createFromObject(userObject: any): User {
+    static createFromObject(userObject: Record<string, any>): User {
         return new User(
             Number(userObject["id"]),
             userObject["email"],
@@ -74,30 +74,26 @@ export class User {
         );
     }
 
-    static async tryAuthenticate(email: string, password: string): Promise<User | null> {
-        const users = (await fetchJson(`/users?email=${email}&password=${password}`)) as any[];
-        return users.length == 1 ? User.createFromObject(users[0]) : null;
+    async update(): Promise<void> {
+        await fetchJson(`/users/${this.id}`, "PUT", this);
     }
 
-    static async publishSchedules(): Promise<void> {
-        const users = (await fetchJson("/users")) as any[];
-
-        Promise.all(
-            users
-                .filter(
-                    (user) =>
-                        JSON.stringify(user.committedSchedule) !==
-                        JSON.stringify(user.directorSchedule)
-                )
-                .map((user) => {
-                    user.committedSchedule = user.directorSchedule;
-                    return fetchJson(`/users/${user.id}`, "PUT", user);
-                })
-        );
+    static async getById(id: number): Promise<User | null> {
+        try {
+            const user = (await fetchJson(`/users/${id}`)) as Record<string, any>;
+            return User.createFromObject(user);
+        } catch {
+            return null;
+        }
     }
 
-    static async getById(user: number): Promise<User> {
-        return User.createFromObject(await fetchJson(`/users/${user}`));
+    static async getByEmail(email: string): Promise<User | null> {
+        const users = (await fetchJson(`/users?email=${email}`)) as Record<string, any>[];
+        if (users.length > 0) {
+            return User.createFromObject(users[0] as Record<string, any>);
+        } else {
+            return null;
+        }
     }
 
     static async getAll(): Promise<User[]> {

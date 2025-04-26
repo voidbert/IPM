@@ -36,8 +36,13 @@ export class Course {
         );
     }
 
-    static async getById(course: number): Promise<Course> {
-        return Course.createFromObject(await fetchJson(`/courses/${course}`));
+    static async getById(id: number): Promise<Course | null> {
+        try {
+            const course = (await fetchJson(`/courses/${id}`)) as Record<string, any>;
+            return Course.createFromObject(course);
+        } catch {
+            return null;
+        }
     }
 
     static async getAll(): Promise<Course[]> {
