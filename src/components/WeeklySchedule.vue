@@ -17,31 +17,43 @@
 <template>
     <table class="reset week-schedule">
         <thead class="reset hours-column">
-            <tr class="reset empty-hour header-cell center"><td>h</td></tr>
-            <tr class="reset hour-cell" v-for="h in hours_string"><td>{{ h }}h00</td></tr>
+            <tr class="reset empty-hour header-cell center">
+                <td>h</td>
+            </tr>
+            <tr class="reset hour-cell" v-for="h in hours_string" :key="h">
+                <td>{{ h }}h00</td>
+            </tr>
         </thead>
         <tbody class="reset week-columns">
-                <table class="reset day-column" v-for="d in days">
-                    <thead class="reset day-header header-cell center"><tr>{{ d }}</tr></thead>
-                        <li class="reset shift-block center" v-for="[l, w, s] in props.shifts"
-                            :key="s.id"
-                            :style="{top: `calc(2rem + ${(s.start - 8) * 7.92}%)`,
-                                     left: `${l*100}%`,
-                                     height: `calc(((100% - (2rem)) / 12) * ${s.end - s.start})`,
-                                     width: `${w*100}%`}"
-                            >
-                            <ShiftItem
-                                :shift_info="getShiftInfo(s)" />
-<!--                            <span v-for="s in sb.shifts" :key="s.name">{{ s.name }}</span>-->
-<!--                            <ShiftBlock :shifts_info="getShiftsFromBlock(sb)" :block_height="getBlockHeight(sb)" />-->
-                        </li>
-                        <tr class="reset day-cells center" v-for="h in hours">
-                            <td class="reset day-cell">
-                                <div class="day-cell-time-slot center"><span>-</span></div>
-                                <div class="day-cell-time-slot center"><span>-</span></div>
-                            </td>
-                        </tr>
-                </table>
+            <table class="reset day-column" v-for="(d, index) in days" :key="index">
+                <thead class="reset day-header header-cell center">
+                    <tr>
+                        {{
+                            d
+                        }}
+                    </tr>
+                </thead>
+                <li
+                    class="reset shift-block center"
+                    v-for="[l, w, s] in props.shifts[index]"
+                    :key="s.id"
+                    :style="{
+                        top: `calc(2rem + ${(s.start - 8) * 7.92}%)`,
+                        left: `${l * 100}%`,
+                        height: `calc(((100% - (2rem)) / 12) * ${s.end - s.start})`,
+                        width: `${w * 100}%`
+                    }">
+                    <ShiftItem :shift_info="getShiftInfo(s)" />
+                    <!--                            <span v-for="s in sb.shifts" :key="s.name">{{ s.name }}</span>-->
+                    <!--                            <ShiftBlock :shifts_info="getShiftsFromBlock(sb)" :block_height="getBlockHeight(sb)" />-->
+                </li>
+                <tr class="reset day-cells center" v-for="h in hours" :key="h">
+                    <td class="reset day-cell">
+                        <div class="day-cell-time-slot center"><span>-</span></div>
+                        <div class="day-cell-time-slot center"><span>-</span></div>
+                    </td>
+                </tr>
+            </table>
         </tbody>
     </table>
 </template>
@@ -54,43 +66,43 @@
     height: 100%;
     width: 100%;
 }
-    .hours-column {
-        display: flex;
-        flex-direction: column;
-        margin-right: 0.5rem;
-    }
-        .empty-hour {
-            visibility: hidden;
-        }
-        .hour-cell {
-            height: 100%;
-            font-size: 0.8rem;
-        }
-    .week-columns {
-        display: flex;
-        width: 100%;
-    }
-        .day-column {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            position: relative;
-        }
-            .day-cells {
-                height: 100%;
-            }
-                .day-cell {
-                    width: 100%;
-                }
-                        .day-cell-time-slot span {
-                            visibility: hidden;
-                        }
-            .shift-block {
-                position: absolute;
-                width: 100%;
-                padding: 0.2rem;
-                box-sizing: border-box;
-            }
+.hours-column {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.5rem;
+}
+.empty-hour {
+    visibility: hidden;
+}
+.hour-cell {
+    height: 100%;
+    font-size: 0.8rem;
+}
+.week-columns {
+    display: flex;
+    width: 100%;
+}
+.day-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+.day-cells {
+    height: 100%;
+}
+.day-cell {
+    width: 100%;
+}
+.day-cell-time-slot span {
+    visibility: hidden;
+}
+.shift-block {
+    position: absolute;
+    width: 100%;
+    padding: 0.2rem;
+    box-sizing: border-box;
+}
 .header-cell {
     height: 2rem;
     padding: 0.5rem;
@@ -137,14 +149,16 @@ import ShiftItem from "./ShiftItem.vue";
 type Day = "Segunda" | "Terça" | "Quarta" | "Quinta" | "Sexta";
 
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-const hours_string = hours.map(e => e.toString().padStart(2, "0"));
-const days : Day[] = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+const hours_string = hours.map((e) => e.toString().padStart(2, "0"));
+const days: Day[] = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 
 const props = defineProps<{
-    shifts: ShiftInfo[];
+    shifts: ShiftInfo[][];
 }>();
 
-const getShiftInfo = (s: Shift): {
+const getShiftInfo = (
+    s: Shift
+): {
     type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
     color_nr: number;
     uc: string;
@@ -165,7 +179,6 @@ const getShiftInfo = (s: Shift): {
         show_capacity: true,
         start: s.start,
         end: s.end
-    }
-}
-
+    };
+};
 </script>
