@@ -24,9 +24,8 @@
 <style scoped>
 .warning {
     display: flex;
-    gap: 6px;
     align-items: center;
-    justify-content: left;
+    gap: 0.5em;
 
     color: var(--color-warning);
 }

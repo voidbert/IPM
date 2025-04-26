@@ -17,7 +17,7 @@
 
 <template>
     <Transition name="toast-slide">
-        <div class="toast" v-if="model" role="alert">
+        <dialog open class="toast" v-if="model">
             <span class="toast-message">
                 <slot />
             </span>
@@ -28,18 +28,84 @@
                 @click="handleUndo">
                 Desfazer
             </button>
-            <button v-else class="toast-button toast-close-icon" @click="model = false" />
-        </div>
+            <NavbarHoverableIcon
+                v-else
+                class="toast-button toast-close-icon"
+                url="/close.svg"
+                tooltip="Fechar"
+                @click="model = false" />
+        </dialog>
     </Transition>
 </template>
 
+<style scoped>
+.toast {
+    all: unset;
+
+    position: fixed;
+    bottom: 2em;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    background-color: var(--color-toast-background);
+    color: var(--color-toast-foreground);
+
+    border-radius: 0.5em;
+    padding: 1em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+@media (orientation: portrait) {
+    .toast {
+        font-size: 0.8em;
+    }
+
+    .toast-message {
+        white-space: nowrap;
+    }
+}
+
+.toast-button {
+    background: none;
+    border: none;
+    padding: 0px;
+    font-size: inherit;
+}
+
+.toast-close-icon {
+    height: 1.5em;
+}
+
+.toast-undo-action {
+    font-weight: bold;
+    color: var(--color-toast-foreground);
+}
+
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+    transition: all 0.4s ease;
+}
+
+.toast-slide-enter-from,
+.toast-slide-leave-to {
+    transform: translate(-50%, 6rem);
+}
+</style>
+
 <script setup lang="ts">
+import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
+
 const props = withDefaults(
     defineProps<{
-        type: "success" | "undo";
+        type?: "success" | "undo";
         duration?: number;
     }>(),
     {
+        type: "success",
         duration: 5000
     }
 );
@@ -59,62 +125,3 @@ setTimeout(() => {
     model.value = false;
 }, props.duration);
 </script>
-
-<style scoped>
-.toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background-color: var(--color-toast-background);
-    color: var(--color-toast-text-default);
-
-    border-radius: 0.5rem;
-    padding: 1rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.toast-button {
-    all: unset;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    cursor: default;
-    margin-left: 1rem;
-}
-
-.toast-button:hover {
-    --color-toast-foreground: var(--color-toast-hover);
-}
-
-.toast-close-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-left: 1rem;
-
-    background-color: var(--color-toast-foreground);
-    mask-image: url("/close.svg");
-    mask-size: cover;
-}
-
-.toast-undo-action {
-    font-weight: bold;
-    color: var(--color-toast-foreground);
-}
-
-.toast-slide-enter-active,
-.toast-slide-leave-active {
-    transition: all 0.4s ease;
-}
-
-.toast-slide-enter-from,
-.toast-slide-leave-to {
-    transform: translate(-50%, 6rem);
-}
-</style>

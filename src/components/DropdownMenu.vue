@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <label class="dropdown-menu-label">
+    <label class="dropdown-menu">
         {{ props.label }}
 
         <div class="dropdown-menu-select-container">
@@ -39,10 +39,11 @@ const model = defineModel({ type: Number });
 </script>
 
 <style scoped>
-.dropdown-menu-label {
+.dropdown-menu {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+
+    gap: 0.5em;
 }
 
 .dropdown-menu-select-container {
@@ -51,13 +52,13 @@ const model = defineModel({ type: Number });
 }
 
 .dropdown-menu-select {
-    all: unset;
+    appearance: none;
 
-    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    padding: 0.5em 2.5em 0.5em 0.75em;
     border: 1px solid var(--color-dropdown-border);
-    border-radius: 6px;
+    border-radius: 0.5em;
 
-    font-size: 1rem;
+    font-size: inherit;
 
     background-color: var(--color-dropdown-background);
     color: var(--color-dropdown-text);
@@ -68,12 +69,12 @@ const model = defineModel({ type: Number });
 
 .dropdown-menu-arrow {
     position: absolute;
-    right: 0.75rem;
+    right: 0.75em;
     top: 50%;
     transform: translateY(-50%);
 
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
 
     background-color: var(--color-dropdown-icon);
     mask-image: url("/expand-more.svg");

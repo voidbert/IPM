@@ -15,15 +15,18 @@
 -->
 
 <template>
-    <div class="problem" :class="props.active ? ['active'] : ['']">
+    <div
+        :class="props.active ? 'problem active' : 'problem'"
+        tabindex="0"
+        @keyup.enter="$emit('click')">
         <img
+            v-if="props.problem.student.profilePicture"
             class="problem-student-picture"
-            :src="props.problem.student.profilePicture"
-            v-if="props.problem.student.profilePicture" />
-        <div class="problem-student-fallback-picture" v-else />
+            :src="props.problem.student.profilePicture" />
+        <div v-else class="problem-student-fallback-picture" />
 
         <div class="problem-info-container">
-            <span class="student-name">
+            <span class="problem-student-name">
                 {{ props.problem.student.name }} ({{ props.problem.student.number }})
             </span>
             <span class="problem-description">{{ props.problem.description }}</span>
@@ -34,19 +37,17 @@
 
 <style scoped>
 .problem {
-    height: 4.5rem;
-
     display: flex;
-    justify-content: left;
     align-items: center;
 
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: 0.5em;
+    padding: 0.5em;
 
-    font-size: 0.8rem;
-    border-radius: 0.5rem;
+    font-size: 0.8em;
+    border-radius: 0.5em;
 
     transition: background-color 0.1s color 0.2s;
+    cursor: default;
 }
 
 .problem.active {
@@ -59,12 +60,9 @@
 
 .problem-student-picture,
 .problem-student-fallback-picture {
-    height: 100%;
-    aspect-ratio: 1 / 1;
-}
-
-.problem-student-picture {
+    height: 4.5em;
     border-radius: 50%;
+    aspect-ratio: 1 / 1;
 }
 
 .problem-student-fallback-picture {
@@ -76,12 +74,10 @@
 .problem-info-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-
-    gap: 0.3rem;
+    gap: 0.25rem;
 }
 
-.student-name {
+.problem-student-name {
     white-space: nowrap;
     color: var(--color-problem-student-name);
 }
@@ -97,8 +93,13 @@ import Warning from "./Warning.vue";
 
 import { Problem } from "../models/Problem.ts";
 
-const props = defineProps<{
-    problem: Problem;
-    active: boolean;
-}>();
+const props = withDefaults(
+    defineProps<{
+        problem: Problem;
+        active?: boolean;
+    }>(),
+    {
+        active: false
+    }
+);
 </script>
