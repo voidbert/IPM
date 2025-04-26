@@ -36,6 +36,7 @@
         <div id="manage-shift-management-container">
             <div id="manage-shift-management">
                 <div id="manage-shift-first-row">
+                    <UndoButton :disabled="undoHistory.length == 0" @click="undo()" />
                     <span
                         id="manage-shift-attendence"
                         v-if="shift"
@@ -45,7 +46,11 @@
                         Lotação: {{ shiftStudents.length }} / {{ shiftCapacity }}
                         <span id="manage-shift-person-icon" />
                     </span>
-                    <Button id="manage-shift-add-student" @click="popupVisible = true">
+                    <Button
+                        :type="otherStudents.length > 0 ? 'action' : 'disabled'"
+                        reasonDisabled="Todos os alunos inscritos nesta UC estão neste turno"
+                        id="manage-shift-add-student"
+                        @click="popupVisible = true">
                         Adicionar aluno
                     </Button>
                 </div>
@@ -150,6 +155,7 @@ import Button from "../components/Button.vue";
 import DropdownMenu from "../components/DropdownMenu.vue";
 import Popup from "../components/Popup.vue";
 import StudentList from "../components/StudentList.vue";
+import UndoButton from "../components/UndoButton.vue";
 
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
@@ -195,6 +201,11 @@ const removeStudent = async (student: User) => {
         (s) => s !== (shift.value as Shift).id
     );
     await student.update();
+
+    undoHistory.value.push({
+        type: "remove",
+        student: student
+    });
 };
 
 // Popup
@@ -225,7 +236,45 @@ const addStudent = async (student: User) => {
     student.directorSchedule.push((shift.value as Shift).id);
     await student.update();
     popupVisible.value = false;
+
+    undoHistory.value.push({
+        type: "add",
+        student: student,
+        replacedShiftId: replacingShift
+    });
 };
+
+// Undo
+interface UndoItem {
+    type: "add" | "remove";
+    student: User;
+    replacedShiftId?: number;
+}
+
+const undoHistory = ref<UndoItem[]>([]);
+const undo = async () => {
+    const item = undoHistory.value.pop() as UndoItem;
+
+    if (item.type === "add") {
+        if (item.replacedShiftId !== undefined) {
+            item.student.directorSchedule.push(item.replacedShiftId);
+        }
+
+        item.student.directorSchedule = item.student.directorSchedule.filter(
+            (s) => s !== (shift.value as Shift).id
+        );
+    } else if (item.type === "remove") {
+        item.student.directorSchedule.push((shift.value as Shift).id);
+    }
+
+    await item.student.update();
+};
+
+document.addEventListener("keyup", (e) => {
+    if (undoHistory.value.length > 0 && e.ctrlKey && (e.key === "z" || e.key == "Z")) {
+        undo();
+    }
+});
 
 // Load page state
 Shift.getAll().then(async (ss) => {
