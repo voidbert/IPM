@@ -65,6 +65,10 @@ export class Shift {
         return `${this.type}${this.number}`;
     }
 
+    get duration(): number {
+        return this.end - this.start;
+    }
+
     async update(): Promise<void> {
         await fetchJson(`/shifts/${this.id}`, "PUT", this);
     }
