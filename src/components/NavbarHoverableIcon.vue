@@ -15,23 +15,31 @@
 -->
 
 <template>
-    <button class="navbar-hoverable-icon" :title="props.tooltip" />
+    <button class="navbar-hoverable-icon" :title="props.tooltip">
+        <div class="navbar-hoverable-icon-svg" />
+    </button>
 </template>
 
 <style scoped>
 .navbar-hoverable-icon {
-    all: unset;
     height: 100%;
     aspect-ratio: 1 / 1;
+
+    background: none;
+    border: none;
+    padding: 0px;
+}
+
+.navbar-hoverable-icon-svg {
+    height: 100%;
 
     background-color: var(--color-navbar-hoverable-icon-default);
     mask-image: v-bind("'url(\"' + props.url + '\")'");
     mask-size: cover;
 }
 
-.navbar-hoverable-icon:hover,
-.navbar-hoverable-icon:active {
-    background: var(--color-navbar-hoverable-icon-hover);
+.navbar-hoverable-icon-svg:hover {
+    background-color: var(--color-navbar-hoverable-icon-hover);
     transition: background-color 0.1s;
 }
 </style>

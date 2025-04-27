@@ -16,7 +16,7 @@
 
 <template>
     <button
-        :class="props.type"
+        :class="'button'"
         :title="props.type == 'disabled' ? props.reasonDisabled : undefined"
         :disabled="props.type === 'disabled'">
         <slot />
@@ -24,8 +24,7 @@
 </template>
 
 <style scoped>
-button {
-    width: 100%;
+.button {
     min-width: max-content;
 
     display: flex;
@@ -33,32 +32,33 @@ button {
     justify-content: center;
 
     border: none;
-    border-radius: 0.3em;
-    padding: 0.6rem 0.6rem;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
 
     color: v-bind(`var(--color-button-foreground-${props.type}) `);
     background-color: v-bind(`var(--color-button-background-${props.type}) `);
 
     font-weight: bold;
-    transition: filter 0.1s linear;
+    font-size: inherit;
+
+    transition:
+        background-color 0.1s,
+        color 0.1s;
 }
 
-.action:hover {
-    filter: brightness(140%) saturate(0.8);
-}
-
-.cancel:hover {
-    filter: brightness(80%);
-}
-
-.disabled:hover {
-    cursor: not-allowed;
+.button:hover {
+    background-color: v-bind(`var(--color-button-background-${props.type}-hover) `);
 }
 </style>
 
 <script setup lang="ts">
-const props = defineProps<{
-    type: "action" | "cancel" | "disabled";
-    reasonDisabled?: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        type?: "action" | "cancel" | "disabled";
+        reasonDisabled?: string;
+    }>(),
+    {
+        type: "action"
+    }
+);
 </script>
