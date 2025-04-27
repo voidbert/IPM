@@ -61,6 +61,10 @@ export class Shift {
         return formatTime(this.end);
     }
 
+    get name(): string {
+        return `${this.type}${this.number}`;
+    }
+
     async update(): Promise<void> {
         await fetchJson(`/shifts/${this.id}`, "PUT", this);
     }

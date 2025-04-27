@@ -196,4 +196,12 @@ export abstract class Business {
             }
         });
     }
+
+    static getShiftCapacity(shift: Shift, course: Course, room: Room) {
+        if (shift.type === "T") {
+            return room.capacity;
+        } else {
+            return Math.min(room.capacity, course.practicalShiftCapacity);
+        }
+    }
 }
