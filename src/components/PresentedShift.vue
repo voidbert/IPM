@@ -113,21 +113,20 @@ import { Room } from "../models/Room.ts";
 
 import { computed } from "vue";
 
-const props = withDefaults(
-    defineProps<{
-        shift: Shift;
-        course: Course;
-        room: Room;
-        type?: "active" | "border" | "disabled" | "disabled-dark" | "disabled-selected";
-        showCapacity?: boolean;
-        attendence?: number;
-    }>(),
-    {
-        type: "active",
-        showCapacity: false,
-        attendence: 0
-    }
-);
+export interface ScheduleShift {
+    shift: Shift;
+    course: Course;
+    room: Room;
+    type?: "active" | "border" | "disabled" | "disabled-dark" | "disabled-selected";
+    showCapacity?: boolean;
+    attendence?: number;
+}
+
+const props = withDefaults(defineProps<ScheduleShift>(), {
+    type: "active",
+    showCapacity: false,
+    attendence: 0
+});
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
 const color = computed(() => String(props.course.id).slice(-1));

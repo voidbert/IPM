@@ -90,6 +90,10 @@ body[class="light"] {
     --color-problem-active: #ccc;
     --color-problem-hover: #eee;
 
+    --color-schedule-header-foreground: --color(--color-body-foreground);
+    --color-schedule-header-background-1: #eee;
+    --color-schedule-header-background-2: #e0e0e0;
+
     --color-shift-foreground: hsla(0, 0%, 0%, 0.7);
     --color-shift-background-disabled: #ddd;
     --color-shift-foreground-disabled-dark: hsla(0, 0%, 0%, 0.7);
