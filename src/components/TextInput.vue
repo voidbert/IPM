@@ -15,26 +15,27 @@
 -->
 
 <template>
-    <div class="text-input-container">
-        <div v-if="props.type == 'search'" class="search-logo-svg" />
+    <div class="text-input">
         <input
             :type="props.type == 'password' ? 'password' : 'text'"
-            :class="[props.type, 'text-input']"
+            :class="['text-input-' + props.type, 'text-input-input']"
             v-model="model"
             :placeholder="props.placeholder" />
+        <div v-if="props.type == 'search'" class="text-input-search-logo" />
     </div>
 </template>
 
 <style scoped>
-.text-input-container {
+.text-input {
     position: relative;
-    display: block;
 }
 
-.text-input {
+.text-input-input {
     box-sizing: border-box;
     width: 100%;
-    height: 2rem;
+    height: 2em;
+
+    font-size: inherit;
 
     border: 1px solid var(--color-text-input-border);
     background-color: var(--color-text-input-background);
@@ -45,24 +46,24 @@
     color: var(--color-text-input-placeholder);
 }
 
-.search {
-    border-radius: 1rem;
-    padding-right: 1.5rem;
-    padding-left: 0.5rem;
+.text-input-search {
+    border-radius: 1em;
+    padding-right: 2.5em;
+    padding-left: 1em;
 }
 
-.text,
-.password {
+.text-input-text,
+.text-input-password {
     border-radius: 5px;
-    padding: 0.5rem;
+    padding: 0.5em;
 }
 
-.search-logo-svg {
+.text-input-search-logo {
     position: absolute;
-    height: 1.5rem;
-    width: 1.5rem;
-    right: 0.25rem;
-    top: 0.25rem;
+    height: 1.5em;
+    width: 1.5em;
+    right: 0.5em;
+    top: 0.25em;
 
     background-color: var(--color-text-input-border);
     mask: url("/search.svg");
@@ -73,8 +74,13 @@
 <script setup lang="ts">
 const model = defineModel<string>();
 
-const props = defineProps<{
-    type: "text" | "password" | "search";
-    placeholder: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        type?: "text" | "password" | "search";
+        placeholder: string;
+    }>(),
+    {
+        type: "text"
+    }
+);
 </script>

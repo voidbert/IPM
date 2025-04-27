@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const fetchJson = async (
-    path: string,
-    method: string = "GET",
-    body: any = undefined
-): Promise<Record<string, any> | Record<string, any>[]> => {
-    const response = await fetch("http://localhost:3000" + path, {
-        headers: { "Content-Type": "application/json" },
-        method: method,
-        body: JSON.stringify(body)
-    });
+import { ref } from "vue";
+import { defineStore } from "pinia";
 
-    if (!response.ok) {
-        throw new Error("JSON-server response NOK");
-    }
-
-    return response.json();
-};
+export const useToastsStore = defineStore("toasts", () => {
+    const successfulSchedulePublishing = ref(false);
+    return { successfulSchedulePublishing };
+});

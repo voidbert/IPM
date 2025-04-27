@@ -15,27 +15,29 @@
 -->
 
 <template>
-    <main>
-        <form class="login-form">
-            <h1 class="page-title">Iniciar Sessão</h1>
+    <main id="login-main">
+        <form id="login-form">
+            <h1 id="login-title">Iniciar Sessão</h1>
             <TextInput
                 type="text"
                 v-model="email"
                 placeholder="Email"
-                v-on:update:modelValue="resetWarning" />
+                v-on:update:modelValue="wrongCredentials = false" />
             <TextInput
                 type="password"
                 v-model="password"
                 placeholder="Password"
-                v-on:update:modelValue="resetWarning" />
+                v-on:update:modelValue="wrongCredentials = false" />
             <Checkbox v-model="rememberUser">Lembrar-se de mim</Checkbox>
 
-            <div class="login-submit-container">
-                <div class="warning-container">
-                    <Warning v-if="wrongCredentials">Email / password incorreto</Warning>
-                </div>
+            <div id="login-submit-container">
+                <Warning
+                    :class="!wrongCredentials ? 'login-warning-invisible' : ''"
+                    id="login-warning"
+                    >Email / password incorreto</Warning
+                >
                 <Button
-                    @click="login"
+                    @click.prevent="login"
                     :type="email && password ? 'action' : 'disabled'"
                     reasonDisabled="Preencha primeiro o email e a password">
                     Iniciar Sessão
@@ -46,45 +48,51 @@
 </template>
 
 <style scoped>
-main {
+#login-main {
     display: flex;
-    flex-grow: 1;
+    flex: 1 0 0;
     justify-content: center;
     align-items: center;
 
-    padding: 10px;
+    padding: 0.5em;
 }
 
-.login-form {
-    width: 25rem;
+#login-form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.5em;
 }
 
-.page-title {
+@media (orientation: portrait) {
+    #login-form {
+        font-size: 1.3em;
+        gap: 1em;
+    }
+
+    #login-warning {
+        font-size: 1em;
+    }
+}
+
+#login-title {
     display: flex;
     justify-content: center;
-    margin-top: 0px; /* For correct vertical centering */
+    margin-top: 0px;
 
-    font-size: 1.5rem;
+    font-size: 1.5em;
 }
 
-.login-submit-container {
+#login-submit-container {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 1em;
 
-    margin-top: 1rem;
+    margin-top: 1em;
 }
 
-.warning-container {
-    display: flex;
-    flex: 2;
-}
-
-Button {
-    flex: 1;
+.login-warning-invisible {
+    opacity: 0%;
+    pointer-events: none;
 }
 </style>
 
@@ -95,7 +103,7 @@ import TextInput from "../components/TextInput.vue";
 import Warning from "../components/Warning.vue";
 
 import { useLoginStore } from "../stores/login.ts";
-import { User } from "../models/User.ts";
+import { Business } from "../models/Business.ts";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -107,27 +115,19 @@ const password = ref("");
 const rememberUser = ref(false);
 const wrongCredentials = ref(false);
 
-const resetWarning = () => {
-    wrongCredentials.value = false;
-};
-
 const loginStore = useLoginStore();
-const login = async (e: FormDataEvent) => {
-    e.preventDefault();
-
-    const user = await User.tryAuthenticate(email.value.toLowerCase(), password.value);
+const login = async () => {
+    const user = await Business.authenticate(email.value.toLowerCase(), password.value);
     if (user) {
         loginStore.login(email.value, password.value, rememberUser.value);
 
         switch (user.type) {
             case "student":
-                router.replace("/MySchedule");
+                router.push("/MySchedule");
                 break;
-
             case "director":
-                router.replace("/SolveProblems");
+                router.push("/SolveProblems");
                 break;
-
             default:
                 break;
         }

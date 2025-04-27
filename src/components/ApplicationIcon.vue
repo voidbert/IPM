@@ -16,14 +16,14 @@
 
 <template>
     <div class="application-icon">
-        <object data="/favicon.svg" class="application-icon-svg" />
+        <img src="/favicon.svg" class="application-icon-svg" alt="SWAP's icon" />
         <span class="application-icon-text">SWAP</span>
     </div>
 </template>
 
 <style scoped>
 .application-icon {
-    display: inline-flex;
+    display: flex;
     justify-content: left;
     align-items: center;
 }
@@ -33,7 +33,7 @@
 }
 
 .application-icon-text {
-    color: var(--color-navbar-text-default);
+    color: var(--color-navbar-foreground);
     font-size: 1.5em;
     font-weight: bold;
 

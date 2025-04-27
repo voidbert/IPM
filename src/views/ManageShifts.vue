@@ -14,16 +14,14 @@
     limitations under the License.
 -->
 
-<!doctype html>
-<html lang="pt">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <title>Horários UMinho</title>
-    </head>
-    <body>
-        <div id="app"></div>
-        <script type="module" src="/src/main.ts"></script>
-    </body>
-</html>
+<template>
+    <main>Hello, world!</main>
+</template>
+
+<style scoped>
+main {
+    padding: 10px;
+}
+</style>
+
+<script setup lang="ts"></script>

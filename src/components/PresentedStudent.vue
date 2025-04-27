@@ -15,27 +15,42 @@
 -->
 
 <template>
-    <span class="warning">
-        <div class="warning-icon" />
-        <slot />
-    </span>
+    <div class="student">
+        <PresentedProblem
+            :interactive="false"
+            :problem="new Problem(props.student, '', 'request')" />
+
+        <Button class="student-button" @click="$emit('act')">{{
+            type === "add" ? "+" : "⨯"
+        }}</Button>
+    </div>
 </template>
 
 <style scoped>
-.warning {
+.student {
     display: flex;
     align-items: center;
-    gap: 0.5em;
-
-    color: var(--color-warning);
+    justify-content: space-between;
 }
 
-.warning-icon {
-    width: 1.5em;
-    height: 1.5em;
-
-    background-color: var(--color-warning);
-    mask-image: url("/warning-icon.svg");
-    mask-size: cover;
+.student-button {
+    margin: 0em 1.5em 0em 1em;
 }
 </style>
+
+<script setup lang="ts">
+import Button from "./Button.vue";
+import PresentedProblem from "./PresentedProblem.vue";
+
+import { Problem } from "../models/Problem.ts";
+import { User } from "../models/User.ts";
+
+const props = defineProps<{
+    student: User;
+    type: "add" | "remove";
+}>();
+
+defineEmits<{
+    (e: "act"): void;
+}>();
+</script>
