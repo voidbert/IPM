@@ -37,15 +37,7 @@
             <div id="manage-shift-management">
                 <div id="manage-shift-first-row">
                     <UndoButton :disabled="undoHistory.length == 0" @click="undo()" />
-                    <span
-                        id="manage-shift-attendence"
-                        v-if="shift"
-                        :class="{
-                            'manage-shift-attendence-over': shiftStudents.length > shiftCapacity
-                        }">
-                        Lotação: {{ shiftStudents.length }} / {{ shiftCapacity }}
-                        <span id="manage-shift-person-icon" />
-                    </span>
+                    <Capacity :attendence="shiftStudents.length" :capacity="shiftCapacity" />
                     <Button
                         :type="otherStudents.length > 0 ? 'action' : 'disabled'"
                         reasonDisabled="Todos os alunos inscritos nesta UC estão neste turno"
@@ -112,26 +104,6 @@
     align-items: center;
 }
 
-#manage-shift-attendence {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-}
-
-.manage-shift-attendence-over {
-    --color-body-foreground: var(--color-uminho);
-    color: var(--color-body-foreground);
-}
-
-#manage-shift-person-icon {
-    width: 1.3em;
-    height: 1.3em;
-
-    background-color: var(--color-body-foreground);
-    mask-image: url("/person-no-circle.svg");
-    mask-size: cover;
-}
-
 #manage-shift-add-student {
     width: 10em;
 }
@@ -152,6 +124,7 @@
 
 <script setup lang="ts">
 import Button from "../components/Button.vue";
+import Capacity from "../components/Capacity.vue";
 import DropdownMenu from "../components/DropdownMenu.vue";
 import Popup from "../components/Popup.vue";
 import StudentList from "../components/StudentList.vue";
