@@ -27,19 +27,23 @@
 
         // Modules
         "allowImportingTsExtensions": true,
-        "module": "ESNext",
+        "module": "es6",
         "moduleResolution": "bundler",
         "moduleDetection": "force",
         "verbatimModuleSyntax": false,
 
         // Javascript and libs
         "allowJs": false,
-        "lib": ["dom", "dom.iterable", "ESNext"],
+        "lib": ["dom", "dom.iterable", "es6"],
         "skipLibCheck": true,
 
         // JSX
         "jsx": "preserve",
         "jsxImportSource": "vue",
+
+        // Target
+        "target": "es6",
+        "downlevelIteration": true,
 
         // Miscelaneous
         "forceConsistentCasingInFileNames": true,

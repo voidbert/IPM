@@ -15,13 +15,75 @@
 -->
 
 <template>
-    <main>Hello, world!</main>
+    <main>
+        <span id="my-schedule-tip">Clique num turno para mais informação</span>
+        <div id="my-schedule-schedule-container">
+            <Schedule id="my-schedule-schedule" :shifts="scheduleShifts" />
+        </div>
+    </main>
 </template>
 
 <style scoped>
 main {
-    padding: 10px;
+    display: flex;
+    flex: 1 0 0;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow: scroll;
+
+    gap: 1em;
+    padding: 1em;
+}
+
+#my-schedule-tip {
+    position: fixed;
+    top: 4rem; /* Hardcoded navbar height */
+    left: 50vw;
+    transform: translateX(-50%);
+
+    padding: 1rem;
+    font-weight: bold;
+}
+
+#my-schedule-schedule-container {
+    flex: 1 0 0;
+    margin-top: 2rem;
 }
 </style>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Schedule from "../components/Schedule.vue";
+import { ScheduleShift } from "../components/PresentedShift.vue";
+
+import { useLoginStore } from "../stores/login.ts";
+import { Course } from "../models/Course.ts";
+import { Room } from "../models/Room.ts";
+import { Shift } from "../models/Shift.ts";
+import { User } from "../models/User.ts";
+
+import { ref } from "vue";
+
+const loginStore = useLoginStore();
+const scheduleShifts = ref<ScheduleShift[]>([]);
+
+Promise.all([
+    User.getByEmail(loginStore.email as string),
+    Shift.getAll(),
+    Course.getAll(),
+    Room.getAll()
+]).then((res) => {
+    const [user, shifts, courses, rooms] = res;
+    scheduleShifts.value = (user as User).committedSchedule.map((shiftId) => {
+        const shift = shifts.find((s) => s.id === shiftId) as Shift;
+        const course = courses.find((c) => c.id === shift.course) as Course;
+        const room = rooms.find((r) => r.id === shift.room) as Room;
+
+        return {
+            shift: shift,
+            course: course,
+            room: room,
+            showCapacity: false
+        };
+    });
+});
+</script>

@@ -21,7 +21,7 @@
                 Voltar
             </Button>
 
-            <h1>{{ course.shortName }} – {{ shift.type }}{{ shift.number }}</h1>
+            <h1>{{ course.shortName }} – {{ shift.name }}</h1>
             <h2>{{ shift.prettyDay }}, {{ shift.prettyStart }} – {{ shift.prettyEnd }}</h2>
             <h3>Docente: {{ professor.name }}</h3>
 
@@ -288,14 +288,11 @@ Shift.getAll().then(async (ss) => {
     ]);
 
     course.value = rawCourse as Course;
-
-    const shiftRoom = rawRoom as Room;
-    if ((shift.value as Shift).type === "T") {
-        shiftCapacity.value = shiftRoom.capacity;
-    } else {
-        shiftCapacity.value = Math.min(shiftRoom.capacity, course.value.practicalShiftCapacity);
-    }
-
+    shiftCapacity.value = Business.getShiftCapacity(
+        shift.value as Shift,
+        course.value as Course,
+        rawRoom as Room
+    );
     professor.value = allUsers.find((u) => u.id === (shift.value as Shift).professor) as User;
     allStudents.value = allUsers;
 });
