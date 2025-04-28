@@ -16,10 +16,14 @@
 
 <template>
     <button
-        :class="['shift', `shift-${props.type}`]"
+        :class="`shift shift-${props.type} ${props.horizontal ? 'shift-horizontal' : ''}`"
         :title="tooltip"
         :disabled="props.type.includes('disabled')">
-        <div class="shift-main-content">
+        <div
+            :class="{
+                'shift-main-content': true,
+                'shift-main-content-horizontal': props.horizontal
+            }">
             <span>{{ props.course.shortName }}</span>
             <span>{{ props.shift.name }}</span>
             <span class="shift-room-text">{{ props.room.name }}</span>
@@ -40,6 +44,7 @@
     padding: 0.5em;
     border: none;
     border-radius: 0.5em;
+    overflow: hidden;
 
     background-color: v-bind(`var(--color-shift-background-${color}) `);
     color: var(--color-shift-foreground);
@@ -47,6 +52,12 @@
     transition:
         background-color 0.1s,
         border-color 0.1s;
+}
+
+.shift-horizontal {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .shift-active:hover {
@@ -82,14 +93,30 @@
     align-items: center;
 }
 
+.shift-main-content-horizontal {
+    flex-direction: row;
+    gap: 0.3em;
+}
+
+.shift-main-content-horizontal .shift-room-text {
+    margin-top: 0px;
+    margin-left: 1em;
+}
+
 .shift-room-text {
     font-size: 0.75em;
     margin-top: 0.5em;
+
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .shift-capacity {
     display: flex;
     justify-content: flex-end;
+
+    white-space: nowrap;
+    overflow: hidden;
 
     gap: 0.5em;
     font-size: 0.75em;
@@ -120,16 +147,18 @@ export interface ScheduleShift {
     type?: "active" | "border" | "disabled" | "disabled-dark" | "disabled-selected";
     showCapacity?: boolean;
     attendence?: number;
+    horizontal?: boolean;
 }
 
 const props = withDefaults(defineProps<ScheduleShift>(), {
     type: "active",
     showCapacity: false,
-    attendence: 0
+    attendence: 0,
+    horizontal: false
 });
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
 const color = computed(() => String(props.course.id).slice(-1));
 const capacity = computed(() => Business.getShiftCapacity(props.shift, props.course, props.room));
-const tooltip = computed(() => `${props.course.name} – ${props.shift.name}`);
+const tooltip = computed(() => `${props.course.name} – ${props.shift.name} [${props.room.name}]`);
 </script>

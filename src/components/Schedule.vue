@@ -33,8 +33,8 @@
                         v-bind="shift.shift"
                         :style="{
                             height: `${shift.shift.shift.duration * 100}%`,
-                            width: `${shift.width * 100}%`,
-                            left: `${shift.position * (1 / shift.occupancy) * 100}%`,
+                            width: `calc(${shift.width * 100}% - 0.1em)`,
+                            left: `calc(${shift.position * (1 / shift.occupancy) * 100}% + 0.05em)`,
                             top: `${(shift.shift.shift.start - Math.floor(shift.shift.shift.start)) * 100}%`
                         }"
                         :tabindex="shift.tabIndex" />
@@ -48,8 +48,8 @@
 .schedule {
     table-layout: fixed;
     border-collapse: collapse;
-    width: 100%;
-    height: 100%;
+    width: calc(max(100%, v-bind(`${maxOccupancy * (showCapacities ? 4.5: 3) * 5 + 3}em`)));
+    height: calc(max(100%, v-bind(`${12 * (showCapacities ? 3.5: 2.5)}em`)));
 }
 
 .schedule-day {
@@ -95,7 +95,7 @@
 import PresentedShift from "./PresentedShift.vue";
 import { ScheduleShift } from "./PresentedShift.vue";
 
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const days = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 const hours = ["08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h"];
@@ -116,12 +116,14 @@ const makeKey = (day: number, hour: number) => {
     return day * 100 + hour;
 };
 
-const hourShifts = computed(() => {
-    const occupancyShifts = new Map<number, ScheduleShift[]>();
+// Shift layout
+const minInterval = 0.5;
+
+const computeOccupancies = (): [Map<number, number>, Map<number, ScheduleShift[]>] => {
     const occupancy = new Map<number, number>();
+    const occupancyShifts = new Map<number, ScheduleShift[]>();
 
     // Determine occupied intervals
-    const minInterval = 0.5;
     props.shifts.forEach((shift) => {
         for (let t = shift.shift.start; t < shift.shift.end; t += minInterval) {
             const key = makeKey(shift.shift.day, t);
@@ -151,6 +153,12 @@ const hourShifts = computed(() => {
             occupancy.set(key, maxOccupancy);
         }
     });
+
+    return [occupancy, occupancyShifts];
+};
+
+const hourShifts = computed(() => {
+    const [occupancy, occupancyShifts] = computeOccupancies();
 
     const ret = new Map<number, PositionedShift[]>();
     const visitedShifts = new Set<number>();
@@ -207,10 +215,16 @@ const hourShifts = computed(() => {
                     occupancy: occupancy.get(key) as number,
                     tabIndex: tabIndex++
                 });
+                shift.horizontal = shift.shift.duration <= 1.5;
                 ret.set(retKey, shiftsList);
             });
         });
 
     return ret;
 });
+
+// @ts-expect-error TypeScript doesn't see this is used in the CSS
+const maxOccupancy = computed(() => Math.max.apply(null, [...computeOccupancies()[0].values()]));
+// @ts-expect-error TypeScript doesn't see this is used in the CSS
+const showCapacities = ref(props.shifts.some((shift) => shift.showCapacity));
 </script>
