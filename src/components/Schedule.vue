@@ -37,7 +37,8 @@
                             left: `calc(${shift.position * (1 / shift.occupancy) * 100}% + 0.05em)`,
                             top: `${(shift.shift.shift.start - Math.floor(shift.shift.shift.start)) * 100}%`
                         }"
-                        :tabindex="shift.tabIndex" />
+                        :tabindex="shift.tabIndex"
+                        @click="$emit('clickShift', shift.shift)" />
                 </td>
             </tr>
         </tbody>
@@ -102,6 +103,10 @@ const hours = ["08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "1
 
 const props = defineProps<{
     shifts: ScheduleShift[];
+}>();
+
+defineEmits<{
+    (e: "clickShift", shift: ScheduleShift): void;
 }>();
 
 interface PositionedShift {
