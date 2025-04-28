@@ -16,35 +16,74 @@
 
 <template>
     <main>
-        <h3>Clique num turno para mais informação</h3>
-        <WeeklySchedule :shifts="shifts" id="schedule" />
+        <span id="my-schedule-tip">Clique num turno para mais informação</span>
+        <div id="my-schedule-schedule-container">
+            <Schedule id="my-schedule-schedule" :shifts="scheduleShifts" />
+        </div>
     </main>
 </template>
 
 <style scoped>
 main {
     display: flex;
+    flex: 1 0 0;
+    justify-content: flex-start;
     flex-direction: column;
-    align-items: center;
-    height: 100%;
+    overflow: scroll;
+
+    gap: 1em;
+    padding: 1em;
 }
-#schedule {
-    width: 80vw;
+
+#my-schedule-tip {
+    position: fixed;
+    top: 4rem; /* Hardcoded navbar height */
+    left: 50vw;
+    transform: translateX(-50%);
+
+    padding: 1rem;
+    font-weight: bold;
+}
+
+#my-schedule-schedule-container {
+    flex: 1 0 0;
+    margin-top: 2rem;
 }
 </style>
 
 <script setup lang="ts">
-import WeeklySchedule from "../components/WeeklySchedule.vue";
-import { ShiftInfo } from "../models/Shift.ts";
+import Schedule from "../components/Schedule.vue";
+import { ScheduleShift } from "../components/PresentedShift.vue";
+
+import { useLoginStore } from "../stores/login.ts";
+import { Course } from "../models/Course.ts";
+import { Room } from "../models/Room.ts";
+import { Shift } from "../models/Shift.ts";
+import { User } from "../models/User.ts";
+
 import { ref } from "vue";
 
-const shifts = ref<ShiftInfo[][]>([]);
+const loginStore = useLoginStore();
+const scheduleShifts = ref<ScheduleShift[]>([]);
 
-const shiftsInfo: ShiftInfo[][] = [];
+Promise.all([
+    User.getByEmail(loginStore.email as string),
+    Shift.getAll(),
+    Course.getAll(),
+    Room.getAll()
+]).then((res) => {
+    const [user, shifts, courses, rooms] = res;
+    scheduleShifts.value = (user as User).committedSchedule.map((shiftId) => {
+        const shift = shifts.find((s) => s.id === shiftId) as Shift;
+        const course = courses.find((c) => c.id === shift.course) as Course;
+        const room = rooms.find((r) => r.id === shift.room) as Room;
 
-const fetchShifts = async () => {
-    shifts.value = shiftsInfo;
-};
-
-fetchShifts();
+        return {
+            shift: shift,
+            course: course,
+            room: room,
+            showCapacity: false
+        };
+    });
+});
 </script>
