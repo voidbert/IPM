@@ -57,6 +57,8 @@
     border-radius: 0.5em;
     padding: 1em;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+
+    z-index: 2;
 }
 
 @media (orientation: portrait) {
