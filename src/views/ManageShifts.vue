@@ -24,7 +24,7 @@
                 :shifts="shifts" />
         </aside>
         <main id="manage-shifts-sidebar-main">
-            {{ selectedShifts }}
+            <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
         </main>
     </div>
 </template>
@@ -39,16 +39,18 @@
 #manage-shifts-sidebar-container {
     min-width: 15em;
     display: flex;
-    overflow-y: scroll;
+    overflow: scroll;
 }
 
 #manage-shifts-sidebar-main {
-    display: flex;
     flex: 1 0 0;
+    overflow: scroll;
 }
 </style>
 
 <script setup lang="ts">
+import { ScheduleShift } from "../components/PresentedShift.vue";
+import Schedule from "../components/Schedule.vue";
 import ShiftSelector from "../components/ShiftSelector.vue";
 
 import { Course } from "../models/Course.ts";
@@ -56,7 +58,8 @@ import { Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
 
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 
 // Load state
 const users = ref<User[]>([]);
@@ -64,7 +67,7 @@ const shifts = ref<Shift[]>([]);
 const courses = ref<Course[]>([]);
 const rooms = ref<Room[]>([]);
 
-const selectedShifts = ref<Record<string, boolean>>();
+const selectedShifts = ref<Record<string, boolean>>({});
 
 Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).then((res) => {
     [users.value, shifts.value, courses.value, rooms.value] = res;
@@ -72,4 +75,22 @@ Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).the
         shifts.value.map((shift) => [String(shift.id), true])
     );
 });
+
+// Schedule
+const scheduleShifts = computed(() => shifts.value.filter((shift) =>
+    selectedShifts.value[String(shift.id)]).map((shift) => {
+    const course = courses.value.find((c) => c.id === shift.course) as Course;
+    const room = rooms.value.find((r) => r.id === shift.room) as Room;
+
+    return {
+        shift: shift,
+        course: course,
+        room: room,
+    };
+}));
+
+const router = useRouter();
+const handleShiftClick = (shift: ScheduleShift) => {
+    router.push(`/ManageShifts/${shift.shift.id}`);
+};
 </script>
