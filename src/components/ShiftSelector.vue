@@ -16,7 +16,7 @@
 
 <template>
     <div class="shift-selector">
-        <template v-for="(course, i) in presentedShifts" :key="i">
+        <template v-for="course in presentedShifts" :key="course.id">
             <details open class="shift-selector-details">
                 <summary class="shift-selector-summary">
                     <Checkbox
