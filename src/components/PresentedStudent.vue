@@ -16,10 +16,7 @@
 
 <template>
     <div class="student">
-        <PresentedProblem
-            :interactive="false"
-            :problem="new Problem(props.student, '', 'request')" />
-
+        <PresentedProblem v-bind="problem" />
         <Button class="student-button" @click="$emit('act')">{{
             type === "add" ? "+" : "⨯"
         }}</Button>
@@ -45,6 +42,8 @@ import PresentedProblem from "./PresentedProblem.vue";
 import { Problem } from "../models/Problem.ts";
 import { User } from "../models/User.ts";
 
+import { computed } from "vue";
+
 const props = defineProps<{
     student: User;
     type: "add" | "remove";
@@ -53,4 +52,9 @@ const props = defineProps<{
 defineEmits<{
     (e: "act"): void;
 }>();
+
+const problem = computed(() => ({
+    problem: new Problem(1, props.student, 0, "T", "request"),
+    interactive: false
+}));
 </script>

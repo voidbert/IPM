@@ -45,6 +45,7 @@
     align-items: center;
 
     backdrop-filter: blur(5px) brightness(60%);
+    z-index: 2;
 }
 
 .popup {

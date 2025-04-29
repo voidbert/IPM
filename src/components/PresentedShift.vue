@@ -28,10 +28,15 @@
             <span>{{ props.shift.name }}</span>
             <span class="shift-room-text">{{ props.room.name }}</span>
         </div>
-        <span v-if="props.showCapacity" class="shift-capacity">
-            {{ props.attendence }} / {{ capacity }}
-            <span class="shift-person-icon" />
-        </span>
+
+        <Capacity
+            v-if="props.showCapacity"
+            class="shift-capacity"
+            :attendence="props.attendence"
+            :capacity="capacity"
+            :showDescription="false"
+            :regularColorVar="foregroundColor"
+            :overColorVar="foregroundColor" />
     </button>
 </template>
 
@@ -112,27 +117,18 @@
 }
 
 .shift-capacity {
-    display: flex;
     justify-content: flex-end;
 
     white-space: nowrap;
     overflow: hidden;
 
-    gap: 0.5em;
     font-size: 0.75em;
-}
-
-.shift-person-icon {
-    width: 1.3em;
-    height: 1.3em;
-
-    background-color: var(--color-shift-foreground);
-    mask-image: url("/person-no-circle.svg");
-    mask-size: cover;
 }
 </style>
 
 <script setup lang="ts">
+import Capacity from "./Capacity.vue";
+
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
 import { Shift } from "../models/Shift.ts";
@@ -159,6 +155,12 @@ const props = withDefaults(defineProps<ScheduleShift>(), {
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
 const color = computed(() => String(props.course.id).slice(-1));
+const foregroundColor = computed(() =>
+    props.type == "disabled-dark"
+        ? "--color-shift-foreground-disabled-dark"
+        : "--color-shift-foreground"
+);
+
 const capacity = computed(() => Business.getShiftCapacity(props.shift, props.course, props.room));
 const tooltip = computed(() => `${props.course.name} – ${props.shift.name} [${props.room.name}]`);
 </script>
