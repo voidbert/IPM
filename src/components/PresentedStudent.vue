@@ -54,7 +54,7 @@ defineEmits<{
 }>();
 
 const problem = computed(() => ({
-    problem: new Problem(props.student, 0, "T", "request"),
+    problem: new Problem(1, props.student, 0, "T", "request"),
     interactive: false
 }));
 </script>

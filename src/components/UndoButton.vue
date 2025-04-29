@@ -39,7 +39,7 @@ const props = withDefaults(
     display: flex;
     align-items: center;
     justify-content: left;
-    gap: 0.3rem;
+    gap: 0.3em;
 
     user-select: none;
     -webkit-user-select: none;
@@ -49,8 +49,8 @@ const props = withDefaults(
 }
 
 .undo-button-icon {
-    width: 1rem;
-    height: 1rem;
+    width: 1em;
+    height: 1em;
 
     background-color: var(--button-color);
     mask-image: url("/undo-button.svg");

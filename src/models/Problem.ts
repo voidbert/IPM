@@ -18,6 +18,7 @@ import { User } from "./User.ts";
 export type ProblemType = "unassignedShift" | "request";
 
 export class Problem {
+    id: number;
     student: User;
     courseId: number;
     shiftType: ShiftType;
@@ -28,6 +29,7 @@ export class Problem {
     replacementShift?: Shift;
 
     constructor(
+        id: number,
         student: User,
         courseId: number,
         shiftType: ShiftType,
@@ -35,6 +37,7 @@ export class Problem {
         originalShift: Shift | undefined = undefined,
         replacementShift: Shift | undefined = undefined
     ) {
+        this.id = id;
         this.student = student;
         this.courseId = courseId;
         this.shiftType = shiftType;

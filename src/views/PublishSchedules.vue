@@ -135,6 +135,7 @@ import { useToastsStore } from "../stores/toasts.ts";
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
 import { Problem } from "../models/Problem.ts";
+import { Shift } from "../models/Shift.ts";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -145,7 +146,7 @@ Business.getProblems().then((ps) => {
     problems.value = ps;
 });
 
-const courses = ref<Course[]>();
+const courses = ref<Course[]>([]);
 Course.getAll().then((cs) => {
     courses.value = cs;
 });

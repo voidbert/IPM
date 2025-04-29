@@ -81,7 +81,7 @@ export abstract class Business {
                 const course = courses.find((course) => course.id === Number(courseId)) as Course;
 
                 shiftTypes.forEach((shiftType) => {
-                    problems.push(new Problem(user, course.id, shiftType, "unassignedShift"));
+                    problems.push(new Problem(1, user, course.id, shiftType, "unassignedShift"));
                 });
             });
         });
@@ -94,7 +94,7 @@ export abstract class Business {
         const humberto = users.find((u) => u.email === "a104348@alunos.uminho.pt") as User;
         const cpt1 = shifts.find((s) => s.id === 49) as Shift;
         const cpt2 = shifts.find((s) => s.id === 50) as Shift;
-        return [new Problem(humberto, cpt1.course, "T", "request", cpt1, cpt2)];
+        return [new Problem(1, humberto, cpt1.course, "T", "request", cpt1, cpt2)];
     }
 
     static async getProblems(): Promise<Problem[]> {
@@ -106,8 +106,7 @@ export abstract class Business {
 
         const unassignedShifts = Business.getUnassignedShiftProblems(courses, shifts, users);
         const requests: Problem[] = Business.getRequestProblems(shifts, users);
-
-        return unassignedShifts.concat(requests).sort((p1, p2) => {
+        const ret = unassignedShifts.concat(requests).sort((p1, p2) => {
             if (p1.student.specialStatus > p2.student.specialStatus) {
                 return -1;
             } else if (p1.student.specialStatus < p2.student.specialStatus) {
@@ -122,6 +121,14 @@ export abstract class Business {
 
             return p1.student.name.localeCompare(p2.student.name);
         });
+
+        let id = 1;
+        ret.forEach((problem) => {
+            problem.id = id;
+            id++;
+        });
+
+        return ret;
     }
 
     static async getAlternativeRooms(shift: number): Promise<AvailableRoom[]> {
@@ -204,6 +211,14 @@ export abstract class Business {
             return room.capacity;
         } else {
             return Math.min(room.capacity, course.practicalShiftCapacity);
+        }
+    }
+
+    static getShiftCapacityReason(shift: Shift, course: Course, room: Room): "room" | "course" {
+        if (shift.type === "T" || room.capacity < course.practicalShiftCapacity) {
+            return "room";
+        } else {
+            return "course";
         }
     }
 }
