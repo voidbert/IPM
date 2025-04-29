@@ -16,7 +16,8 @@
 
 <template>
     <div id="manage-shifts-page-container">
-        <aside id="manage-shifts-sidebar-container">
+        <aside id="manage-shifts-sidebar">
+            <h1 id="manage-shifts-sidebar-title">Turnos</h1>
             <ShiftSelector
                 v-if="selectedShifts"
                 v-model="selectedShifts"
@@ -36,14 +37,23 @@
     overflow: scroll;
 }
 
-#manage-shifts-sidebar-container {
+#manage-shifts-sidebar {
     min-width: 15em;
     display: flex;
+    flex-direction: column;
     overflow: scroll;
 }
 
+#manage-shifts-sidebar-title {
+    margin: 0em 1em 0.5em 0.5em;
+    padding: 0.5em;
+    border-bottom: 1px solid var(--color-body-foreground);
+}
+
 #manage-shifts-sidebar-main {
-    flex: 1 0 0;
+    display: flex;
+    flex-direction: column; /* For horizontal schedule growth */
+    margin: 1rem;
     overflow: scroll;
 }
 </style>
@@ -77,17 +87,20 @@ Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).the
 });
 
 // Schedule
-const scheduleShifts = computed(() => shifts.value.filter((shift) =>
-    selectedShifts.value[String(shift.id)]).map((shift) => {
-    const course = courses.value.find((c) => c.id === shift.course) as Course;
-    const room = rooms.value.find((r) => r.id === shift.room) as Room;
+const scheduleShifts = computed(() =>
+    shifts.value
+        .filter((shift) => selectedShifts.value[String(shift.id)])
+        .map((shift) => {
+            const course = courses.value.find((c) => c.id === shift.course) as Course;
+            const room = rooms.value.find((r) => r.id === shift.room) as Room;
 
-    return {
-        shift: shift,
-        course: course,
-        room: room,
-    };
-}));
+            return {
+                shift: shift,
+                course: course,
+                room: room
+            };
+        })
+);
 
 const router = useRouter();
 const handleShiftClick = (shift: ScheduleShift) => {

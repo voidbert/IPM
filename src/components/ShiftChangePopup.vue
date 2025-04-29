@@ -96,8 +96,8 @@
 import Button from "./Button.vue";
 import Popup from "./Popup.vue";
 
-import { Shift } from "../models/Shift.ts";
 import { Course } from "../models/Course.ts";
+import { Shift } from "../models/Shift.ts";
 
 const props = defineProps<{
     original: Shift;

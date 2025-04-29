@@ -16,7 +16,7 @@
 
 <template>
     <button
-        :class="'button'"
+        class="button"
         :title="props.type == 'disabled' ? props.reasonDisabled : undefined"
         :disabled="props.type === 'disabled'">
         <slot />

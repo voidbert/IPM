@@ -50,18 +50,18 @@
 
 .popup {
     all: unset;
-    max-width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2em);
 }
 
 .popup-title-bar {
     display: flex;
-    height: 4rem;
+    height: 4em;
 
     align-items: center;
     justify-content: space-between;
 
-    border-radius: 5px 5px 0px 0px;
-    padding: 0px 10px;
+    border-radius: 0.5em 0.5em 0px 0px;
+    padding: 0px 0.5em;
 
     background-color: var(--color-uminho);
 }
@@ -74,7 +74,7 @@
     display: flex;
     padding: 0.5em;
 
-    border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 0.5em 0.5em;
     background-color: var(--color-body-background);
 }
 </style>
@@ -84,4 +84,10 @@ import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
 
 const model = defineModel({ type: Boolean });
+
+document.addEventListener("keyup", (e) => {
+    if (e.key === "Escape") {
+        model.value = false;
+    }
+});
 </script>

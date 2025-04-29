@@ -44,15 +44,24 @@
     padding: 1em;
 }
 
+.shift-selector-title {
+    display: block;
+}
+
 .shift-selector-summary {
     display: flex;
     align-items: center;
     gap: 0.5em;
 }
 
+.shift-selector-summary::-webkit-details-marker {
+    display: none;
+}
+
 .shift-selector-summary::before {
+    appearance: none;
     content: "▶";
-    color: var(--color-checkbox-foreground);
+    color: var(--color-body-foreground);
     transition:
         color 0.2s,
         transform 0.1s;

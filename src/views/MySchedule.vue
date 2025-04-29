@@ -77,6 +77,7 @@ main {
 }
 
 #my-schedule-schedule-container {
+    display: flex;
     flex: 1 0 0;
     margin-top: 3rem;
 }
@@ -86,9 +87,9 @@ main {
 import Button from "../components/Button.vue";
 import { ScheduleShift } from "../components/PresentedShift.vue";
 import Schedule from "../components/Schedule.vue";
+import ShiftChangePopup from "../components/ShiftChangePopup.vue";
 import { ShiftInfo } from "../components/ShiftInfoPopup.vue";
 import ShiftInfoPopup from "../components/ShiftInfoPopup.vue";
-import ShiftChangePopup from "../components/ShiftChangePopup.vue";
 import Toast from "../components/Toast.vue";
 
 import { useLoginStore } from "../stores/login.ts";
@@ -173,6 +174,7 @@ const showToast = ref(false);
 
 const handleShiftClick = (shift: ScheduleShift) => {
     if (choosing.value) {
+        // Open shift change confirmation popup
         const student = users.value.find((u) => u.email === (loginStore.email as string)) as User;
         const originalShift = student.committedSchedule.find((shiftId) => {
             const shift = shifts.value.find((s) => s.id === shiftId) as Shift;
@@ -186,6 +188,7 @@ const handleShiftClick = (shift: ScheduleShift) => {
 
         showShiftChange.value = true;
     } else {
+        // Open shift info popup
         const attendence = users.value.filter((u) =>
             u.committedSchedule.includes(shift.shift.id)
         ).length;

@@ -29,7 +29,7 @@
 }
 
 .application-icon-svg {
-    height: 4rem;
+    height: 4em;
 }
 
 .application-icon-text {

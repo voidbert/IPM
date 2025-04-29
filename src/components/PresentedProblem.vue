@@ -78,7 +78,7 @@
 .problem-info-container {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.25em;
 }
 
 .problem-student-name {

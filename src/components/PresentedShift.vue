@@ -45,6 +45,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 
     padding: 0.5em;
     border: none;
@@ -131,8 +132,8 @@ import Capacity from "./Capacity.vue";
 
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
-import { Shift } from "../models/Shift.ts";
 import { Room } from "../models/Room.ts";
+import { Shift } from "../models/Shift.ts";
 
 import { computed } from "vue";
 

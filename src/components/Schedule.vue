@@ -49,11 +49,13 @@
 .schedule {
     table-layout: fixed;
     border-collapse: collapse;
-    width: calc(max(100%, v-bind(`${maxOccupancy * (showCapacities ? 4.5: 3) * 5 + 3}em`)));
-    height: calc(max(100%, v-bind(`${12 * (showCapacities ? 3.5: 2.5)}em`)));
+    width: calc(max(100%, v-bind(`${maxOccupancy * (showCapacities ? 4.5: 3.5) * 5 + 3}em`)));
+    flex: 1 0 calc(max(100%, v-bind(`${12 * (showCapacities ? 3: 2.5)}em`)));
 }
 
 .schedule-day {
+    padding: 0px;
+
     font-weight: normal;
     color: var(--color-schedule-header-foreground);
     background-color: var(--color-schedule-header-background-1);
@@ -96,7 +98,7 @@
 import PresentedShift from "./PresentedShift.vue";
 import { ScheduleShift } from "./PresentedShift.vue";
 
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 const days = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 const hours = ["08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h"];
@@ -229,7 +231,10 @@ const hourShifts = computed(() => {
 });
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
-const maxOccupancy = computed(() => Math.max.apply(null, [...computeOccupancies()[0].values()]));
+const maxOccupancy = computed(() =>
+    Math.max.apply(null, [...computeOccupancies()[0].values()].concat([0]))
+);
+
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
-const showCapacities = ref(props.shifts.some((shift) => shift.showCapacity));
+const showCapacities = computed(() => props.shifts.some((shift) => shift.showCapacity));
 </script>

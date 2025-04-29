@@ -21,7 +21,7 @@
         v-model="search"
         v-on:update:modelValue="updateWidth" />
 
-    <div :id="id" class="student-list-students">
+    <div ref="studentList" class="student-list-students">
         <PresentedStudent
             v-for="(student, i) in shownStudents"
             :key="i"
@@ -49,7 +49,7 @@ import TextInput from "../components/TextInput.vue";
 
 import { User } from "../models/User.ts";
 
-import { computed, ref, useId } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 
 const props = defineProps<{
     students: User[];
@@ -70,11 +70,11 @@ const shownStudents = computed(() => {
 });
 
 // Always keep the student list's width the same, despite the elements actually being shown
-const id = useId();
+const studentList = useTemplateRef("studentList");
 const fixedWidth = ref("auto");
 const updateWidth = () => {
     if (fixedWidth.value === "auto") {
-        fixedWidth.value = getComputedStyle(document.getElementById(id) as HTMLElement).width;
+        fixedWidth.value = getComputedStyle(studentList.value as Element).width;
     }
 };
 </script>
