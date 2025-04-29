@@ -32,6 +32,7 @@
                         v-if="mustShowProblem(problem)"
                         :active="i === activeProblem"
                         :problem="problem"
+                        :description="describe(problem)"
                         @click="activeProblem = i" />
                 </div>
             </div>
@@ -89,13 +90,23 @@ import Toast from "../components/Toast.vue";
 
 import { useToastsStore } from "../stores/toasts.ts";
 import { Business } from "../models/Business.ts";
+import { Course } from "../models/Course.ts";
 import { Problem } from "../models/Problem.ts";
+import { Shift } from "../models/Shift.ts";
 
 import { ref } from "vue";
 
 const props = defineProps<{
     problem?: string; // Must be a number casted to string (router limitations)
 }>();
+
+// State loading
+const shifts = ref<Shift[]>([]);
+const courses = ref<Course[]>([]);
+Promise.all([Shift.getAll(), Course.getAll()]).then((res) => {
+    shifts.value = res[0];
+    courses.value = res[1];
+});
 
 // Sidebar
 const allProblems = ref<Problem[]>([]);
@@ -110,8 +121,17 @@ const mustShowProblem = (problem: Problem) => {
     return (
         problem.student.name.toLowerCase().includes(searchString) ||
         (problem.student.number as string).toLowerCase().includes(searchString) ||
-        problem.description.toLowerCase().includes(searchString)
+        describe(problem).toLowerCase().includes(searchString)
     );
+};
+
+const describe = (problem: Problem): string => {
+    const course = courses.value.find((c) => c.id === problem.courseId) as Course;
+    if (problem.type === "unassignedShift") {
+        return `${course.shortName} (por atribuir)`;
+    } else {
+        return `${course.shortName} ${(problem.originalShift as Shift).name} → ${(problem.replacementShift as Shift).name}`;
+    }
 };
 
 // Always keep the side bar's width the same, despite the elements actually being shown

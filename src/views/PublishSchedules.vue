@@ -21,12 +21,13 @@
             <h2 v-if="problems.length > 0">Problemas por resolver</h2>
         </div>
 
-        <div id="publish-schedules-problems" v-if="problems.length > 0">
+        <div id="publish-schedules-problems" v-if="problems.length > 0 && courses">
             <PresentedProblem
                 v-for="(problem, i) in problems"
                 :key="i"
-                @click="router.push(`/SolveProblems/${i}`)"
-                :problem="problem" />
+                :problem="problem"
+                :description="describe(problem)"
+                @click="router.push(`/SolveProblems/${i}`)" />
         </div>
         <h2 v-else>Sem problemas por resolver</h2>
 
@@ -92,7 +93,7 @@ h2 {
 
 #publish-schedules-buttons-container {
     display: flex;
-    gap: 1rem;
+    gap: 1em;
 }
 
 #publish-schedules-popup-content {
@@ -105,8 +106,8 @@ h2 {
     flex-direction: column;
     align-items: center;
 
-    padding: 1rem 1rem 2rem 1rem;
-    gap: 0.5rem;
+    padding: 1em 1em 2em 1em;
+    gap: 0.5em;
 }
 
 .publish-schedules-popup-question {
@@ -117,7 +118,7 @@ h2 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 1em;
 }
 
 #publish-schedules-popup-confirmation > * {
@@ -132,6 +133,7 @@ import PresentedProblem from "../components/PresentedProblem.vue";
 
 import { useToastsStore } from "../stores/toasts.ts";
 import { Business } from "../models/Business.ts";
+import { Course } from "../models/Course.ts";
 import { Problem } from "../models/Problem.ts";
 
 import { ref } from "vue";
@@ -142,6 +144,20 @@ const problems = ref<Problem[]>([]);
 Business.getProblems().then((ps) => {
     problems.value = ps;
 });
+
+const courses = ref<Course[]>();
+Course.getAll().then((cs) => {
+    courses.value = cs;
+});
+
+const describe = (problem: Problem): string => {
+    const course = courses.value.find((c) => c.id === problem.courseId) as Course;
+    if (problem.type === "unassignedShift") {
+        return `${course.shortName} ${problem.shiftType} (por atribuir)`;
+    } else {
+        return `${course.shortName} ${(problem.originalShift as Shift).name} → ${(problem.replacementShift as Shift).name}`;
+    }
+};
 
 // Popup
 const confirmationVisible = ref(false);

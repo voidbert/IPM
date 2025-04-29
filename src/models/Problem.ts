@@ -12,18 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Shift, ShiftType } from "./Shift.ts";
 import { User } from "./User.ts";
 
 export type ProblemType = "unassignedShift" | "request";
 
 export class Problem {
     student: User;
-    description: string;
+    courseId: number;
+    shiftType: ShiftType;
     type: ProblemType;
 
-    constructor(student: User, description: string, type: ProblemType) {
+    // Request only properties
+    originalShift?: Shift;
+    replacementShift?: Shift;
+
+    constructor(
+        student: User,
+        courseId: number,
+        shiftType: ShiftType,
+        type: ProblemType,
+        originalShift: Shift | undefined = undefined,
+        replacementShift: Shift | undefined = undefined
+    ) {
         this.student = student;
-        this.description = description;
+        this.courseId = courseId;
+        this.shiftType = shiftType;
         this.type = type;
+        this.originalShift = originalShift;
+        this.replacementShift = replacementShift;
     }
 }

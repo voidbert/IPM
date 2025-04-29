@@ -33,7 +33,7 @@
             <span class="problem-student-name">
                 {{ props.problem.student.name }} ({{ props.problem.student.number }})
             </span>
-            <span class="problem-description">{{ props.problem.description }}</span>
+            <span class="problem-description">{{ props.description }}</span>
             <Warning v-if="props.problem.student.specialStatus">Trabalhador estudante</Warning>
         </div>
     </div>
@@ -97,15 +97,16 @@ import Warning from "./Warning.vue";
 
 import { Problem } from "../models/Problem.ts";
 
-const props = withDefaults(
-    defineProps<{
-        problem: Problem;
-        active?: boolean;
-        interactive?: boolean;
-    }>(),
-    {
-        active: false,
-        interactive: true
-    }
-);
+export interface ProblemInfo {
+    problem: Problem;
+    description?: string;
+    active?: boolean;
+    interactive?: boolean;
+}
+
+const props = withDefaults(defineProps<ProblemInfo>(), {
+    description: "",
+    active: false,
+    interactive: true
+});
 </script>

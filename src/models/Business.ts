@@ -81,18 +81,20 @@ export abstract class Business {
                 const course = courses.find((course) => course.id === Number(courseId)) as Course;
 
                 shiftTypes.forEach((shiftType) => {
-                    problems.push(
-                        new Problem(
-                            user,
-                            `${course.shortName} ${shiftType} (por atribuir)`,
-                            "unassignedShift"
-                        )
-                    );
+                    problems.push(new Problem(user, course.id, shiftType, "unassignedShift"));
                 });
             });
         });
 
         return problems;
+    }
+
+    private static getRequestProblems(shifts: Shift[], users: User[]): Problem[] {
+        // TODO - actual problems
+        const humberto = users.find((u) => u.email === "a104348@alunos.uminho.pt") as User;
+        const cpt1 = shifts.find((s) => s.id === 49) as Shift;
+        const cpt2 = shifts.find((s) => s.id === 50) as Shift;
+        return [new Problem(humberto, cpt1.course, "T", "request", cpt1, cpt2)];
     }
 
     static async getProblems(): Promise<Problem[]> {
@@ -103,7 +105,7 @@ export abstract class Business {
         ]);
 
         const unassignedShifts = Business.getUnassignedShiftProblems(courses, shifts, users);
-        const requests: Problem[] = []; // TODO - get problems (requests) from notifications
+        const requests: Problem[] = Business.getRequestProblems(shifts, users);
 
         return unassignedShifts.concat(requests).sort((p1, p2) => {
             if (p1.student.specialStatus > p2.student.specialStatus) {
