@@ -15,13 +15,61 @@
 -->
 
 <template>
-    <main>Hello, world!</main>
+    <div id="manage-shifts-page-container">
+        <aside id="manage-shifts-sidebar-container">
+            <ShiftSelector
+                v-if="selectedShifts"
+                v-model="selectedShifts"
+                :courses="courses"
+                :shifts="shifts" />
+        </aside>
+        <main id="manage-shifts-sidebar-main">
+            {{ selectedShifts }}
+        </main>
+    </div>
 </template>
 
 <style scoped>
-main {
-    padding: 10px;
+#manage-shifts-page-container {
+    display: flex;
+    flex: 1 0 0;
+    overflow: scroll;
+}
+
+#manage-shifts-sidebar-container {
+    min-width: 15em;
+    display: flex;
+    overflow-y: scroll;
+}
+
+#manage-shifts-sidebar-main {
+    display: flex;
+    flex: 1 0 0;
 }
 </style>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ShiftSelector from "../components/ShiftSelector.vue";
+
+import { Course } from "../models/Course.ts";
+import { Room } from "../models/Room.ts";
+import { Shift } from "../models/Shift.ts";
+import { User } from "../models/User.ts";
+
+import { ref } from "vue";
+
+// Load state
+const users = ref<User[]>([]);
+const shifts = ref<Shift[]>([]);
+const courses = ref<Course[]>([]);
+const rooms = ref<Room[]>([]);
+
+const selectedShifts = ref<Record<string, boolean>>();
+
+Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).then((res) => {
+    [users.value, shifts.value, courses.value, rooms.value] = res;
+    selectedShifts.value = Object.fromEntries(
+        shifts.value.map((shift) => [String(shift.id), true])
+    );
+});
+</script>
