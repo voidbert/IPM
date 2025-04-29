@@ -15,123 +15,109 @@
 -->
 
 <template>
-    <div v-if="Object.keys(model).length">
-        <div v-for="(turnos, disciplina) in model" :key="disciplina">
-            <details open>
-                <summary>
+    <div class="shift-selector">
+        <template v-for="(course, i) in presentedShifts" :key="i">
+            <details open class="shift-selector-details">
+                <summary class="shift-selector-summary">
                     <Checkbox
-                        class="checkbox"
-                        :modelValue="
-                            disciplinasSelecionadas[disciplina] === true
-                                ? true
-                                : isIndeterminate(disciplina) === null
-                                  ? null
-                                  : false
-                        "
-                        @change="
-                            (val) => {
-                                disciplinasSelecionadas[disciplina] = val === true;
-                                onDisciplinaChange(disciplina);
-                            }
-                        ">
-                        {{ disciplina }}
+                        :modelValue="courseCheckboxValue(course.shifts)"
+                        @input.prevent="handleCourseInput(course.shifts)">
+                        {{ course.course.shortName }}
                     </Checkbox>
                 </summary>
-                <ul>
-                    <li v-for="(turno, index) in turnos" :key="turno[0]">
-                        <Checkbox
-                            :modelValue="model[disciplina]?.[index]?.[1] ?? false"
-                            @update:modelValue="
-                                (val) => {
-                                    if (model[disciplina] && model[disciplina][index]) {
-                                        model[disciplina][index][1] = val ?? false;
-                                        onTurnoChange(disciplina);
-                                    }
-                                }
-                            ">
-                            {{ turno[0] }}
+                <ul class="shift-selector-list">
+                    <li v-for="shift in course.shifts" :key="shift.id">
+                        <Checkbox v-model="props.modelValue[shift.id]">
+                            {{ shift.name }}
                         </Checkbox>
                     </li>
                 </ul>
             </details>
-        </div>
+        </template>
     </div>
 </template>
 
-<script setup lang="ts">
-import { reactive } from "vue";
-import Checkbox from "./Checkbox.vue";
-
-type TurnoInfo = [string, boolean];
-type Disciplinas = Record<string, TurnoInfo[]>;
-
-const props = defineProps<{
-    disciplinas: Disciplinas;
-}>();
-
-const model = reactive<Disciplinas>(structuredClone(props.disciplinas));
-
-const disciplinasSelecionadas = reactive<Record<string, boolean>>({});
-
-for (const [disciplina, turnos] of Object.entries(model)) {
-    disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
-}
-
-function isIndeterminate(disciplina: string): boolean | null {
-    const turnos = model[disciplina];
-    if (!turnos) return false;
-
-    const selecionados = turnos.filter((t) => t[1]).length;
-    if (selecionados === 0) return false;
-    if (selecionados === turnos.length) return false;
-    return null; // <-- aqui é o segredo!
-}
-
-function onDisciplinaChange(disciplina: string) {
-    const turnos = model[disciplina]!;
-    if (!turnos) return;
-
-    const novoEstado = disciplinasSelecionadas[disciplina];
-    turnos.forEach((t) => (t[1] = novoEstado === true));
-}
-
-function onTurnoChange(disciplina: string) {
-    const turnos = model[disciplina];
-    if (!turnos) return;
-
-    disciplinasSelecionadas[disciplina] = turnos.every((t) => t[1]);
-}
-</script>
-
 <style scoped>
-details {
-    margin-left: 1em;
+.shift-selector {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
 }
 
-details ul {
-    list-style-type: none;
-    padding-left: 2.5em;
-    margin-top: 0;
-}
-
-details summary {
+.shift-selector-summary {
     display: flex;
     align-items: center;
+    gap: 0.5em;
 }
 
-details:not(open) summary::before {
+.shift-selector-summary::before {
     content: "▶";
-    transform: rotate(0deg);
     color: var(--color-checkbox-foreground);
+    transition:
+        color 0.2s,
+        transform 0.1s;
+    transform: scale(0.6);
 }
 
-details:open > summary::before {
-    content: "▶";
-    transform: rotate(90deg);
-    color: var(--color-checkbox-foreground);
+.shift-selector-details:open .shift-selector-summary::before {
+    transform: rotate(90deg) scale(0.6);
 }
 
-details summary:hover:has(.checkbox:not(:hover))::before {
-    color: rgb(140, 139, 139);
+.shift-selector-list {
+    list-style-type: none;
+    margin-top: 0.5em;
 }
 </style>
+
+<script setup lang="ts">
+import Checkbox from "./Checkbox.vue";
+
+import { Course } from "../models/Course.ts";
+import { Shift } from "../models/Shift.ts";
+
+import { computed } from "vue";
+
+const props = defineProps<{
+    courses: Course[];
+    shifts: Shift[];
+
+    // An hack to get an deep reactive model. This is actually how Vue compiles models.
+    /* eslint vue/no-mutating-props: 0 */
+    modelValue: Record<string, boolean>;
+}>();
+
+const presentedShifts = computed(() =>
+    props.courses
+        .map((course) => ({
+            course: course,
+            shifts: props.shifts.filter((shift) => shift.course === course.id)
+        }))
+        .sort((c1, c2) => c1.course.shortName.localeCompare(c2.course.shortName))
+);
+
+const courseCheckboxValue = (shifts: Shift[]) => {
+    const shiftIds = shifts.map((shift) => String(shift.id));
+    const selected = Object.entries(props.modelValue).filter(
+        (entry) => shiftIds.includes(entry[0]) && entry[1]
+    ).length;
+
+    if (selected == 0) {
+        return false;
+    } else if (selected === shifts.length) {
+        return true;
+    } else {
+        return null;
+    }
+};
+
+const handleCourseInput = (shifts: Shift[]) => {
+    let selected = courseCheckboxValue(shifts);
+    if (selected === null) {
+        selected = true;
+    }
+
+    shifts.forEach((shift) => {
+        props.modelValue[String(shift.id)] = !selected;
+    });
+};
+</script>

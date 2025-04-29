@@ -43,7 +43,7 @@
     accent-color: var(--color-checkbox-checked);
 }
 
-.checkbox-input:not(:checked) {
+.checkbox-input:not(:checked):not(:indeterminate) {
     filter: brightness(var(--color-checkbox-unchecked));
 }
 
