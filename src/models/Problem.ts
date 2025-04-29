@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const fetchJson = async (
-    path: string,
-    method: string = "GET",
-    body: any = undefined
-): Promise<Record<string, any> | Record<string, any>[]> => {
-    const response = await fetch("http://localhost:3000" + path, {
-        headers: { "Content-Type": "application/json" },
-        method: method,
-        body: JSON.stringify(body)
-    });
+import { User } from "./User.ts";
 
-    if (!response.ok) {
-        throw new Error("JSON-server response NOK");
+export type ProblemType = "unassignedShift" | "request";
+
+export class Problem {
+    student: User;
+    description: string;
+    type: ProblemType;
+
+    constructor(student: User, description: string, type: ProblemType) {
+        this.student = student;
+        this.description = description;
+        this.type = type;
     }
-
-    return response.json();
-};
+}

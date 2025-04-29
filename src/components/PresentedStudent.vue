@@ -15,40 +15,42 @@
 -->
 
 <template>
-    <div class="shift-block">
-        <Shift
-            v-for="shift in props.shifts_info"
-            :key="shift.name"
-            :shift_info="shift"
-            :block_height="props.block_height"></Shift>
+    <div class="student">
+        <PresentedProblem
+            :interactive="false"
+            :problem="new Problem(props.student, '', 'request')" />
+
+        <Button class="student-button" @click="$emit('act')">{{
+            type === "add" ? "+" : "⨯"
+        }}</Button>
     </div>
 </template>
 
 <style scoped>
-.shift-block {
+.student {
     display: flex;
-    padding: 5px;
     align-items: center;
-    gap: 3px;
-    flex-shrink: 0;
-    height: 120px;
+    justify-content: space-between;
+}
+
+.student-button {
+    margin: 0em 1.5em 0em 1em;
 }
 </style>
 
 <script setup lang="ts">
-import Shift from "./Shift.vue";
+import Button from "./Button.vue";
+import PresentedProblem from "./PresentedProblem.vue";
+
+import { Problem } from "../models/Problem.ts";
+import { User } from "../models/User.ts";
+
 const props = defineProps<{
-    shifts_info: {
-        type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
-        color_nr: number;
-        uc: string;
-        name: string;
-        room: string;
-        capacity: string;
-        show_capacity: boolean;
-        start: number;
-        end: number;
-    }[];
-    block_height: number;
+    student: User;
+    type: "add" | "remove";
+}>();
+
+defineEmits<{
+    (e: "act"): void;
 }>();
 </script>

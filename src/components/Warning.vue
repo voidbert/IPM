@@ -24,18 +24,17 @@
 <style scoped>
 .warning {
     display: flex;
-    gap: 6px;
     align-items: center;
-    justify-content: left;
+    gap: 0.5em;
 
-    color: var(--color-uminho);
+    color: var(--color-warning);
 }
 
 .warning-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
 
-    background-color: var(--color-uminho);
+    background-color: var(--color-warning);
     mask-image: url("/warning-icon.svg");
     mask-size: cover;
 }
