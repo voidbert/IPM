@@ -147,7 +147,223 @@ o cursor os sobrevoar por alguns segundos:
 
 \section{Componentes Implementados}
 
-\section{Páginas Implementadas}
+O primeiro passo no processo de implementação da interface foi a identificação de componentes e
+respetiva implementação. Foram identificados como componentes \emph{widgets} comuns (botões, campos
+de texto, \ldots) e outros elementos presentes em várias páginas / várias vezes na mesma página.
+Note-se que \emph{widgets} simples foram implementados como componentes (em vez de serem usados
+diretamente) para haver um maior controlo sobre o estilo que é aplicado aos mesmos, e para ser
+possível suportar várias variantes dos mesmos. Segue-se uma breve lista dos vários componentes
+desenvolvidos:
+
+\subsection{Alerta}
+
+Este componente estático apresenta uma informação importante ao utilizador. É utilizado, por
+exemplo, para informar o utilizador na página ``Iniciar Sessão'' que as credenciais que submeteu
+se encontram incorretas, ou nos componentes ``Aluno'' e ``Problema'' que um aluno é
+trabalhador-estudante, como se vê na figura \ref{problem}.
+
+\subsection{Barra de Navegação}
+
+Este componente está presente no topo de todas as páginas implementadas, e permite ao utilizador
+rapidamente navegar para outras páginas de interesse, bem como alterar o seu tema (claro ou escuro)
+e terminar sessão. Este componente, como se vê abaixo, existe em três variantes, uma para antes de
+se ter iniciado sessão, uma para alunos, e outra para o diretor de curso. A barra de navegação
+subdivide-se em vários subcomponentes, que não serão mencionados neste relatório, visto que apenas
+existem para dividir a barra de navegação em partes mais pequenas, dando origem a código mais
+modular.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{res/components/navbar-login.png}
+    \includegraphics[width=\textwidth]{res/components/navbar-student.png}
+    \includegraphics[width=\textwidth]{res/components/navbar-director.png}
+    \caption{
+        \onehalfspacing
+        De cima para baixo, variantes de \emph{login}, de aluno, e do diretor de curso da barra de
+        navegação.
+    }
+    \label{navbar}
+\end{figure}
+
+\subsection{Botão}
+
+Este componente, presente em diversas páginas da aplicação, trata-se de um \emph{widget} no qual se
+pode clicar para se realizar uma ação pré-determinada. Existem várias variantes de botão (ativo, de
+cancelamento, e desativado), distinguíveis pela sua cor. Adicionalmente, botões desativados podem
+ter uma \emph{tooltip} a explicar por que motivo não é possível interagir com eles. Abaixo,
+apresentam-se os três tipos de botão implementados:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{res/components/button.png}
+    \caption{Da esquerda para a direita, variantes de cancelamento, desativada e ativa de botões.}
+    \label{button}
+\end{figure}
+
+\subsection{Botão para Desfazer}
+
+Este componente trata-se de um botão especial, utilizado para desfazer ações nas páginas
+``Resolver Problemas'' e ``Gerir Turno''. Pode ser visto na figura abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=3cm]{res/components/undo-button.png}
+    \caption{Botão para desfazer.}
+    \label{undo-button}
+\end{figure}
+
+\subsection{Capacidade}
+
+Este componente apresenta a utilização de um turno em função da sua capacidade, sendo utilizado na
+página ``Gerir Turno'', no componente ``Turno'', e no diálogo de informação sobre um turno nas
+páginas ``O Meu Horário'' e ``Horário Completo''. Opcionalmente, este componente pode passar a ser
+representado a vermelho caso um turno exceda a sua capacidade, como pode ser visto na figura abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{res/components/capacity.png}
+    \caption{Capacidade de um turno sobrelotado.}
+    \label{capacity}
+\end{figure}
+
+\subsection{Campo de texto}
+
+Este componente, presente em várias páginas da aplicação, permite ao utilizador escrever texto a ser
+consumido pelo programa. Existem três variantes deste componente, para entrada de texto, para
+entrada de \emph{passwords}, e uma barra de pesquisa. Na figura abaixo, podem observar-se estas três
+variantes do campo de texto:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{res/components/text-input-regular-password.png} \\
+    \includegraphics[width=8cm]{res/components/text-input-search.png}
+    \caption{
+        Campos de texto para entrada textual, entrada de \emph{passwords}, e barra de pesquisa.
+    }
+    \label{text-input}
+\end{figure}
+
+\subsection{\emph{Check box}}
+
+Este componente permite ao utilizador definir o valor de um booleano. Destaca-se o seu uso no
+componente ``Seletor de Turnos'', visível na figura \ref{shift-selector}.
+
+\subsection{\emph{Dropdown}}
+
+Presente apenas na página ``Gerir turno'', este componente permite ao utilizador escolher uma de
+diversas opções, no caso, uma de diversas salas, como se pode ver abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{res/components/dropdown.png}
+    \caption{\emph{Dropdown}.}
+    \label{dropdown}
+\end{figure}
+
+\subsection{Estudante e Problema}
+
+Estes dois componentes são bastante semelhantes, e permitem apresentar um estudante e um problema
+(pedido de troca ou turno por atribuir), respetivamente. O componente ``Problema'' pode observar-se
+abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{res/components/problem.png}
+    \caption{
+        \onehalfspacing
+        Problema de turno por atribuir. Caso apenas se apresentasse o aluno, a linha
+        ``FCD T (por atribuir)'' não seria visível.
+    }
+    \label{problem}
+\end{figure}
+
+\subsection{Horário}
+
+Este componente, utilizado em diversas páginas, permite apresentar um conjunto de turnos,
+organizados temporalmente ao longo de uma semana, como se pode ver abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{res/components/schedule-1.png}
+    \includegraphics[width=0.45\textwidth]{res/components/schedule-2.png}
+    \caption{Horários com diferentes tipos de turnos.}
+    \label{schedule}
+\end{figure}
+
+\subsection{Ícone da Aplicação}
+
+Este componente estático é usado na barra de navegação e na barra de janela do componente ``Popup''.
+Pode ser visto na figura abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{res/components/application-icon.png}
+    \caption{Ícone da aplicação.}
+    \label{application-icon}
+\end{figure}
+
+\subsection{Lista de Estudantes}
+
+Este componente, utilizado na página ``Gerir Turno'', apresenta uma lista de estudantes, onde cada
+estudante se encontra associado a um botão, que pode ser usado o para adicionar a / remover de um
+turno. Este componente pode ser visto na figura abaixo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{res/components/student-list.png}
+    \caption{Lista para remoção de estudantes.}
+    \label{student-list}
+\end{figure}
+
+\subsection{\emph{Popup}}
+
+Este componente é um diálogo com uma borda de janela. Várias páginas utilizam \emph{popups}, mas
+dois destes, para mostrar informação de um turno e para confirmar a troca entre dois turnos,
+apresentados abaixo, foram transformados em componentes visto que estão presentes em mais do que uma
+página, no caso, ``O meu Horário'' e ``Horário Completo''.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=4cm]{res/components/popup-1.png}
+    \includegraphics[height=4cm]{res/components/popup-2.png}
+    \caption{Diálogos de informação de turno e para confirmação de troca de turnos.}
+    \label{popup}
+\end{figure}
+
+\subsection{Seletor de turnos}
+
+Este componente, presente nas páginas ``Horário Completo'' e ``Gerir Turnos'', permite ao utilizador
+escolher que turnos deseja ver no horário.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{res/components/shift-selector.png}
+    \caption{Seletor de turnos.}
+    \label{shift-selector}
+\end{figure}
+
+\subsection{\emph{Toast}}
+
+Este trata-se de um componente para apresentar um alerta ao utilizador, sem que este deixe de poder
+utilizar a página. É normalmente utilizado para informar o utilizador de sucesso nas operações que
+realizou: que um pedido de mudança de horário foi enviado nas páginas ``O Meu Horário'' e
+``Horário Completo'', e que os horários foram publicados com sucesso, na página
+``Resolver Problemas''. Abaixo, pode ver-se o exemplo de uma \emph{toast}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{res/components/toast.png}
+    \caption{\emph{Toast}.}
+    \label{toast}
+\end{figure}
+
+\subsection{Turno}
+
+Este componente, utilizado no componente ``Horário'' (figura \ref{schedule}), permite apresentar um
+turno. Existem várias variantes de turnos, necessárias para ser possível distinguir turnos com os
+quais é possível interagir, turnos pertencentes ao horário do aluno, o turno do qual um aluno
+requisita para sair, \emph{etc.}. É também possível escolher se se deseja que um turno apresente ou
+não a sua capacidade.
 
 \section{Tecnologias Utilizadas}
 
