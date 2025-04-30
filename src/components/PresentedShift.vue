@@ -72,7 +72,7 @@
 
 .shift-border {
     background-color: var(--color-shift-background-disabled);
-    border: 0.5em solid v-bind(`var(--color-shift-background-${color}) `);
+    border: 0.3em solid v-bind(`var(--color-shift-background-${color}) `);
 }
 
 .shift-border:hover {
