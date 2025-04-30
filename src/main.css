@@ -17,35 +17,34 @@
 /* Color themes */
 body {
     --color-uminho: #80171b;
+    --color-uminho-light: #9b393e;
+    --color-uminho-complementary: #17807c;
 
-    --color-navbar-text-default: #fff;
-    --color-navbar-hoverable-icon-default: #fff;
+    --color-navbar-background: var(--color-uminho);
+    --color-navbar-foreground: #fff;
+    --color-navbar-link-active-foreground: var(--color-uminho);
+    --color-navbar-link-active-background: var(--color-navbar-foreground);
+    --color-navbar-link-inactive-foreground: var(--color-navbar-foreground);
+    --color-navbar-link-inactive-background: var(--color-uminho);
+    --color-navbar-link-inactive-hover: var(--color-uminho-light);
+    --color-navbar-hoverable-icon-default: var(--color-navbar-foreground);
     --color-navbar-hoverable-icon-hover: #ddd;
 
-    --color-toast-text-default: #fff;
+    --color-shift-background-1: #f07575;
+    --color-shift-background-1-hover: #f5a3a3;
+    --color-shift-background-2: #759cf0;
+    --color-shift-background-2-hover: #a3bdf5;
+    --color-shift-background-3: #7af075;
+    --color-shift-background-3-hover: #a6f5a3;
+    --color-shift-background-4: #f075d7;
+    --color-shift-background-4-hover: #f5a3e4;
+    --color-shift-background-5: #f0ee75;
+    --color-shift-background-5-hover: #f5f3a3;
+    --color-shift-background-6: #75f0ea;
+    --color-shift-background-6-hover: #a3f5f1;
 
-    --color-dropdown-background: #fff;
-    --color-dropdown-text: #000;
-    --color-dropdown-border: #ccc;
-    --color-dropdown-icon: #666;
-
-    --color-shift-text: hsla(0, 0%, 0%, 0.5);
-    --color-shift-border: rgba(0, 0, 0, 0.1);
-    --color-shift-grey: #dcdcdc;
-    --color-shift-dark-grey: #959595;
-
-    --color-shift-1: #f5a3a3;
-    --color-shift-1-bright: #f07575;
-    --color-shift-2: #a3bdf5;
-    --color-shift-2-bright: #759cf0;
-    --color-shift-3: #a6f5a3;
-    --color-shift-3-bright: #7af075;
-    --color-shift-4: #f5a3e4;
-    --color-shift-4-bright: #f075d7;
-    --color-shift-5: #f5f3a3;
-    --color-shift-5-bright: #f0ee75;
-    --color-shift-6: #a3f5f1;
-    --color-shift-6-bright: #75f0ea;
+    --color-toast-background: var(--color-uminho);
+    --color-toast-foreground: #fff;
 
     --color-notification-text: #333333;
     --color-notification-card: #000;
@@ -75,6 +74,8 @@ body {
     --color-icon-button-icon-hover: #faf4f4;
     --color-icon-button-disabled: #d6cdcd;
     --color-icon-button-icon-disabled: #cbbaba;
+
+    --color-warning: var(--color-uminho);
 }
 
 body,
@@ -85,6 +86,10 @@ body * {
         --color-checkbox-unchecked 0.2s;
 }
 
+body * :focus-visible {
+    outline: 2px solid var(--color-uminho-complementary);
+}
+
 body[class="light"] {
     --color-body-background: #fff;
     --color-body-foreground: #000;
@@ -92,6 +97,9 @@ body[class="light"] {
     --color-button-background-action: var(--color-uminho);
     --color-button-background-cancel: #ddd;
     --color-button-background-disabled: #888;
+    --color-button-background-action-hover: var(--color-uminho-light);
+    --color-button-background-cancel-hover: #bbb;
+    --color-button-background-disabled-hover: var(--color-button-background-disabled);
     --color-button-foreground-action: #fff;
     --color-button-foreground-cancel: #000;
     --color-button-foreground-disabled: #000;
@@ -100,13 +108,30 @@ body[class="light"] {
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
 
+    --color-dropdown-background: var(--color-body-background);
+    --color-dropdown-text: var(--color-body-foreground);
+    --color-dropdown-border: #bbb;
+    --color-dropdown-icon: #444;
+
+    --color-problem-student-name: #555;
+    --color-problem-description: var(--color-body-foreground);
+    --color-problem-student-profile-picture-fallback: #aaa;
+    --color-problem-active: #ccc;
+    --color-problem-hover: #eee;
+
+    --color-schedule-header-foreground: --color(--color-body-foreground);
+    --color-schedule-header-background-1: #eee;
+    --color-schedule-header-background-2: #e0e0e0;
+
+    --color-shift-foreground: hsla(0, 0%, 0%, 0.7);
+    --color-shift-background-disabled: #ddd;
+    --color-shift-foreground-disabled-dark: hsla(0, 0%, 0%, 0.7);
+    --color-shift-background-disabled-highlighted: #888;
+
     --color-text-input-background: --var(--color-body-background);
     --color-text-input-foreground: --var(--color-body-foreground);
     --color-text-input-placeholder: #888;
     --color-text-input-border: #bbb;
-
-    --color-student-name: #555;
-    --color-student-profile-picture-fallback: #aaa;
 
     --color-undo-button-disabled: #bbb;
     --color-undo-button-regular: #333;
@@ -120,6 +145,9 @@ body[class="dark"] {
     --color-button-background-action: var(--color-uminho);
     --color-button-background-cancel: #222;
     --color-button-background-disabled: #888;
+    --color-button-background-action-hover: var(--color-uminho-light);
+    --color-button-background-cancel-hover: #444;
+    --color-button-background-disabled-hover: var(--color-button-background-disabled);
     --color-button-foreground-action: #fff;
     --color-button-foreground-cancel: #fff;
     --color-button-foreground-disabled: #000;
@@ -127,6 +155,26 @@ body[class="dark"] {
     --color-checkbox-unchecked: 13.333%;
     --color-checkbox-checked: var(--color-uminho);
     --color-checkbox-foreground: var(--color-body-foreground);
+
+    --color-dropdown-background: #222;
+    --color-dropdown-text: var(--color-body-foreground);
+    --color-dropdown-border: #444;
+    --color-dropdown-icon: #444;
+
+    --color-problem-student-name: #aaa;
+    --color-problem-description: var(--color-body-foreground);
+    --color-problem-student-profile-picture-fallback: #555;
+    --color-problem-active: #222;
+    --color-problem-hover: #1a1a1a;
+
+    --color-schedule-header-foreground: --color(--color-body-foreground);
+    --color-schedule-header-background-1: #222;
+    --color-schedule-header-background-2: #333;
+
+    --color-shift-foreground: hsla(0, 0%, 0%, 0.7);
+    --color-shift-background-disabled: #888;
+    --color-shift-foreground-disabled-dark: #ccc;
+    --color-shift-background-disabled-highlighted: #333;
 
     --color-text-input-background: #222;
     --color-text-input-foreground: --var(--color-body-foreground);
@@ -145,9 +193,16 @@ body[class="dark"] {
 }
 
 /* Base app style */
+html {
+    height: 100vw;
+    overflow: hidden;
+}
+
 body {
     height: 100vh;
     margin: 0px;
+
+    overflow: hidden;
 
     background-color: var(--color-body-background);
     color: var(--color-body-foreground);
@@ -156,12 +211,8 @@ body {
 }
 
 #app {
-    height: 100vh;
+    height: 100%;
 
     display: flex;
     flex-direction: column;
-}
-
-.reset {
-    all: unset;
 }

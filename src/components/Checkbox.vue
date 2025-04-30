@@ -15,43 +15,43 @@
 -->
 
 <template>
-    <label class="custom-checkbox">
+    <label class="checkbox">
         <input
             type="checkbox"
-            class="custom-checkbox-input"
+            class="checkbox-input"
             v-model="model"
-            :indeterminate="model === null"
-            @change="$emit('change', model as boolean | null)" />
+            :indeterminate="model === null" />
         <slot />
     </label>
 </template>
 
 <style scoped>
-.custom-checkbox {
+.checkbox {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.5em;
 
     color: var(--color-checkbox-foreground);
 }
 
-.custom-checkbox-input {
-    width: 1.2rem;
-    height: 1.2rem;
+.checkbox-input {
+    width: 1em;
+    height: 1em;
     margin-left: 0px;
 
+    font-size: inherit;
     accent-color: var(--color-checkbox-checked);
 }
 
-.custom-checkbox-input:not(:checked) {
+.checkbox-input:not(:checked):not(:indeterminate) {
     filter: brightness(var(--color-checkbox-unchecked));
+}
+
+.custom-checkbox-input:indeterminate {
+    filter: brightness(var(--color-checkbox-checked));
 }
 </style>
 
 <script setup lang="ts">
 const model = defineModel<boolean | null>();
-
-defineEmits<{
-    (event: "change", value: boolean | null): void;
-}>();
 </script>

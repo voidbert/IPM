@@ -20,14 +20,18 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import "./main.css";
 
-import LoginPage from "./views/LoginPage.vue";
+import Login from "./views/Login.vue";
 import MySchedule from "./views/MySchedule.vue";
-import SolveProblems from "./views/SolveProblems.vue";
-import Notifications from "./views/Notifications.vue";
+import CompleteSchedule from "./views/CompleteSchedule.vue";
 import RequestsHistory from "./views/RequestsHistory.vue";
+import Notifications from "./views/Notifications.vue";
+import SolveProblems from "./views/SolveProblems.vue";
+import ManageShifts from "./views/ManageShifts.vue";
+import ManageShift from "./views/ManageShift.vue";
+import PublishSchedules from "./views/PublishSchedules.vue";
 
 import { useLoginStore } from "./stores/login.ts";
-import { User } from "./models/User.ts";
+import { Business } from "./models/Business.ts";
 
 // Set up routes
 export {};
@@ -42,8 +46,8 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            name: "LoginPage",
-            component: LoginPage,
+            name: "Login",
+            component: Login,
             meta: {
                 userType: ["login"]
             }
@@ -73,9 +77,52 @@ const router = createRouter({
             }
         },
         {
+            path: "/CompleteSchedule",
+            name: "CompleteSchedule",
+            component: CompleteSchedule,
+            meta: {
+                userType: ["student"]
+            }
+        },
+        {
             path: "/SolveProblems",
             name: "SolveProblems",
             component: SolveProblems,
+            meta: {
+                userType: ["director"]
+            },
+            children: [
+                {
+                    path: ":problem",
+                    name: "SolveProblem",
+                    component: SolveProblems
+                }
+            ],
+            props: true
+        },
+        {
+            path: "/ManageShifts",
+            meta: {
+                userType: ["director"]
+            },
+            children: [
+                {
+                    path: "",
+                    name: "ManageShifts",
+                    component: ManageShifts
+                },
+                {
+                    path: ":shiftId",
+                    name: "ManageShift",
+                    component: ManageShift,
+                    props: true
+                }
+            ]
+        },
+        {
+            path: "/PublishSchedules",
+            name: "PublishSchedules",
+            component: PublishSchedules,
             meta: {
                 userType: ["director"]
             }
@@ -99,7 +146,7 @@ router.beforeEach(async (to) => {
     const password = loginStore.password;
 
     if (email && password) {
-        const user = await User.tryAuthenticate(email, password);
+        const user = await Business.authenticate(email, password);
 
         if (!user) {
             loginStore.logout();
@@ -111,7 +158,7 @@ router.beforeEach(async (to) => {
         } else if (user.type === "director") {
             return "/SolveProblems";
         }
-    } else if (to.name !== "LoginPage") {
+    } else if (to.name !== "Login") {
         return "/";
     }
 

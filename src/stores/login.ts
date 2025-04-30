@@ -16,6 +16,8 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { User } from "../models/User.ts";
 
+import { useShiftSelectorStore } from "./shiftSelector.ts";
+
 const usePersistentLoginStore = defineStore(
     "loginPersistent",
     () => {
@@ -56,6 +58,9 @@ export const useLoginStore = defineStore(
             user.value = User.createFromObject({});
             persistent.email = null;
             persistent.password = null;
+
+            const shiftSelectorStore = useShiftSelectorStore();
+            shiftSelectorStore.reset();
         };
 
         return { temporaryEmail, temporaryPassword, email, password, user, login, logout };

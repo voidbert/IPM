@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const fetchJson = async (
-    path: string,
-    method: string = "GET",
-    body: any = undefined
-): Promise<Record<string, any> | Record<string, any>[]> => {
-    const response = await fetch("http://localhost:3000" + path, {
-        headers: { "Content-Type": "application/json" },
-        method: method,
-        body: JSON.stringify(body)
-    });
+import { ref } from "vue";
+import { defineStore } from "pinia";
 
-    if (!response.ok) {
-        throw new Error("JSON-server response NOK");
+export const useShiftSelectorStore = defineStore(
+    "shiftSelector",
+    () => {
+        const initialized = ref(false);
+        const selectedShifts = ref<Record<string, boolean>>({});
+        const openCourses = ref<Record<string, boolean>>({});
+
+        const reset = () => {
+            initialized.value = false;
+            selectedShifts.value = {};
+            openCourses.value = {};
+        };
+
+        return { initialized, selectedShifts, openCourses, reset };
+    },
+    {
+        persist: true
     }
-
-    return response.json();
-};
+);
