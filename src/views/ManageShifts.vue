@@ -51,7 +51,7 @@
 #manage-shifts-sidebar-main {
     display: flex;
     flex-direction: column; /* For horizontal schedule growth */
-    margin: 1rem;
+    padding: 1rem;
     overflow: scroll;
 }
 </style>

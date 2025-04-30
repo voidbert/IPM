@@ -97,7 +97,6 @@
 #solve-problems-page-container {
     display: flex;
 
-    padding: 0.5em;
     gap: 1em;
 }
 
@@ -107,6 +106,7 @@
     flex-direction: column;
 
     gap: 0.5em;
+    padding: 0.5em 0em 0.5em 0.5em;
 }
 
 #solve-problems-sidebar-problems {
