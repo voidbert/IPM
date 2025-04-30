@@ -18,11 +18,7 @@
     <div id="manage-shifts-page-container">
         <aside id="manage-shifts-sidebar">
             <h1 id="manage-shifts-sidebar-title">Turnos</h1>
-            <ShiftSelector
-                v-if="selectedShifts"
-                v-model="selectedShifts"
-                :courses="courses"
-                :shifts="shifts" />
+            <ShiftSelector v-model="shiftSelectorStore" :courses="courses" :shifts="shifts" />
         </aside>
         <main id="manage-shifts-sidebar-main">
             <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
@@ -48,6 +44,8 @@
     margin: 0em 1em 0.5em 0.5em;
     padding: 0.5em;
     border-bottom: 1px solid var(--color-body-foreground);
+
+    font-size: 1.2em;
 }
 
 #manage-shifts-sidebar-main {
@@ -63,6 +61,7 @@ import { ScheduleShift } from "../components/PresentedShift.vue";
 import Schedule from "../components/Schedule.vue";
 import ShiftSelector from "../components/ShiftSelector.vue";
 
+import { useShiftSelectorStore } from "../stores/shiftSelector.ts";
 import { Course } from "../models/Course.ts";
 import { Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
@@ -77,19 +76,28 @@ const shifts = ref<Shift[]>([]);
 const courses = ref<Course[]>([]);
 const rooms = ref<Room[]>([]);
 
-const selectedShifts = ref<Record<string, boolean>>({});
+const shiftSelectorStore = useShiftSelectorStore();
 
 Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).then((res) => {
     [users.value, shifts.value, courses.value, rooms.value] = res;
-    selectedShifts.value = Object.fromEntries(
-        shifts.value.map((shift) => [String(shift.id), true])
-    );
+
+    if (!shiftSelectorStore.initialized) {
+        shiftSelectorStore.selectedShifts = Object.fromEntries(
+            shifts.value.map((shift) => [String(shift.id), true])
+        );
+
+        shiftSelectorStore.openCourses = Object.fromEntries(
+            courses.value.map((course) => [String(course.id), true])
+        );
+
+        shiftSelectorStore.initialized = true;
+    }
 });
 
 // Schedule
 const scheduleShifts = computed(() =>
     shifts.value
-        .filter((shift) => selectedShifts.value[String(shift.id)])
+        .filter((shift) => shiftSelectorStore.selectedShifts[String(shift.id)])
         .map((shift) => {
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
