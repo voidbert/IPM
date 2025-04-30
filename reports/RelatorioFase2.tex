@@ -110,6 +110,97 @@ abaixo:
 
 \section{Tecnologias Utilizadas}
 
+Para a realização deste projeto, foi necessário o uso de diversas tecnologias. Nesta secção,
+procura-se apresentar as diversas tecnologias utilizadas, como estas foram utilizadas, e as
+facilidades e dificuldades sentidas com cada uma.
+
+\subsection{HTML e CSS}
+
+Visto que a aplicação desenvolvida é uma aplicação Web, o uso de HTML e CSS é imperativo em quase
+todas as \emph{frameworks}. De um modo geral, o desenvolvimento de componentes e páginas com recurso
+a estas tecnologias foi fácil, especialmente devido à sua natureza declarativa. Outra facilidade do
+uso destas tecnologias foram as flexboxes, que simplificaram a organização dos elementos nas
+componentes e nas páginas.
+
+No entanto, houve algumas dificuldades em garantir que o código desenvolvido funcionava em todos os
+navegadores: como nem todos os navegadores suportavam todas as funcionalidades desejadas, foi
+necessário testar a aplicação desenvolvida em Chromium (Blink), Firefox (Gecko) e Safari (WebKit).
+Várias vezes, foi necessário adicionar regras de CSS com \emph{vendor prefixes}, ou até refazer
+algumas funcionalidades devido a diferenças de funcionamento entre navegadores.
+
+\subsection{TypeScript}
+
+\hyphenation{Java-Script}
+
+No projeto desenvolvido, foi utilizado TypeScript \cite{typescript}, linguagem que é transpilada
+para JavaScript, mas que permite alguma verificação de tipos. O TypeScript foi uma grande ajuda para
+garantir a correção do código da aplicação, e assegurar, em \emph{compile-time}, que a aplicação não
+terá exceções em \emph{runtime} devido a erros de tipos. Ademais, o compilador não obriga que o
+código seja tipado durante o processo de desenvolvimento, pelo que este pode continuar a ser
+bastante veloz. Assim, apenas quando se acaba de escrever um módulo / componente / página, podem
+adicionar-se anotações de tipo ao código para garantir a sua correção.
+
+\subsection{Vue}
+
+A \emph{framework} utilizada para o desenvolvimento da aplicação foi Vue.js \cite{vue}. Esta
+\emph{framework}, devido à sua natureza declarativa e reativa, foi de muito fácil atualização:
+alterar um objeto reativo conduzia à atualização automática das partes da componente / página que
+sofreram alterações. Por exemplo, ao contrário do Blazor \cite{blazor}, utilizado em Laboratórios de
+Informática IV, não era necessário chamar uma função (\texttt{StateHasChanged}) sempre que era
+necessário atualizar os conteúdos da DOM.
+
+Apesar de poucas, foram sentidas algumas dificuldades no uso de Vue, especialmente quando era
+necessário integrar funcionalidades não reativas (no caso, a resposta a um evento de mudança de uma
+\emph{media query}) com a reatividade do Vue, tendo sido necessários \emph{hacks} para forçar a
+atualização dos objetos reativos.
+
+\subsection{Pinia}
+
+A biblioteca Pinia \cite{pinia} foi utilizada para armazenamento do estado da aplicação, como as
+credenciais do utilizador, o tema da aplicação (claro ou escuro) e os turnos escolhidos nas páginas
+``Horário Completo'' e ``Gerir Turnos'', para que esta informação não desapareça quando se navega
+entre diferentes páginas da aplicação. Adicionalmente, o \emph{plugin}
+\texttt{pinia-plugin- persistedstate} \cite{pinia-persistent} foi utilizado para persistir algum
+estado no \texttt{localStorage} do navegador, para este ser mantido mesmo após o navegador ser
+fechado. Por exemplo, as credenciais do utilizador são armazenadas no \texttt{localStorage} quando
+este escolhe que deseja que a aplicação se ``lembre de si''.
+
+O Pinia, devido à sua integração com Vue, foi das ferramentas de mais fácil utilização, visto que os
+objetos armazenados nos \emph{stores} do Pinia podiam ser utilizados como qualquer outro objeto
+reativo do Vue.
+
+\subsection{JSON Server}
+
+É necessário que a aplicação desenvolvida tenha dados que possa apresentar. Na UC de Interface
+Pessoa-Máquina, não é pedido que se implemente um \emph{backend} completo para a aplicação, pelo que
+se utilizou \texttt{json-server} \cite{json-server}, um programa que cria uma API REST a partir dos
+dados num ficheiro JSON.
+
+A utilização desta tecnologia foi complicada, não devido a complexidade da tecnologia em si, mas sim
+devido ao trabalho necessário para organizar os dados da API num formato adequado para apresentação.
+Devido às capacidades muito limitadas de interrogação do \texttt{json-server}, várias interrogações
+tiveram de ser implementadas imperativamente em JavaScript, ao contrário de declarativamente numa
+linguagem especializada, como se teria feito caso se tivesse utilizado uma base de dados. O uso de
+uma base de dados seria, por este motivo, uma grande melhoria ao projeto.
+
+\subsection{Outras tecnologias}
+
+O \texttt{npm} \cite{npm} é o gestor de pacotes do NodeJS, que permite, no ficheiro
+\texttt{pacakage.json}, definir as dependências do projeto desenvolvido. Além disso, também é
+possível definir \emph{scripts} como \texttt{npm run dev}, para abrir a aplicação com ferramentas de
+desenvolvimento, e \texttt{npm run preview}, para pré-visualização da aplicação final. Para melhorar
+a experiência de desenvolvimento, estes dois \emph{scripts} foram modificados para, além de
+executarem o servidor HTTP da aplicação, também executarem o JSON Server. Também foram adicionados
+\emph{scripts} para, com recurso às ferramentas ESLint \cite{eslint} e Prettier \cite{prettier},
+automaticamente fazer uma análise estática e formatação do código, respetivamente. Estes
+\emph{scripts} são usados na \emph{pipeline} de CI (\emph{Continuous Integration}) do repositório do
+projeto (GitHub Actions), obrigando a que todos os \emph{pull requests} tenham código correto e bem
+formatado.
+
+A principal dificuldade do uso do \texttt{npm} foi garantir que os \emph{scripts} criados
+funcionavam em diferentes sistemas operativos, visto que alguns comandos utilizados apenas estavam
+disponíveis, por exemplo, em Linux.
+
 \section{Conclusão e Trabalho Futuro}
 
 \begingroup
@@ -118,8 +209,33 @@ abaixo:
 
 \begin{thebibliography}{9}
     \bibitem{figma}
-        ``Figma: Collaborative Interface Design Tool.''. Figma. Accessed: Mar. 13, 2025. [Online.]
+        ``Figma: Collaborative Interface Design Tool''. Figma. Accessed: Mar. 13, 2025. [Online.]
         Available: \url{https://www.figma.com/}
+    \bibitem{typescript}
+        ``TypeScript''. TypeScript. Accessed: Apr. 30, 2025. [Online.] Available:
+        \url{https://www.typescriptlang.org/}
+    \bibitem{vue}
+        ``The Progressive JavaScript Framework''. Figma. Accessed: Apr. 30, 2025. [Online.]
+        Available: \url{https://vuejs.org/}
+    \bibitem{blazor}
+        `` Launch your idea to the web fast with Blazor''. Blazor. Accessed: Apr. 30, 2025.
+        [Online.] Available: \url{https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor}
+    \bibitem{pinia}
+        ``Pinia: The intuitive store for Vue.js''. Pinia. Accessed: Apr. 30, 2025. [Online.]
+        Available: \url{https://pinia.vuejs.org/}
+    \bibitem{pinia-persistent}
+        ``Pinia Plugin Persistedstate: Configurable persistence of Pinia stores''.
+        Pinia Plugin Persistedstate. Accessed: Apr. 30, 2025. [Online.] Available:
+        \url{https://prazdevs.github.io/pinia-plugin-persistedstate/}
+    \bibitem{json-server}
+        ``json-server''. GitHub. Accessed: Apr. 24, 2025. [Online.] Available:
+        \url{https://github.com/typicode/json-server}
+    \bibitem{npm}
+        ``NPM''. NPM. Accessed: Apr. 24, 2025. [Online.] Available: \url{https://www.npmjs.com/}
+    \bibitem{eslint}
+        ``ESLint''. ESLint. Apr. 24, 2025. [Online.] \url{https://eslint.org/}
+    \bibitem{prettier}
+        ``Prettier''. Prettier. Apr. 24, 2025. [Online.] \url{https://prettier.io/}
 \end{thebibliography}
 \endgroup
 
