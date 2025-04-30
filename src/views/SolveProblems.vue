@@ -270,11 +270,15 @@ const scheduleShifts = computed(() => {
 
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
+            const isGoal = problem.replacementShift
+                ? shift.id === problem.replacementShift.id
+                : true;
 
             ret.push({
                 shift: shift,
                 course: course,
                 room: room,
+                type: isGoal ? "active" : "border",
                 attendence: attendence,
                 showCapacity: true
             });
