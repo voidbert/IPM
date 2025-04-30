@@ -29,15 +29,6 @@
     </label>
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-    label: string;
-    options: string[];
-}>();
-
-const model = defineModel({ type: Number });
-</script>
-
 <style scoped>
 .dropdown-menu {
     display: flex;
@@ -83,3 +74,12 @@ const model = defineModel({ type: Number });
     pointer-events: none;
 }
 </style>
+
+<script setup lang="ts">
+const props = defineProps<{
+    label: string;
+    options: string[];
+}>();
+
+const model = defineModel({ type: Number });
+</script>

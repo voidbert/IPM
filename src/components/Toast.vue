@@ -94,7 +94,7 @@
 
 .toast-slide-enter-from,
 .toast-slide-leave-to {
-    transform: translate(-50%, 6rem);
+    transform: translate(-50%, 6em);
 }
 </style>
 
@@ -126,4 +126,10 @@ const handleUndo = () => {
 setTimeout(() => {
     model.value = false;
 }, props.duration);
+
+document.addEventListener("keyup", (e) => {
+    if (e.key === "Escape") {
+        model.value = false;
+    }
+});
 </script>

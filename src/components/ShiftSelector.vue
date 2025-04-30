@@ -15,9 +15,12 @@
 -->
 
 <template>
-    <div class="shift-selector">
-        <template v-for="course in presentedShifts" :key="course.id">
-            <details open class="shift-selector-details">
+    <div v-if="props.modelValue.initialized" class="shift-selector">
+        <template v-for="course in presentedShifts" :key="course.course.id">
+            <details
+                class="shift-selector-details"
+                :open="props.modelValue.openCourses[course.course.id]"
+                @toggle="(e) => toggleCourse(e, course.course.id)">
                 <summary class="shift-selector-summary">
                     <Checkbox
                         :modelValue="courseCheckboxValue(course.shifts)"
@@ -27,7 +30,7 @@
                 </summary>
                 <ul class="shift-selector-list">
                     <li v-for="shift in course.shifts" :key="shift.id">
-                        <Checkbox v-model="props.modelValue[shift.id]">
+                        <Checkbox v-model="props.modelValue.selectedShifts[shift.id]">
                             {{ shift.name }}
                         </Checkbox>
                     </li>
@@ -44,15 +47,24 @@
     padding: 1em;
 }
 
+.shift-selector-title {
+    display: block;
+}
+
 .shift-selector-summary {
     display: flex;
     align-items: center;
     gap: 0.5em;
 }
 
+.shift-selector-summary::-webkit-details-marker {
+    display: none;
+}
+
 .shift-selector-summary::before {
+    appearance: none;
     content: "▶";
-    color: var(--color-checkbox-foreground);
+    color: var(--color-body-foreground);
     transition:
         color 0.2s,
         transform 0.1s;
@@ -83,7 +95,11 @@ const props = defineProps<{
 
     // An hack to get an deep reactive model. This is actually how Vue compiles models.
     /* eslint vue/no-mutating-props: 0 */
-    modelValue: Record<string, boolean>;
+    modelValue: {
+        initialized: boolean;
+        selectedShifts: Record<string, boolean>;
+        openCourses: Record<string, boolean>;
+    };
 }>();
 
 const presentedShifts = computed(() =>
@@ -97,7 +113,7 @@ const presentedShifts = computed(() =>
 
 const courseCheckboxValue = (shifts: Shift[]) => {
     const shiftIds = shifts.map((shift) => String(shift.id));
-    const selected = Object.entries(props.modelValue).filter(
+    const selected = Object.entries(props.modelValue.selectedShifts).filter(
         (entry) => shiftIds.includes(entry[0]) && entry[1]
     ).length;
 
@@ -110,6 +126,12 @@ const courseCheckboxValue = (shifts: Shift[]) => {
     }
 };
 
+const toggleCourse = (e: ToggleEvent, courseId: number) => {
+    if ((e.target as HTMLDetailsElement).open != props.modelValue.openCourses[courseId]) {
+        props.modelValue.openCourses[courseId] = !props.modelValue.openCourses[courseId];
+    }
+};
+
 const handleCourseInput = (shifts: Shift[]) => {
     let selected = courseCheckboxValue(shifts);
     if (selected === null) {
@@ -117,7 +139,7 @@ const handleCourseInput = (shifts: Shift[]) => {
     }
 
     shifts.forEach((shift) => {
-        props.modelValue[String(shift.id)] = !selected;
+        props.modelValue.selectedShifts[String(shift.id)] = !selected;
     });
 };
 </script>

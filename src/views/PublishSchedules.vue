@@ -21,7 +21,7 @@
             <h2 v-if="problems.length > 0">Problemas por resolver</h2>
         </div>
 
-        <div id="publish-schedules-problems" v-if="problems.length > 0 && courses">
+        <div id="publish-schedules-problems" v-if="problems.length > 0 && courses.length > 0">
             <PresentedProblem
                 v-for="(problem, i) in problems"
                 :key="i"

@@ -144,9 +144,9 @@ const props = defineProps<{
 }>();
 
 // Sidebar
-const shift = ref<Shift | undefined>(undefined);
-const course = ref<Course | undefined>(undefined);
-const professor = ref<User | undefined>(undefined);
+const shift = ref<Shift>();
+const course = ref<Course>();
+const professor = ref<User>();
 const rooms = ref<AvailableRoom[]>([]);
 const roomNames = ref<string[]>([]);
 const selectedRoom = ref(0);

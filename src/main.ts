@@ -22,6 +22,7 @@ import "./main.css";
 
 import Login from "./views/Login.vue";
 import MySchedule from "./views/MySchedule.vue";
+import CompleteSchedule from "./views/CompleteSchedule.vue";
 import SolveProblems from "./views/SolveProblems.vue";
 import ManageShifts from "./views/ManageShifts.vue";
 import ManageShift from "./views/ManageShift.vue";
@@ -53,6 +54,14 @@ const router = createRouter({
             path: "/MySchedule",
             name: "MySchedule",
             component: MySchedule,
+            meta: {
+                userType: "student"
+            }
+        },
+        {
+            path: "/CompleteSchedule",
+            name: "CompleteSchedule",
+            component: CompleteSchedule,
             meta: {
                 userType: "student"
             }

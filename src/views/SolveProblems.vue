@@ -16,14 +16,14 @@
 
 <template>
     <div id="solve-problems-page-container" v-if="allProblems.length > 0">
-        <aside id="solve-problems-sidebar">
+        <aside id="solve-problems-sidebar" ref="sidebar">
             <TextInput
                 type="search"
                 placeholder="Pesquisar"
                 v-model="problemSearch"
                 v-on:update:modelValue="updateSideBarWidth" />
 
-            <div id="solve-problems-sidebar-problems" v-if="courses">
+            <div id="solve-problems-sidebar-problems" v-if="courses.length > 0">
                 <div
                     class="solve-problems-problem-container"
                     v-for="(problem, i) in allProblems"
@@ -97,7 +97,6 @@
 #solve-problems-page-container {
     display: flex;
 
-    padding: 0.5em;
     gap: 1em;
 }
 
@@ -107,6 +106,7 @@
     flex-direction: column;
 
     gap: 0.5em;
+    padding: 0.5em 0em 0.5em 0.5em;
 }
 
 #solve-problems-sidebar-problems {
@@ -179,7 +179,7 @@ import { Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
 
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -224,13 +224,12 @@ const describe = (problem: Problem): string => {
     }
 };
 
-// Always keep the side bar's width the same, despite the elements actually being shown
+// Always keep the sidebar's width the same, despite the elements actually being shown
 const fixedSideBarWidth = ref("auto");
+const sidebar = useTemplateRef("sidebar");
 const updateSideBarWidth = () => {
     if (fixedSideBarWidth.value === "auto") {
-        fixedSideBarWidth.value = getComputedStyle(
-            document.getElementById("solve-problems-sidebar") as HTMLElement
-        ).width;
+        fixedSideBarWidth.value = getComputedStyle(sidebar.value as Element).width;
     }
 };
 
@@ -271,11 +270,15 @@ const scheduleShifts = computed(() => {
 
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
+            const isGoal = problem.replacementShift
+                ? shift.id === problem.replacementShift.id
+                : true;
 
             ret.push({
                 shift: shift,
                 course: course,
                 room: room,
+                type: isGoal ? "active" : "border",
                 attendence: attendence,
                 showCapacity: true
             });

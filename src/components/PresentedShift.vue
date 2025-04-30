@@ -45,6 +45,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 
     padding: 0.5em;
     border: none;
@@ -71,7 +72,7 @@
 
 .shift-border {
     background-color: var(--color-shift-background-disabled);
-    border: 0.5em solid v-bind(`var(--color-shift-background-${color}) `);
+    border: 0.3em solid v-bind(`var(--color-shift-background-${color}) `);
 }
 
 .shift-border:hover {
@@ -131,8 +132,8 @@ import Capacity from "./Capacity.vue";
 
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
-import { Shift } from "../models/Shift.ts";
 import { Room } from "../models/Room.ts";
+import { Shift } from "../models/Shift.ts";
 
 import { computed } from "vue";
 
