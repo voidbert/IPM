@@ -15,19 +15,33 @@
 -->
 
 <template>
-    <main id="my-schedule-page-container">
-        <span id="my-schedule-tip">
-            <template v-if="!choosing">Clique num turno para mais informação</template>
-            <template v-else>Clique num turno para realizar a sua troca</template>
-        </span>
-        <Button v-if="choosing" id="my-schedule-cancel" type="cancel" @click="choosing = undefined">
-            Cancelar
-        </Button>
+    <div id="complete-schedule-page-container">
+        <aside id="complete-schedule-sidebar">
+            <h1 id="complete-schedule-sidebar-title">Turnos</h1>
+            <ShiftSelector
+                v-model="shiftSelectorStore"
+                :courses="studentCourses"
+                :shifts="studentShifts" />
+        </aside>
 
-        <div id="my-schedule-schedule-container">
-            <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
-        </div>
-    </main>
+        <main id="complete-schedule-main">
+            <span id="complete-schedule-tip">
+                <template v-if="!choosing">Clique num turno para mais informação</template>
+                <template v-else>Clique num turno para realizar a sua troca</template>
+            </span>
+            <Button
+                v-if="choosing"
+                id="complete-schedule-cancel"
+                type="cancel"
+                @click="choosing = undefined">
+                Cancelar
+            </Button>
+
+            <div id="complete-schedule-schedule-container">
+                <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
+            </div>
+        </main>
+    </div>
 
     <!-- v-if necessary to avoid warnings about undefined properties -->
     <ShiftInfoPopup
@@ -42,25 +56,40 @@
         :replacement="changeShiftReplacement"
         :course="changeShiftCourse"
         @accept="sendRequest()" />
-    <Toast v-model="showToast">Pedido de troca realizado com sucesso</Toast>
+    <Toast v-model="showToast"> Pedido de troca realizado com sucesso </Toast>
 </template>
 
 <style scoped>
-#my-schedule-page-container {
-    position: relative;
+#complete-schedule-page-container {
+    display: flex;
+    flex: 1 0 0;
+    overflow: scroll;
+}
 
+#complete-schedule-sidebar {
+    min-width: 15em;
     display: flex;
     flex-direction: column;
-    flex: 1 0 0;
-    justify-content: flex-start;
+    overflow: scroll;
+}
 
-    gap: 1em;
-    padding: 1em;
+#complete-schedule-sidebar-title {
+    margin: 0em 1em 0.5em 0.5em;
+    padding: 0.5em;
+    border-bottom: 1px solid var(--color-body-foreground);
+
+    font-size: 1.2em;
+}
+
+#complete-schedule-main {
+    position: relative;
+    display: flex;
+    padding: 1rem;
 
     overflow: scroll;
 }
 
-#my-schedule-tip {
+#complete-schedule-tip {
     position: absolute;
     top: 1em;
     left: 50%;
@@ -72,13 +101,13 @@
     font-weight: bold;
 }
 
-#my-schedule-cancel {
+#complete-schedule-cancel {
     position: absolute;
-    top: 0.5em;
+    top: 0.5em; /* Hardcoded navbar height */
     left: 1em;
 }
 
-#my-schedule-schedule-container {
+#complete-schedule-schedule-container {
     display: flex;
     flex-direction: column; /* For horizontal schedule growth */
     flex: 1 0 0;
@@ -93,9 +122,11 @@ import Schedule from "../components/Schedule.vue";
 import ShiftChangePopup from "../components/ShiftChangePopup.vue";
 import { ShiftInfo } from "../components/ShiftInfoPopup.vue";
 import ShiftInfoPopup from "../components/ShiftInfoPopup.vue";
+import ShiftSelector from "../components/ShiftSelector.vue";
 import Toast from "../components/Toast.vue";
 
 import { useLoginStore } from "../stores/login.ts";
+import { useShiftSelectorStore } from "../stores/shiftSelector.ts";
 import { Course } from "../models/Course.ts";
 import { Room } from "../models/Room.ts";
 import { Shift, ShiftType } from "../models/Shift.ts";
@@ -110,11 +141,36 @@ const shifts = ref<Shift[]>([]);
 const courses = ref<Course[]>([]);
 const rooms = ref<Room[]>([]);
 
+const studentCourses = ref<Course[]>([]);
+const studentShifts = ref<Shift[]>([]);
+
+const shiftSelectorStore = useShiftSelectorStore();
+
 Promise.all([User.getAll(), Shift.getAll(), Course.getAll(), Room.getAll()]).then((res) => {
     users.value = res[0];
     shifts.value = res[1];
     courses.value = res[2];
     rooms.value = res[3];
+
+    const student = users.value.find((u) => u.email === (loginStore.email as string)) as User;
+    studentCourses.value = courses.value.filter((course) =>
+        student.enrollments.includes(course.id)
+    );
+    studentShifts.value = shifts.value.filter((shift) =>
+        student.enrollments.includes(shift.course)
+    );
+
+    if (!shiftSelectorStore.initialized) {
+        shiftSelectorStore.selectedShifts = Object.fromEntries(
+            studentShifts.value.map((shift) => [String(shift.id), true])
+        );
+
+        shiftSelectorStore.openCourses = Object.fromEntries(
+            studentCourses.value.map((course) => [String(course.id), true])
+        );
+
+        shiftSelectorStore.initialized = true;
+    }
 });
 
 const scheduleShifts = computed(() => {
@@ -122,19 +178,19 @@ const scheduleShifts = computed(() => {
     const student = users.value.find((u) => u.email === (loginStore.email as string)) as User;
     if (!(student instanceof User)) return [];
 
-    // Base student schedule
-    student.committedSchedule.forEach((shiftId) => {
-        const shift = shifts.value.find((s) => s.id === shiftId) as Shift;
-        const course = courses.value.find((c) => c.id === shift.course) as Course;
-        const room = rooms.value.find((r) => r.id === shift.room) as Room;
+    // Selected shifts
+    shifts.value
+        .filter((shift) => shiftSelectorStore.selectedShifts[String(shift.id)])
+        .forEach((shift) => {
+            const course = courses.value.find((c) => c.id === shift.course) as Course;
+            const room = rooms.value.find((r) => r.id === shift.room) as Room;
 
-        ret.push({
-            shift: shift,
-            course: course,
-            room: room,
-            type: choosing.value ? "disabled" : "active"
+            ret.push({
+                shift: shift,
+                course: course,
+                room: room
+            });
         });
-    });
 
     // Add extra shifts when choosing a shift
     if (choosing.value) {
@@ -143,10 +199,13 @@ const scheduleShifts = computed(() => {
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
 
-            if (course.id === courseId && shift.type === shiftType) {
+            // Shifts of the desired type
+            if (
+                (course.id === courseId && shift.type === shiftType) ||
+                student.committedSchedule.includes(shift.id)
+            ) {
                 const found = ret.find((s) => s.shift.id === shift.id);
                 if (found) {
-                    found.type = "disabled-selected";
                     return;
                 }
 
@@ -158,6 +217,22 @@ const scheduleShifts = computed(() => {
             }
         });
     }
+
+    ret.forEach((pshift) => {
+        const studentShift = student.committedSchedule.includes(pshift.shift.id);
+
+        if (choosing.value) {
+            const [courseId, shiftType] = choosing.value as [number, ShiftType];
+
+            if (pshift.shift.course === courseId && pshift.shift.type === shiftType) {
+                pshift.type = studentShift ? "disabled-selected" : "active";
+            } else {
+                pshift.type = studentShift ? "disabled-dark" : "disabled";
+            }
+        } else {
+            pshift.type = studentShift ? "active" : "border";
+        }
+    });
 
     return ret;
 });
