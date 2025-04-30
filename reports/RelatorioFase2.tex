@@ -11,7 +11,8 @@
 
 \title{\textbf{Interface Pessoa-Máquina \\ \large Trabalho Prático -- Fase II}}
 \date{4 de maio de 2025}
-\author{Grupo 12 \\
+\author{Grupo 12 \\ \\
+    \url{https://www.figma.com/design/Ps4VLCPz66bKq5p2ypzrDR/Projeto-IPM} \\ \\
     \url{https://github.com/UMinho-ENGINF-IPM/trabalho-pr-tico-gp25_12}}
 
 \begin{document}
@@ -32,7 +33,6 @@
 \setlength{\parindent}{0pt}
 \def\arraystretch{1.5}
 
-\vspace{2cm}
 \begin{center}
     \begin{tabular}{>{\centering}p{0.25\textwidth}
                     >{\centering}p{0.25\textwidth}
@@ -57,7 +57,31 @@
 
 \begin{abstract}
     \noindent
+    No âmbito da segunda fase deste trabalho prático, foi implementada, com base em modelação
+    prévia, uma interface de utilizador de um sistema para a gestão de horários de um curso
+    universitário, utilizado tanto pelos alunos como pelo diretor de curso. Neste documento,
+    apresenta-se a interface implementada em Vue \cite{vue} (e outras tecnologias) e o seu processo
+    de implementação, bem como algumas correções feitas ao modelo da interface. Por falta de tempo,
+    não foi possível fazer testes da aplicação com utilizadores reais, não sendo possível fazer uma
+    reflexão muito aprofundada sobre a qualidade do produto final. No entanto, consideramos que a
+    aplicação desenvolvida cumpriu os requisitos pedidos.
 \end{abstract}
+
+\section{Objetivos}
+
+O objetivo do trabalho prático proposto na Unidade Curricular de Interface Pessoa-Máquina é a
+modelação e o desenvolvimento de uma aplicação Web para para a gestão de horários de um curso
+universitário, utilizado tanto pelos alunos como pelo diretor de curso. Em particular, deseja-se que
+a aplicação permita aos alunos consultar o seu horário e fazer pedidos de troca de turno ao diretor
+de curso, e que o diretor de curso possa manualmente colocar alunos em turnos (para resolver
+limitações do algoritmo de colocação e aceder a pedidos de alunos) e aceder a pedidos de professores
+para mudança de turnos para salas maiores. Para mais detalhes, o enunciado do trabalho prático pode
+ser consultado nos anexos deste relatório. Idealmente, a aplicação deve ajudar o utilizador a não
+cometer erros, como colocar alunos em turnos que originem sobreposições de horário.
+
+Na primeira fase deste trabalho, fez-se a modelação da aplicação em Figma \cite{figma}, e nesta
+fase, procurou-se implementar a interface modelada em Vue \cite{vue}. Também se realizaram algumas
+alterações ao modelo, a corrigir alguns aspetos que se acharam relevantes.
 
 \section{Alterações ao Modelo da Interface}
 
@@ -208,15 +232,15 @@ disponíveis, por exemplo, em Linux.
 \renewcommand{\section}[2]{}
 
 \begin{thebibliography}{9}
+    \bibitem{vue}
+        ``The Progressive JavaScript Framework''. Figma. Accessed: Apr. 30, 2025. [Online.]
+        Available: \url{https://vuejs.org/}
     \bibitem{figma}
         ``Figma: Collaborative Interface Design Tool''. Figma. Accessed: Mar. 13, 2025. [Online.]
         Available: \url{https://www.figma.com/}
     \bibitem{typescript}
         ``TypeScript''. TypeScript. Accessed: Apr. 30, 2025. [Online.] Available:
         \url{https://www.typescriptlang.org/}
-    \bibitem{vue}
-        ``The Progressive JavaScript Framework''. Figma. Accessed: Apr. 30, 2025. [Online.]
-        Available: \url{https://vuejs.org/}
     \bibitem{blazor}
         `` Launch your idea to the web fast with Blazor''. Blazor. Accessed: Apr. 30, 2025.
         [Online.] Available: \url{https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor}
