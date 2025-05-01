@@ -21,7 +21,10 @@
             v-for="link in props.links"
             :key="link.url"
             :to="link.url">
-            <li>{{ link.name }}</li>
+            <li>
+                {{ link.name }}
+                <NotificationCircle v-if="link.notificationCircle" />
+            </li>
         </RouterLink>
     </ul>
 </template>
@@ -36,6 +39,7 @@
     list-style-type: none;
     text-decoration: none;
 
+    position: relative;
     padding: 0.5em;
     border-radius: 0.5em;
 
@@ -59,10 +63,13 @@
 </style>
 
 <script setup lang="ts">
+import NotificationCircle from "./NotificationCircle.vue";
+
 const props = defineProps<{
     links: {
         name: string;
         url: string;
+        notificationCircle?: boolean;
     }[];
 }>();
 </script>

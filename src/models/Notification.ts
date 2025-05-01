@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { fetchJson } from "./Utils.ts";
+import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
 export type NotificationType = "studentRequest" | "professorRequest";
 export type NotificationState = "pending" | "accepted" | "rejected";
@@ -75,6 +76,9 @@ export class Notification {
 
     async update(): Promise<void> {
         await fetchJson(`/notifications/${this.id}`, "PUT", this);
+
+        const notificationCirclesStore = useNotificationCirclesStore();
+        notificationCirclesStore.forceUpdate++;
     }
 
     async add(): Promise<void> {

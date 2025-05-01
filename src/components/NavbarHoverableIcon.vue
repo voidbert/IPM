@@ -17,11 +17,15 @@
 <template>
     <button class="navbar-hoverable-icon" :title="props.tooltip">
         <div class="navbar-hoverable-icon-svg" />
+        <NotificationCircle
+            class="navbar-hoverable-icon-notification-circle"
+            v-if="props.notificationCircle" />
     </button>
 </template>
 
 <style scoped>
 .navbar-hoverable-icon {
+    position: relative;
     height: 100%;
     aspect-ratio: 1 / 1;
 
@@ -42,11 +46,24 @@
     background-color: var(--color-navbar-hoverable-icon-hover);
     transition: background-color 0.1s;
 }
+
+.navbar-hoverable-icon-notification-circle {
+    top: 0% !important;
+    right: 0% !important;
+}
 </style>
 
 <script setup lang="ts">
-const props = defineProps<{
-    url: string;
-    tooltip: string;
-}>();
+import NotificationCircle from "./NotificationCircle.vue";
+
+const props = withDefaults(
+    defineProps<{
+        url: string;
+        tooltip: string;
+        notificationCircle?: boolean;
+    }>(),
+    {
+        notificationCircle: false
+    }
+);
 </script>

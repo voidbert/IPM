@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { fetchJson } from "./Utils.ts";
+import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
 export type UserType = "student" | "professor" | "director";
 
@@ -76,6 +77,9 @@ export class User {
 
     async update(): Promise<void> {
         await fetchJson(`/users/${this.id}`, "PUT", this);
+
+        const notificationCirclesStore = useNotificationCirclesStore();
+        notificationCirclesStore.forceUpdate++;
     }
 
     static async getById(id: number): Promise<User | null> {

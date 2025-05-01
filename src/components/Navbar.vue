@@ -27,6 +27,7 @@
             v-if="props.type !== 'login'"
             url="/notifications.svg"
             tooltip="Notificações"
+            :notificationCircle="hasNotificationCircle"
             @click="router.push('/Notifications')" />
         <NavbarHoverableIcon
             v-if="props.type !== 'login'"
@@ -64,8 +65,11 @@ import NavbarLinks from "./NavbarLinks.vue";
 
 import { useThemeStore } from "../stores/theme.ts";
 import { useLoginStore } from "../stores/login.ts";
+import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -73,6 +77,9 @@ const props = defineProps<{
 }>();
 
 // Links
+const hasSchedulesCircles = ref(false);
+const hasNotificationCircle = ref(false);
+
 const links = computed(() => {
     return {
         login: [],
@@ -101,7 +108,8 @@ const links = computed(() => {
             },
             {
                 name: "Publicar Horários",
-                url: "/PublishSchedules"
+                url: "/PublishSchedules",
+                notificationCircle: hasSchedulesCircles.value
             }
         ],
         professor: []
@@ -111,9 +119,32 @@ const links = computed(() => {
 // Theme switching
 const themeStore = useThemeStore();
 
+// Notification circles
+const loginStore = useLoginStore();
+const notificationCirclesStore = useNotificationCirclesStore();
+
+const updateNotificationCircles = async () => {
+    const users = await User.getAll();
+    const user = (await User.getByEmail(loginStore.email as string)) as User;
+    const notifications = await Notification.getToUser(user.id);
+
+    console.log(
+        users.find(
+            (u) => JSON.stringify(u.committedSchedule) !== JSON.stringify(u.directorSchedule)
+        )
+    );
+
+    hasSchedulesCircles.value = users.some(
+        (u) => JSON.stringify(u.committedSchedule) !== JSON.stringify(u.directorSchedule)
+    );
+    hasNotificationCircle.value = notifications.filter((n) => n.state === "pending").length > 0;
+};
+
+watch(notificationCirclesStore, updateNotificationCircles);
+notificationCirclesStore.forceUpdate++;
+
 // Session control
 const router = useRouter();
-const loginStore = useLoginStore();
 const logout = () => {
     loginStore.logout();
     router.push("/");
