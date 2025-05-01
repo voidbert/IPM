@@ -20,6 +20,13 @@ body {
     --color-uminho-light: #9b393e;
     --color-uminho-complementary: #17807c;
 
+    --color-icon-button: var(--color-uminho);
+    --color-icon-button-hover: var(--color-uminho-light);
+    --color-icon-button-icon: #fff;
+    --color-icon-button-icon-hover: #fff;
+    --color-icon-button-disabled: var(--color-uminho-light);
+    --color-icon-button-icon-disabled: #ccc;
+
     --color-navbar-background: var(--color-uminho);
     --color-navbar-foreground: #fff;
     --color-navbar-link-active-foreground: var(--color-uminho);
@@ -46,34 +53,11 @@ body {
     --color-toast-background: var(--color-uminho);
     --color-toast-foreground: #fff;
 
-    --color-notification-text: #333333;
-    --color-notification-card: #000;
-    --color-notification-director-side-hover: #80171b;
-    --color-notification-director-hover: #eddfed;
-    --color-notification-shadow: #0000003f;
-    --color-notification-bubble: #20b6b0;
-    --color-notification-unread: #f7f7f7;
-    --color-notification-read: #ededed;
-    --color-notification-closed: #00000000;
-    --color-notification-icon-state: #9e9494;
-
-    --color-notifications-list: #ededed;
-    --color-notifications-list-header-border: #bfbfbf;
-
-    --color-requests-list: #ededed;
-
     --color-toggle-button: #9e9494;
     --color-toggle-button-text: #e6e6e6;
     --color-toggle-button-active: #705c5c;
     --color-toggle-button-hover: #b7afaf;
     --color-toggle-button-shadow: #808080;
-
-    --color-icon-button: #d6c2c2;
-    --color-icon-button-hover: #993337;
-    --color-icon-button-icon: #ad8585;
-    --color-icon-button-icon-hover: #faf4f4;
-    --color-icon-button-disabled: #d6cdcd;
-    --color-icon-button-icon-disabled: #cbbaba;
 
     --color-warning: var(--color-uminho);
 }
@@ -112,6 +96,11 @@ body[class="light"] {
     --color-dropdown-text: var(--color-body-foreground);
     --color-dropdown-border: #bbb;
     --color-dropdown-icon: #444;
+
+    --color-notification-foreground: #000;
+    --color-notification-background-read: #ccc;
+    --color-notification-background-unread: #eee;
+    --color-notification-list-background: #bbb;
 
     --color-problem-student-name: #555;
     --color-problem-description: var(--color-body-foreground);
@@ -160,6 +149,11 @@ body[class="dark"] {
     --color-dropdown-text: var(--color-body-foreground);
     --color-dropdown-border: #444;
     --color-dropdown-icon: #444;
+
+    --color-notification-foreground: #fff;
+    --color-notification-background-read: #111;
+    --color-notification-background-unread: #333;
+    --color-notification-list-background: #222;
 
     --color-problem-student-name: #aaa;
     --color-problem-description: var(--color-body-foreground);
