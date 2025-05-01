@@ -64,6 +64,7 @@ import { Shift } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
 
 import { computed, ref } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
 
 const props = defineProps<{
     type: "student" | "director" | "request";
@@ -88,7 +89,7 @@ const shownNotifications = computed(() =>
             return {
                 notification: notification,
                 nameUser: users.value.find((u) => u.id === nameId) as User,
-                course: courses.value.find((c) => c.id === notification.course) as Course,
+                course: courses.value.find((c) => c.id === notification.course),
                 fromShift: shifts.value.find((s) => s.id === notification.fromShift),
                 toShift: shifts.value.find((s) => s.id === notification.toShift),
                 currentShift: shifts.value.find((s) => s.id === notification.currentShift),
@@ -108,4 +109,17 @@ const shownNotifications = computed(() =>
             }
         })
 );
+
+onBeforeRouteLeave(async (_, from) => {
+    if (from.path === "/Notifications" && props.type === "student") {
+        await Promise.all(
+            props.notifications
+                .filter((notification) => notification.state === "pending")
+                .map((notification) => {
+                    notification.state = "accepted";
+                    return notification.update();
+                })
+        );
+    }
+});
 </script>
