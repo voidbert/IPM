@@ -38,9 +38,6 @@ body {
     --color-navbar-hoverable-icon-hover: #ddd;
 
     --color-notification-circle: #0ff;
-    --color-notification-text: #333333;
-    --color-notification-shadow: #0000003f;
-    --color-notification-icon-state: #9e9494;
 
     --color-shift-background-1: #f07575;
     --color-shift-background-1-hover: #f5a3a3;
@@ -106,6 +103,7 @@ body[class="light"] {
     --color-notification-background-read: #ccc;
     --color-notification-background-unread: #fafafa;
     --color-notification-list-background: #bbb;
+    --color-notification-shadow: #0000003f;
 
     --color-problem-student-name: #555;
     --color-problem-description: var(--color-body-foreground);
@@ -159,6 +157,7 @@ body[class="dark"] {
     --color-notification-background-read: #111;
     --color-notification-background-unread: #333;
     --color-notification-list-background: #222;
+    --color-notification-shadow: #0000003f;
 
     --color-problem-student-name: #aaa;
     --color-problem-description: var(--color-body-foreground);
