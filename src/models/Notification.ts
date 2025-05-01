@@ -77,6 +77,15 @@ export class Notification {
         await fetchJson(`/notifications/${this.id}`, "PUT", this);
     }
 
+    async add(): Promise<void> {
+        const notifications = await Notification.getAll();
+        const maxId = Math.max(...notifications.map((n) => n.id));
+
+        const toSend = structuredClone<any>(this);
+        toSend.id = String(maxId + 1);
+        await fetchJson(`/notifications/`, "POST", toSend);
+    }
+
     static async getFromUser(userId: number): Promise<Notification[]> {
         const notifications = (await fetchJson(`/notifications?from=${userId}`)) as any[];
         return notifications.map((notification) => Notification.createFromObject(notification));
@@ -85,5 +94,9 @@ export class Notification {
     static async getToUser(userId: number): Promise<Notification[]> {
         const notifications = (await fetchJson(`/notifications?to=${userId}`)) as any[];
         return notifications.map((notification) => Notification.createFromObject(notification));
+    }
+
+    static async getAll(): Promise<Notification[]> {
+        return (await fetchJson("/notifications")).map(Notification.createFromObject);
     }
 }

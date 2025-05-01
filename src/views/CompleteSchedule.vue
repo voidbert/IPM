@@ -128,6 +128,7 @@ import Toast from "../components/Toast.vue";
 import { useLoginStore } from "../stores/login.ts";
 import { useShiftSelectorStore } from "../stores/shiftSelector.ts";
 import { Course } from "../models/Course.ts";
+import { Notification } from "../models/Notification.ts";
 import { Room } from "../models/Room.ts";
 import { Shift, ShiftType } from "../models/Shift.ts";
 import { User } from "../models/User.ts";
@@ -295,8 +296,26 @@ const startChange = () => {
     ];
 };
 
-const sendRequest = () => {
-    // TODO - send request
+const sendRequest = async () => {
+    const student = users.value.find((u) => u.email === (loginStore.email as string)) as User;
+    const director = users.value.find((u) => u.type === "director") as User;
+
+    console.log(student);
+
+    const notification = new Notification(
+        -1,
+        student.id,
+        director.id,
+        new Date(),
+        "studentRequest",
+        "pending",
+        (choosing.value as [number, ShiftType])[0],
+        (changeShiftOriginal.value as Shift).id,
+        (changeShiftReplacement.value as Shift).id
+    );
+
+    await notification.add();
+
     choosing.value = undefined;
     showToast.value = true;
 };
