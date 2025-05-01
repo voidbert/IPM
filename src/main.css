@@ -99,7 +99,7 @@ body[class="light"] {
 
     --color-notification-foreground: #000;
     --color-notification-background-read: #ccc;
-    --color-notification-background-unread: #eee;
+    --color-notification-background-unread: #fafafa;
     --color-notification-list-background: #bbb;
 
     --color-problem-student-name: #555;

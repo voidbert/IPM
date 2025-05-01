@@ -16,13 +16,18 @@
 
 <template>
     <ol
-        v-if="users.length > 0 && shifts.length > 0 && courses.length > 0"
+        v-if="
+            notifications.length > 0 && users.length > 0 && shifts.length > 0 && courses.length > 0
+        "
         class="notification-list">
         <PresentedNotification
             v-for="notification in shownNotifications"
             :key="notification.notification.id"
             v-bind="notification" />
     </ol>
+    <div v-else class="notification-list notification-list-no-notifications">
+        Sem {{ props.type === "request" ? "pedidos" : "notificações" }} a apresentar
+    </div>
 </template>
 
 <style scoped>
@@ -36,10 +41,17 @@
     gap: 0.5em;
     border-radius: 0.5em;
     padding: 0.5em;
+    margin: 0px;
 
     background-color: var(--color-notification-list-background);
 
     overflow-y: scroll;
+}
+
+.notification-list-no-notifications {
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 </style>
 
