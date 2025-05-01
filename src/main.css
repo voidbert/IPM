@@ -37,6 +37,8 @@ body {
     --color-navbar-hoverable-icon-default: var(--color-navbar-foreground);
     --color-navbar-hoverable-icon-hover: #ddd;
 
+    --color-notification-circle: #0ff;
+
     --color-shift-background-1: #f07575;
     --color-shift-background-1-hover: #f5a3a3;
     --color-shift-background-2: #759cf0;
