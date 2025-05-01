@@ -15,121 +15,47 @@
 -->
 
 <template>
-    <main>
-        <h2>Notificações</h2>
-        <NotificationsList
-            :type="loginStore.user.type ?? ''"
-            :notifications="notifications"
-            :usersInfo="usersInfo"
-            id="notifications"
-            @changeRead="updateNotification"
-            @changeState="updateNotificationState" />
+    <main id="notifications-main">
+        <h1 id="notifications-title">Notificações</h1>
+        <NotificationList
+            v-if="notificationType"
+            :type="notificationType"
+            :notifications="notifications" />
     </main>
 </template>
 
 <style scoped>
-main {
+#notifications-main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    overflow: hidden;
+    flex: 1 0 0;
+
+    gap: 1em;
+    padding: 1em;
 }
 
-#notifications {
-    width: 80vw;
+#notifications-title {
+    margin: 0px;
+    text-align: center;
+    font-size: 1.5rem;
 }
 </style>
 
 <script setup lang="ts">
-import NotificationsList from "../components/NotificationsList.vue";
-
-import { Notification, State } from "../models/Notification.ts";
-import { User } from "../models/User.ts";
+import NotificationList from "../components/NotificationList.vue";
 
 import { useLoginStore } from "../stores/login.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
 import { ref } from "vue";
 
 const loginStore = useLoginStore();
-
+const notificationType = ref<"student" | "director">();
 const notifications = ref<Notification[]>([]);
-const usersInfo = ref<Record<number, User>>({});
-const maxType: number = 3;
 
-const updateNotification = async (read: boolean, id: number) => {
-    const notification = notifications.value.find((e) => e.id == id);
-    if (notification) {
-        notification.read = read;
-    }
-    if (id >= 0) {
-        await Notification.setNotificationRead(id, read);
-    }
-};
-
-const updateNotificationState = async (state: State, id: number) => {
-    const notification = notifications.value.find((e) => e.id == id);
-    if (notification) {
-        notification.state = state;
-    }
-    await Notification.setNotificationState(id, state);
-};
-
-const fetchNotifications = async () => {
-    let allNotifications: Notification[] = [];
-    if (loginStore.user.type == "student") {
-        allNotifications = await Notification.getUserNotifications(loginStore.user.id);
-    } else if (loginStore.user.type == "director") {
-        allNotifications = await Notification.getUserNotifications(loginStore.user.id);
-        let typeShift = 0;
-        let typeRoom = 0;
-        allNotifications.forEach((n) => {
-            if (n.exchange === "shift" && n.state === "pending") typeShift += 1;
-            else if (n.exchange === "room" && n.state === "pending") typeRoom += 1;
-        });
-        if (typeShift > maxType) {
-            allNotifications = allNotifications.filter(
-                (n) => !(n.exchange === "shift" && n.state === "pending")
-            );
-            const notificationGroup = new Notification(
-                2,
-                -1,
-                `Tem ${typeShift} pedidos de troca de turno`,
-                new Date(),
-                false,
-                "pending",
-                "shift"
-            );
-            allNotifications.push(notificationGroup);
-        }
-        if (typeRoom > maxType) {
-            allNotifications = allNotifications.filter(
-                (n) => !(n.exchange === "room" && n.state === "pending")
-            );
-            const notificationGroup = new Notification(
-                2,
-                -1,
-                `Tem ${typeRoom} pedidos de troca de sala`,
-                new Date(),
-                false,
-                "pending",
-                "room"
-            );
-            allNotifications.push(notificationGroup);
-        }
-    }
-    notifications.value = allNotifications;
-    await fetchUsersInfo();
-};
-
-const fetchUsersInfo = async () => {
-    const usersIds: number[] = [];
-    notifications.value.forEach((n) => {
-        if (n.from > 0 && !usersIds.includes(n.from)) usersIds.push(n.from);
-    });
-    usersInfo.value = await User.getUsersPublicInfo(usersIds);
-};
-
-fetchNotifications();
+User.getByEmail(loginStore.email as string).then(async (user) => {
+    notificationType.value = (user as User).type as "student" | "director";
+    notifications.value = await Notification.getToUser((user as User).id);
+});
 </script>
