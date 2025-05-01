@@ -124,7 +124,7 @@
     gap: 0.5em;
     padding: 1em;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #solve-problems-empty {
@@ -158,6 +158,11 @@
 #solve-problems-full-shift-buttons > *,
 #solve-problems-confirm-refusal-buttons > * {
     width: 16em;
+}
+
+#solve-problem-refuse-button {
+    margin-left: auto;
+    width: 10em;
 }
 </style>
 

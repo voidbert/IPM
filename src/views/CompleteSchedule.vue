@@ -63,14 +63,14 @@
 #complete-schedule-page-container {
     display: flex;
     flex: 1 0 0;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-sidebar {
     min-width: 15em;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-sidebar-title {
@@ -86,7 +86,7 @@
     display: flex;
     padding: 1rem;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-tip {

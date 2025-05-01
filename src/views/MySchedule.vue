@@ -57,7 +57,7 @@
     gap: 1em;
     padding: 1em;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #my-schedule-tip {

@@ -50,7 +50,7 @@
     table-layout: fixed;
     border-collapse: collapse;
     width: calc(max(100%, v-bind(`${maxOccupancy * (showCapacities ? 4.5: 3.5) * 5 + 3}em`)));
-    flex: 1 0 calc(max(100%, v-bind(`${12 * (showCapacities ? 3: 2.5)}em`)));
+    flex: 1 0 calc(max(80%, v-bind(`${12 * (showCapacities ? 2.75: 2.5)}em`)));
 }
 
 .schedule-day {
