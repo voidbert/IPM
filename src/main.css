@@ -38,6 +38,9 @@ body {
     --color-navbar-hoverable-icon-hover: #ddd;
 
     --color-notification-circle: #0ff;
+    --color-notification-text: #333333;
+    --color-notification-shadow: #0000003f;
+    --color-notification-icon-state: #9e9494;
 
     --color-shift-background-1: #f07575;
     --color-shift-background-1-hover: #f5a3a3;
