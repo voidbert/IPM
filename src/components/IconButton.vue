@@ -15,77 +15,88 @@
 -->
 
 <template>
-    <button class="reset button" :class="props.disabled ? 'disabled' : ''">
-        <span class="reset icon" :class="type" :title="tooltip" />
+    <button class="icon-button" :disabled="props.disabled">
+        <span
+            class="icon-button-icon"
+            :class="`icon-button-icon-${props.type}`"
+            :title="props.disabled ? undefined : tooltip" />
     </button>
 </template>
 
 <style scoped>
-.button {
+.icon-button {
+    border: none;
+
+    width: 2em;
+    height: 2em;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    padding: 0.2em;
     border-radius: 0.5em;
-    background-color: var(--color-icon-button);
-    width: 1.5rem;
-    height: 1.5rem;
+
+    background: var(--color-icon-button);
     transition: background-color 0.1s linear;
 }
 
-.button:hover:not(.disabled) {
+.icon-button:hover:not(:disabled) {
     background-color: var(--color-icon-button-hover);
 }
 
-.button:hover:not(.disabled) .icon {
+.icon-button:hover:not(:disabled) .icon-button-icon {
     background-color: var(--color-icon-button-icon-hover);
 }
 
-.disabled {
-    cursor: default;
+.icon-button:disabled {
     background-color: var(--color-icon-button-disabled);
 }
 
-.disabled .icon {
+.icon-button:disabled > .icon-button-icon {
     background-color: var(--color-icon-button-icon-disabled);
 }
 
-.icon {
+.icon-button-icon {
     background-color: var(--color-icon-button-icon);
-    mask-image: url("/public/icon-accept.svg");
     mask-size: cover;
-    width: 80%;
-    height: 80%;
+
+    width: 100%;
+    height: 100%;
     transition: background-color 0.1s linear;
 }
 
-.accept {
-    mask-image: url("/public/icon-accept.svg");
+.icon-button-icon-accept {
+    mask-image: url("/accept.svg");
 }
 
-.reject {
-    mask-image: url("/public/icon-reject.svg");
+.icon-button-icon-reject {
+    mask-image: url("/reject.svg");
 }
 
-.view {
-    mask-image: url("/public/icon-view.svg");
-    width: 100%;
-    height: 100%;
+.icon-button-icon-view {
+    mask-image: url("/view.svg");
 }
 </style>
 
 <script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps<{
-    type: "accept" | "reject" | "view";
-    disabled: boolean;
-}>();
+const props = withDefaults(
+    defineProps<{
+        type: "accept" | "reject" | "view";
+        disabled?: boolean;
+    }>(),
+    {
+        disabled: false
+    }
+);
 
 const tooltip = computed(() => {
-    let result = "";
-    if (props.type == "accept") result = "Aceitar";
-    else if (props.type == "reject") result = "Rejeitar";
-    else if (props.type == "view") result = "Ir para";
-    return result;
+    return {
+        accept: "Aceitar",
+        reject: "Rejeitar",
+        view: "Ir para"
+    }[props.type];
 });
 </script>
