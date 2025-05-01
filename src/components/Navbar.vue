@@ -128,12 +128,6 @@ const updateNotificationCircles = async () => {
     const user = (await User.getByEmail(loginStore.email as string)) as User;
     const notifications = await Notification.getToUser(user.id);
 
-    console.log(
-        users.find(
-            (u) => JSON.stringify(u.committedSchedule) !== JSON.stringify(u.directorSchedule)
-        )
-    );
-
     hasSchedulesCircles.value = users.some(
         (u) => JSON.stringify(u.committedSchedule) !== JSON.stringify(u.directorSchedule)
     );
