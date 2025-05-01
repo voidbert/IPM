@@ -15,7 +15,7 @@
 import { fetchJson } from "./Utils.ts";
 import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
-export type NotificationType = "studentRequest" | "professorRequest";
+export type NotificationType = "studentRequest" | "professorRequest" | "publishedSchedules";
 export type NotificationState = "pending" | "accepted" | "rejected";
 
 export class Notification {
@@ -24,7 +24,7 @@ export class Notification {
     from: number;
     to: number;
     date: Date;
-    course: number;
+    course?: number;
     type: NotificationType;
     state: NotificationState;
 
@@ -35,6 +35,8 @@ export class Notification {
     // Professor request attributes
     currentShift?: number;
 
+    static maxId = 0;
+
     constructor(
         id: number,
         from: number,
@@ -42,7 +44,7 @@ export class Notification {
         date: Date,
         type: NotificationType,
         state: NotificationState,
-        course: number,
+        course: number | undefined = undefined,
         fromShift: number | undefined = undefined,
         toShift: number | undefined = undefined,
         currentShift: number | undefined = undefined
@@ -83,10 +85,11 @@ export class Notification {
 
     async add(): Promise<void> {
         const notifications = await Notification.getAll();
-        const maxId = Math.max(...notifications.map((n) => n.id));
+        Notification.maxId =
+            Math.max(Notification.maxId, Math.max(...notifications.map((n) => n.id))) + 1;
 
         const toSend = structuredClone<any>(this);
-        toSend.id = String(maxId + 1);
+        toSend.id = String(Notification.maxId + 1);
         await fetchJson(`/notifications/`, "POST", toSend);
     }
 

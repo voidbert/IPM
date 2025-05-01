@@ -31,19 +31,31 @@ export abstract class Business {
 
     static async publishSchedules(): Promise<void> {
         const users = await User.getAll();
+        const director = users.find((u) => u.type === "director") as User;
 
-        await Promise.all(
-            users
-                .filter(
-                    (user) =>
-                        JSON.stringify(user.committedSchedule) !==
-                        JSON.stringify(user.directorSchedule)
-                )
-                .map((user) => {
-                    user.committedSchedule = user.directorSchedule;
-                    user.update();
-                })
-        );
+        const promises = users
+            .filter(
+                (user) =>
+                    JSON.stringify(user.committedSchedule) !== JSON.stringify(user.directorSchedule)
+            )
+            .map((user) => {
+                user.committedSchedule = user.directorSchedule;
+                const notification = new Notification(
+                    -1,
+                    director.id,
+                    user.id,
+                    new Date(),
+                    "publishedSchedules",
+                    "pending"
+                );
+
+                return Promise.all([user.update(), notification.add()]);
+            });
+
+        // Sequence is important here
+        for (let i = 0; i < promises.length; ++i) {
+            await promises[i];
+        }
     }
 
     private static getUnassignedShiftProblems(
@@ -111,7 +123,7 @@ export abstract class Business {
                 return new Problem(
                     1,
                     student,
-                    notification.course,
+                    notification.course as number,
                     originalShift.type,
                     "request",
                     originalShift,
