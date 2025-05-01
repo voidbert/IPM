@@ -174,6 +174,7 @@ import UndoButton from "../components/UndoButton.vue";
 import { useToastsStore } from "../stores/toasts.ts";
 import { Business } from "../models/Business.ts";
 import { Course } from "../models/Course.ts";
+import { Notification } from "../models/Notification.ts";
 import { Problem } from "../models/Problem.ts";
 import { Room } from "../models/Room.ts";
 import { Shift } from "../models/Shift.ts";
@@ -191,11 +192,16 @@ const shifts = ref<Shift[]>([]);
 const courses = ref<Course[]>([]);
 const rooms = ref<Room[]>([]);
 const users = ref<User[]>([]);
-Promise.all([Shift.getAll(), Course.getAll(), Room.getAll(), User.getAll()]).then((res) => {
+const notifications = ref<Notification[]>([]);
+
+Promise.all([Shift.getAll(), Course.getAll(), Room.getAll(), User.getAll()]).then(async (res) => {
     shifts.value = res[0];
     courses.value = res[1];
     rooms.value = res[2];
     users.value = res[3];
+
+    const director = users.value.find((u) => u.type === "director") as User;
+    notifications.value = await Notification.getToUser(director.id);
 });
 
 // Sidebar
@@ -309,7 +315,7 @@ const swapShift = async () => {
 
     const replacingShift = problem.student.directorSchedule.find((shiftId) => {
         const shiftObj = shifts.value.find((s) => s.id === shiftId) as Shift;
-        return shiftObj.course === shift.shift.id && shiftObj.type === shift.shift.type;
+        return shiftObj.course === shift.shift.course && shiftObj.type === shift.shift.type;
     });
 
     if (replacingShift !== undefined) {
@@ -335,8 +341,17 @@ const swapRoom = () => {
 };
 
 const confirmRefusal = ref(false);
-const refuse = () => {
-    // TODO - actually remove request from notifications
+const refuse = async () => {
+    const problem = allProblems.value[activeProblem.value] as Problem;
+    const notification = notifications.value.find(
+        (notification) =>
+            notification.from === problem.student.id &&
+            notification.fromShift === (problem.originalShift as Shift).id &&
+            notification.toShift === (problem.replacementShift as Shift).id
+    ) as Notification;
+
+    notification.state = "rejected";
+    await notification.update();
 
     confirmRefusal.value = false;
     allProblems.value.splice(activeProblem.value, 1);

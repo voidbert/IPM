@@ -23,6 +23,8 @@ import "./main.css";
 import Login from "./views/Login.vue";
 import MySchedule from "./views/MySchedule.vue";
 import CompleteSchedule from "./views/CompleteSchedule.vue";
+import RequestsHistory from "./views/RequestsHistory.vue";
+import Notifications from "./views/Notifications.vue";
 import SolveProblems from "./views/SolveProblems.vue";
 import ManageShifts from "./views/ManageShifts.vue";
 import ManageShift from "./views/ManageShift.vue";
@@ -35,7 +37,7 @@ import { Business } from "./models/Business.ts";
 export {};
 declare module "vue-router" {
     interface RouteMeta {
-        userType: "login" | "student" | "director";
+        userType: Array<"login" | "student" | "director" | "professor">;
     }
 }
 
@@ -47,7 +49,7 @@ const router = createRouter({
             name: "Login",
             component: Login,
             meta: {
-                userType: "login"
+                userType: ["login"]
             }
         },
         {
@@ -55,7 +57,23 @@ const router = createRouter({
             name: "MySchedule",
             component: MySchedule,
             meta: {
-                userType: "student"
+                userType: ["student"]
+            }
+        },
+        {
+            path: "/RequestsHistory",
+            name: "RequestsHistory",
+            component: RequestsHistory,
+            meta: {
+                userType: ["student"]
+            }
+        },
+        {
+            path: "/Notifications",
+            name: "Notifications",
+            component: Notifications,
+            meta: {
+                userType: ["student", "director"]
             }
         },
         {
@@ -63,7 +81,7 @@ const router = createRouter({
             name: "CompleteSchedule",
             component: CompleteSchedule,
             meta: {
-                userType: "student"
+                userType: ["student"]
             }
         },
         {
@@ -71,7 +89,7 @@ const router = createRouter({
             name: "SolveProblems",
             component: SolveProblems,
             meta: {
-                userType: "director"
+                userType: ["director"]
             },
             children: [
                 {
@@ -85,7 +103,7 @@ const router = createRouter({
         {
             path: "/ManageShifts",
             meta: {
-                userType: "director"
+                userType: ["director"]
             },
             children: [
                 {
@@ -106,7 +124,7 @@ const router = createRouter({
             name: "PublishSchedules",
             component: PublishSchedules,
             meta: {
-                userType: "director"
+                userType: ["director"]
             }
         }
     ]
@@ -133,7 +151,7 @@ router.beforeEach(async (to) => {
         if (!user) {
             loginStore.logout();
             return "/";
-        } else if (user.type === to.meta.userType) {
+        } else if (to.meta.userType.includes(user.type)) {
             return true;
         } else if (user.type === "student") {
             return "/MySchedule";

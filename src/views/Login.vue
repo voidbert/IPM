@@ -118,7 +118,7 @@ const loginStore = useLoginStore();
 const login = async () => {
     const user = await Business.authenticate(email.value.toLowerCase(), password.value);
     if (user) {
-        loginStore.login(email.value, password.value, rememberUser.value);
+        loginStore.login(email.value, password.value, user, rememberUser.value);
 
         switch (user.type) {
             case "student":

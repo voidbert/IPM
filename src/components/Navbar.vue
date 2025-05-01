@@ -69,7 +69,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
-    type: "login" | "student" | "director";
+    type: "login" | "student" | "director" | "professor";
 }>();
 
 // Links
@@ -103,7 +103,8 @@ const links = computed(() => {
                 name: "Publicar Horários",
                 url: "/PublishSchedules"
             }
-        ]
+        ],
+        professor: []
     }[props.type];
 });
 

@@ -15,30 +15,35 @@
 -->
 
 <template>
-    <Navbar :type="navbarType" />
-    <RouterView />
+    <main id="requests-history-main">
+        <NotificationList type="request" :notifications="notifications" />
+    </main>
 </template>
 
-<script setup lang="ts">
-import Navbar from "./components/Navbar.vue";
+<style scoped>
+#requests-history-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
 
-import { useLoginStore } from "./stores/login.ts";
-import { useThemeStore } from "./stores/theme.ts";
+    gap: 1em;
+    padding: 1em;
+}
+</style>
+
+<script setup lang="ts">
+import NotificationList from "../components/NotificationList.vue";
+
+import { useLoginStore } from "../stores/login.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
 import { ref } from "vue";
-import { RouterView, useRouter } from "vue-router";
 
-// Prepare navbar
-const router = useRouter();
-const navbarType = ref<"login" | "student" | "director" | "professor">("login");
 const loginStore = useLoginStore();
-router.beforeEach((to) => {
-    navbarType.value = to.meta.userType.includes(loginStore.user.type)
-        ? loginStore.user.type
-        : "login";
-});
+const notifications = ref<Notification[]>([]);
 
-// Theme switching
-const themeStore = useThemeStore();
-document.body.className = themeStore.theme;
+User.getByEmail(loginStore.email as string).then(async (user) => {
+    notifications.value = await Notification.getFromUser((user as User).id);
+});
 </script>

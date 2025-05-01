@@ -14,6 +14,7 @@
 
 import { Course } from "./Course.ts";
 import { Problem } from "./Problem.ts";
+import { Notification } from "./Notification.ts";
 import { AvailableRoom, Room } from "./Room.ts";
 import { Shift } from "./Shift.ts";
 import { User } from "./User.ts";
@@ -89,12 +90,34 @@ export abstract class Business {
         return problems;
     }
 
-    private static getRequestProblems(shifts: Shift[], users: User[]): Problem[] {
-        // TODO - actual problems
-        const humberto = users.find((u) => u.email === "a104348@alunos.uminho.pt") as User;
-        const cpt1 = shifts.find((s) => s.id === 49) as Shift;
-        const cpt2 = shifts.find((s) => s.id === 50) as Shift;
-        return [new Problem(1, humberto, cpt1.course, "T", "request", cpt1, cpt2)];
+    private static async getRequestProblems(shifts: Shift[], users: User[]): Promise<Problem[]> {
+        const director = users.find((u) => u.type === "director") as User;
+        const notifications = await Notification.getToUser(director.id);
+
+        return notifications
+            .filter((notification) => {
+                const student = users.find((u) => u.id === notification.from) as User;
+                return (
+                    notification.type === "studentRequest" &&
+                    notification.state !== "rejected" &&
+                    student.directorSchedule.includes(notification.fromShift as number)
+                );
+            })
+            .map((notification) => {
+                const student = users.find((u) => u.id === notification.from) as User;
+                const originalShift = shifts.find((s) => s.id === notification.fromShift) as Shift;
+                const replacementShift = shifts.find((s) => s.id === notification.toShift) as Shift;
+
+                return new Problem(
+                    1,
+                    student,
+                    notification.course,
+                    originalShift.type,
+                    "request",
+                    originalShift,
+                    replacementShift
+                );
+            });
     }
 
     static async getProblems(): Promise<Problem[]> {
@@ -105,7 +128,7 @@ export abstract class Business {
         ]);
 
         const unassignedShifts = Business.getUnassignedShiftProblems(courses, shifts, users);
-        const requests: Problem[] = Business.getRequestProblems(shifts, users);
+        const requests: Problem[] = await Business.getRequestProblems(shifts, users);
         const ret = unassignedShifts.concat(requests).sort((p1, p2) => {
             if (p1.student.specialStatus > p2.student.specialStatus) {
                 return -1;
