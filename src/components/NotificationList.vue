@@ -83,9 +83,11 @@ Promise.all([User.getAll(), Shift.getAll(), Course.getAll()]).then((res) => {
 const shownNotifications = computed(() =>
     props.notifications
         .map((notification) => {
+            const nameId = props.type === "request" ? notification.to : notification.from;
+
             return {
                 notification: notification,
-                sender: users.value.find((u) => u.id === notification.from) as User,
+                nameUser: users.value.find((u) => u.id === nameId) as User,
                 course: courses.value.find((c) => c.id === notification.course) as Course,
                 fromShift: shifts.value.find((s) => s.id === notification.fromShift),
                 toShift: shifts.value.find((s) => s.id === notification.toShift),

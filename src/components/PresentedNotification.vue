@@ -162,7 +162,7 @@ import { useRouter } from "vue-router";
 
 export interface PageNotification {
     notification: Notification;
-    sender: User;
+    nameUser: User;
     course: Course;
     fromShift?: Shift;
     toShift?: Shift;
@@ -173,7 +173,7 @@ export interface PageNotification {
 const props = defineProps<PageNotification>();
 
 const shownName = computed(() => {
-    const names = props.sender.name.split(" ");
+    const names = props.nameUser.name.split(" ");
     return names[0] + " " + names[names.length - 1];
 });
 
