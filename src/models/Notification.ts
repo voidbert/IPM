@@ -77,6 +77,11 @@ export class Notification {
         await fetchJson(`/notifications/${this.id}`, "PUT", this);
     }
 
+    static async getFromUser(userId: number): Promise<Notification[]> {
+        const notifications = (await fetchJson(`/notifications?from=${userId}`)) as any[];
+        return notifications.map((notification) => Notification.createFromObject(notification));
+    }
+
     static async getToUser(userId: number): Promise<Notification[]> {
         const notifications = (await fetchJson(`/notifications?to=${userId}`)) as any[];
         return notifications.map((notification) => Notification.createFromObject(notification));

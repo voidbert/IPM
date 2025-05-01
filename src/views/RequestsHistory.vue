@@ -15,55 +15,35 @@
 -->
 
 <template>
-    <main>
-        <h2>Histórico</h2>
-        <RequestsList :type="type" :requests="requests" :usersInfo="usersInfo" id="requests" />
+    <main id="requests-history-main">
+        <NotificationList type="request" :notifications="notifications" />
     </main>
 </template>
 
 <style scoped>
-main {
+#requests-history-main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    overflow: hidden;
-}
+    flex: 1 0 0;
 
-#requests {
-    width: 80vw;
+    gap: 1em;
+    padding: 1em;
 }
 </style>
 
 <script setup lang="ts">
-import RequestsList from "../components/RequestsList.vue";
-
-import { Notification } from "../models/Notification.ts";
-import { User } from "../models/User.ts";
+import NotificationList from "../components/NotificationList.vue";
 
 import { useLoginStore } from "../stores/login.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
 import { ref } from "vue";
 
 const loginStore = useLoginStore();
+const notifications = ref<Notification[]>([]);
 
-const requests = ref<Notification[]>([]);
-const usersInfo = ref<Record<number, User>>({});
-const type = "request";
-
-const fetchRequests = async () => {
-    requests.value = await Notification.getUserRequests(loginStore.user.id);
-    await fetchUsersInfo();
-};
-
-const fetchUsersInfo = async () => {
-    const usersIds: number[] = [];
-    requests.value.forEach((r) => {
-        if (r.to > 0 && !usersIds.includes(r.to)) usersIds.push(r.to);
-    });
-    usersInfo.value = await User.getUsersPublicInfo(usersIds);
-};
-
-fetchRequests();
+User.getByEmail(loginStore.email as string).then(async (user) => {
+    notifications.value = await Notification.getFromUser((user as User).id);
+});
 </script>
