@@ -231,9 +231,7 @@ const hourShifts = computed(() => {
 });
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
-const maxOccupancy = computed(() =>
-    Math.max.apply(null, [...computeOccupancies()[0].values()].concat([0]))
-);
+const maxOccupancy = computed(() => Math.max(...[...computeOccupancies()[0].values()].concat([0])));
 
 // @ts-expect-error TypeScript doesn't see this is used in the CSS
 const showCapacities = computed(() => props.shifts.some((shift) => shift.showCapacity));
