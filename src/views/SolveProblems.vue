@@ -125,8 +125,6 @@
 
     gap: 0.5em;
     padding: 1em;
-
-    overflow: auto;
 }
 
 #solve-problems-empty {
@@ -163,7 +161,10 @@
 }
 
 #solve-problem-schedule {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+
     overflow: auto;
 }
 
