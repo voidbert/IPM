@@ -22,7 +22,8 @@
                 :open="props.modelValue.openCourses[course.course.id]"
                 @toggle="(e) => toggleCourse(e, course.course.id)">
                 <summary class="shift-selector-summary">
-                    <Checkbox class="checkbox"
+                    <Checkbox
+                        class="checkbox"
                         :modelValue="courseCheckboxValue(course.shifts)"
                         @input.prevent="handleCourseInput(course.shifts)">
                         {{ course.course.shortName }}
@@ -86,7 +87,6 @@
 .shift-selector-details:not(open) summary:hover:not(:has(.checkbox:hover))::before {
     transform: scale(1);
 }
-
 </style>
 
 <script setup lang="ts">
