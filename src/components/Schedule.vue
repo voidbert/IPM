@@ -47,6 +47,7 @@
 
 <style scoped>
 .schedule {
+    height: 100%;
     table-layout: fixed;
     border-collapse: collapse;
     width: calc(max(100%, v-bind(`${maxOccupancy * (showCapacities ? 4.5: 3.5) * 5 + 3}em`)));

@@ -40,7 +40,9 @@
 
         <main id="solve-problems-main">
             <UndoButton :disabled="undoHistory.length == 0" @click="undo()" />
-            <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
+            <div id="solve-problem-schedule">
+                <Schedule :shifts="scheduleShifts" @clickShift="handleShiftClick" />
+            </div>
             <Button
                 id="solve-problem-refuse-button"
                 v-if="(allProblems[activeProblem] as Problem).type === 'request'"
@@ -158,6 +160,11 @@
 #solve-problems-full-shift-buttons > *,
 #solve-problems-confirm-refusal-buttons > * {
     width: 16em;
+}
+
+#solve-problem-schedule {
+    height: 100%;
+    overflow: auto;
 }
 
 #solve-problem-refuse-button {
