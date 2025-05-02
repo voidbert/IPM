@@ -163,7 +163,7 @@ import { useRouter } from "vue-router";
 export interface PageNotification {
     notification: Notification;
     nameUser: User;
-    course: Course;
+    course?: Course;
     fromShift?: Shift;
     toShift?: Shift;
     currentShift?: Shift;
@@ -180,8 +180,10 @@ const shownName = computed(() => {
 const shownContent = computed(() => {
     if (props.notification.type === "studentRequest") {
         return `Troca de turno: ${(props.course as Course).shortName} ${(props.fromShift as Shift).name} → ${(props.toShift as Shift).name}`;
-    } else {
+    } else if (props.notification.type === "professorRequest") {
         return `Troca de sala: ${(props.course as Course).shortName} ${(props.currentShift as Shift).name}`;
+    } else {
+        return "O seu horário sofreu alterações";
     }
 });
 
