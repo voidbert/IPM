@@ -52,7 +52,7 @@
     filter: brightness(var(--color-checkbox-checked));
 }
 .checkbox:hover {
-    background-color: rgb(153, 150, 150);
+    background-color: rgba(153, 150, 150, 0.316);
 }
 </style>
 

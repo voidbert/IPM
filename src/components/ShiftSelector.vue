@@ -81,11 +81,11 @@
 }
 
 .shift-selector-details:open summary:hover:not(:has(.checkbox:hover))::before {
-    transform: rotate(90deg) scale(1);
+    transform: rotate(90deg) scale(0.95);
 }
 
 .shift-selector-details:not(open) summary:hover:not(:has(.checkbox:hover))::before {
-    transform: scale(1);
+    transform: scale(0.95);
 }
 </style>
 
