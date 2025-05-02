@@ -30,6 +30,7 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+    flex: 1;
 
     color: var(--color-checkbox-foreground);
 }
@@ -47,8 +48,11 @@
     filter: brightness(var(--color-checkbox-unchecked));
 }
 
-.custom-checkbox-input:indeterminate {
+.checkbox-input:indeterminate {
     filter: brightness(var(--color-checkbox-checked));
+}
+.checkbox:hover {
+    background-color: rgb(153, 150, 150);
 }
 </style>
 
