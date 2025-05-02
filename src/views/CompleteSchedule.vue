@@ -199,6 +199,9 @@ const scheduleShifts = computed(() => {
             const [courseId, shiftType] = choosing.value as [number, ShiftType];
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
+            const attendence = users.value.filter((u) =>
+                u.committedSchedule.includes(shift.id)
+            ).length;
 
             // Shifts of the desired type
             if (
@@ -213,7 +216,9 @@ const scheduleShifts = computed(() => {
                 ret.push({
                     shift: shift,
                     course: course,
-                    room: room
+                    room: room,
+                    showCapacity: true,
+                    attendence: attendence
                 });
             }
         });
@@ -221,12 +226,21 @@ const scheduleShifts = computed(() => {
 
     ret.forEach((pshift) => {
         const studentShift = student.committedSchedule.includes(pshift.shift.id);
+        const attendence = users.value.filter((u) =>
+            u.committedSchedule.includes(pshift.shift.id)
+        ).length;
 
         if (choosing.value) {
             const [courseId, shiftType] = choosing.value as [number, ShiftType];
 
             if (pshift.shift.course === courseId && pshift.shift.type === shiftType) {
-                pshift.type = studentShift ? "disabled-selected" : "active";
+                if (studentShift) {
+                    pshift.type = "disabled-selected";
+                } else {
+                    pshift.type = "active";
+                    pshift.showCapacity = true;
+                    pshift.attendence = attendence;
+                }
             } else {
                 pshift.type = studentShift ? "disabled-dark" : "disabled";
             }

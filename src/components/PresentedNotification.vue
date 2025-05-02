@@ -95,7 +95,7 @@
     width: 2em;
     height: 2em;
 
-    background-color: var(--color-notification-icon-state);
+    background-color: var(--color-notification-foreground);
     mask-size: cover;
 }
 
@@ -122,7 +122,7 @@
 
 .notification-director {
     --notification-buttons-display: none;
-    --notification-date-color: var(--color-notification-text);
+    --notification-date-color: var(--color-notification-foreground);
     --notification-date-pointer-events: all;
 }
 

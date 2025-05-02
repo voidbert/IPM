@@ -143,6 +143,9 @@ const scheduleShifts = computed(() => {
             const [courseId, shiftType] = choosing.value as [number, ShiftType];
             const course = courses.value.find((c) => c.id === shift.course) as Course;
             const room = rooms.value.find((r) => r.id === shift.room) as Room;
+            const attendence = users.value.filter((u) =>
+                u.committedSchedule.includes(shift.id)
+            ).length;
 
             if (course.id === courseId && shift.type === shiftType) {
                 const found = ret.find((s) => s.shift.id === shift.id);
@@ -154,7 +157,9 @@ const scheduleShifts = computed(() => {
                 ret.push({
                     shift: shift,
                     course: course,
-                    room: room
+                    room: room,
+                    showCapacity: true,
+                    attendence: attendence
                 });
             }
         });
