@@ -131,6 +131,10 @@
     --notification-buttons-display: flex;
     --notification-date-color: #00000000;
     --notification-date-pointer-events: none;
+    background-color: var(--color-notification-hover);
+    box-shadow:
+        inset 0.2em 0 0 var(--color-uminho),
+        0px 2px 4px #0000003f;
 }
 
 .notification-director.notification-pending .notification-date {
