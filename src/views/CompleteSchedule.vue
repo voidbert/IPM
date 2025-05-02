@@ -90,10 +90,9 @@
 }
 
 #complete-schedule-tip {
-    position: absolute;
-    top: 1em;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    top: 5em;
+    left: calc((100vw - 10em) / 2);
 
     white-space: nowrap;
     overflow: hidden;
@@ -112,6 +111,8 @@
     flex-direction: column; /* For horizontal schedule growth */
     flex: 1 0 0;
     margin-top: 3rem;
+
+    overflow: auto;
 }
 </style>
 

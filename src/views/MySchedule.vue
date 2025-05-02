@@ -83,6 +83,8 @@
     flex-direction: column; /* For horizontal schedule growth */
     flex: 1 0 0;
     margin-top: 3rem;
+
+    overflow: auto;
 }
 </style>
 
