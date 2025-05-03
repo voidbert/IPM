@@ -497,6 +497,262 @@ disponíveis, por exemplo, em Linux.
 \section{Manual de Utilização}
 \label{user-manual}
 
+\section*{Utilizador Diretor de curso}
+
+\subsection{\emph{Cenário 1}}
+
+No cenário 1 o diretor de curso entra na aplicação, consulta a ocupação dos turnos, verifica
+e aloca os alunos que o algoritmo não alocou e publica o horário. Para isso, terá de realizar
+os seguintes passos:
+
+\textbf{- Entrar com as suas credenciais:}
+
+Preencher o ecrã seguinte com o seu email e password e clicar em \textbf{Iniciar Sessão}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/pagina_login_vazia.png}
+    \caption{\emph{Página de inicio de sessão vazia}.}
+    \label{login_vazio}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/login_diretor.png}
+    \caption{\emph{Página de inicio de sessão preenchida}.}
+    \label{login_diretor}
+\end{figure}
+
+\textbf{- Ver a ocupação dos turnos:}
+
+Para visualizar a ocupação dos vários turnos, o diretor de curso tem de aceder à página
+\textbf{Gerir Turnos}. Nesta, o diretor verá o horário do curso, podendo selecionar os
+turnos e unidades curriculares que pretende ver.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/gerir_turnos.png}
+    \caption{\emph{Página de gestão de turnos}.}
+    \label{gerir_turnos}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/gerir_turnos_filtrados.png}
+    \caption{\emph{Página de gestão de turnos com turnos não selecionados}.}
+    \label{gerir_turnos_filtrados}
+\end{figure}
+
+Clicando num turno, irá para a página de gestão deste turno, onde, para além de outras
+funcionalidades descritas mais à frente, pode consultar a sua lotação.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/gerir_turno.png}
+    \caption{\emph{Página de gestão de um turno}.}
+    \label{gerir_turno}
+\end{figure}
+
+\textbf{- Ver alunos não colocados:}
+
+Ao entrar na aplicação, o diretor de curso entra na página \textbf{Resolver Problemas}
+(acessível também a partir da barra de navegação), que mostra os alunos que não estão
+colocados num turno e os pedidos de troca de turno, sendo também possível pesquisar
+nesta lista. Assim, o diretor de curso pode facilmente ver os alunos que não
+foram alocados pelo algoritmo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/resolver_problemas.png}
+    \caption{\emph{Página de resolução de problemas}.}
+    \label{resolver_problemas}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/resolver_problemas_pesquisar.png}
+    \caption{\emph{Pesquisa na página de resolução de problemas}.}
+    \label{resolver_problemas_pesquisa}
+\end{figure}
+
+\textbf{- Alocação manual:}
+
+O diretor de curso pode, então, clicar num aluno da lista para o tentar alocar a um
+turno. Pode ver o horário desse aluno e os turnos possíveis, bem como a lotação dos
+mesmos, para assim tentar escolher um turno com vagas disponíveis que não crie conflitos
+no horário. Para colocar o aluno nesse turno de forma provisória, basta clicar no turno pretendido.
+
+\textbf{- Publicar horário:}
+
+Para fazer com que as mudanças efetuadas fiquem guardadas e afetem o horário dos alunos,
+o diretor de curso deve aceder à página \textbf{Publicar Horários} e clicar no botão
+com o mesmo nome.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/publicar_horario.png}
+    \caption{\emph{Página de publicação de horários}.}
+    \label{publicar_horarios}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/toast_horario_publicado.png}
+    \caption{\emph{Confirmação da publicação do horário}.}
+    \label{toast_horario_publicado}
+\end{figure}
+
+\subsection{\emph{Cenário 2}}
+
+Para as operações descritas no cenário 2, em que o diretor de curso responde a um
+pedido de mudança de sala, ele terá de realizar as seguintes ações:
+
+\textbf{- Ver os pedidos:}
+
+Para ver os pedidos feitos pelos docentes, o diretor de curso irá consultar as suas notificações,
+clicando no botão com ícone de sino, no canto superior direito da página.
+Aí terá o pedido de mudança de sala e, passando o cursor por cima dele, terá três opções: rejeitar,
+aceitar e ir para o pedido.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_sala.png}
+    \caption{\emph{Notificação de troca de sala}.}
+    \label{notificacao_troca_sala}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_sala_hover.png}
+    \caption{\emph{Opções da notificação}.}
+    \label{notificacao_troca_sala_hover}
+\end{figure}
+
+As opções de rejeitar e aceitar dão como resolvido o pedido, mostrando
+a quem pediu se ele foi aceite ou rejeitado. A opção de ir para o pedido leva para
+a página onde este pode ser resolvido.
+Neste caso, o diretor clica nessa última opção e vai para a página de gestão
+de um turno (figura \ref{gerir_turno}).
+
+\textbf{- Consultar as salas disponíveis:}
+
+Nesta página, clicando no dropdown \textbf{Sala}, o diretor pode ver as salas disponíveis no horário
+daquele turno e a capacidade de cada uma. Neste exemplo, pode ver que a sala CP2 0.05 tem uma maior
+capacidade do que a sala atual e escolhe então mudar para esta, selecionando-a no dropdown.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/trocar_sala.png}
+    \caption{\emph{Página de gestão de turno, com uma nova sala selecionada}.}
+    \label{trocar_sala}
+\end{figure}
+
+\textbf{- Fazer a alteração da sala:}
+
+Para efetivar a alteração da sala no horário dos alunos, tal como no cenário 1,
+o diretor deve publicar o novo horário (figura \ref{publicar_horarios}).
+
+\subsection{\emph{Cenário 3}}
+
+No cenário 3, o diretor de curso vê que existe um pedido de troca de turno,
+e tenta atender esse pedido. Assim, realiza as seguintes ações na aplicação:
+
+\textbf{- Verificar que recebeu um pedido:}
+
+Como mencionado anteriormente, ao entrar na aplicação, o diretor de curso vê inicialmente a página
+Resolver Problemas. É nesta página que se encontram também os pedidos efetuados pelos alunos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/resolver_troca_turno.png}
+    \caption{\emph{Página de resolução de problemas, com um pedido de troca de turno}.}
+    \label{resolver_troca_turno}
+\end{figure}
+
+O pedido pode também ser visto na página de notificações, e acedido da mesma forma que o pedido
+de alteração de sala, com um botão Ir Para, que leva o utilizador para a página onde resolve o
+pedido, neste caso, a própria Resolver Problemas, com o pedido em questão já selecionado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_turno.png}
+    \caption{\emph{Página de notificações, com um pedido de troca de turno}.}
+    \label{notificacao_troca_turno}
+\end{figure}
+
+\textbf{- Verificar a capacidade do turno:}
+
+Nesta página (figura \ref{resolver_troca_turno}) é possível ver no horário do aluno que
+efetuou o pedido, o turno para onde pretende mudar, e os outros turnos desta
+Unidade Curricular, bem como a capacidade de cada um. Assim, pode verificar que o turno
+pretendido - o PL5 -  tem vagas disponíveis. No caso de não existir capacidade nesse turno,
+seria também visível se outros turnos à mesma hora têm capacidade e, no caso de não
+existirem turnos a essa hora com vagas disponíveis, é também fácil de ver, pelo aviso
+na lista de pedidos, que o aluno em questão é trabalhador estudante, para saber se a
+troca é feita para um turno cheio, como mencionado no cenário.
+
+\textbf{- Realizar a troca de turno:}
+
+Clicando então no turno pretendido, o aluno fica alocado neste de maneira provisória.
+Para fazer com que esta mudança tenha efeito no horário do aluno, é necessário ir à
+página \textbf{Publicar Horário} e fazer essa publicação (figura \ref{publicar_horarios}).
+
+\textbf{- Aceitar o pedido:}
+
+Para dar o pedido como resolvido é necessário então o diretor de curso ir à sua página
+de notificações (figura \ref{notificacao_troca_turno}) e clicar no botão para aceitar o pedido.
+No caso de o diretor pretender recusar o pedido, clicando no botão Recusar na página de Resolver
+Problemas (figura \ref{resolver_troca_turno}), o pedido deixa de aparecer nessa página, e o seu
+estado é dado como recusado nas notificações do diretor de curso, e quando o aluno o consultar no
+seu histórico de pedidos.
+
+\subsection{\emph{Outras funcionalidades}}
+
+\textbf{- Gerir um turno:}
+
+O diretor de curso pode também, na página de gestão de um turno (figura \ref{gerir_turno}),
+para além de consultar a lotação e trocar a sala de um turno, consultar e fazer a gestão dos
+alunos colocados neste. Na lista de alunos do lado direito é possível pesquisar por nome do aluno,
+retirar um aluno do turno clicando no X, e adicionar um aluno no botão do canto superior direito.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/gerir_turno_pesquisar_alunos.png}
+    \caption{\emph{Pesquisa na página de gestão de um turno}.}
+    \label{gerir_turno_pesquisar}
+\end{figure}
+
+No popup de adicionar aluno vê-se uma lista dos alunos inscritos na unidade curricular
+a que o turno que se está a gerir pertence, existindo também uma barra de pesquisa.
+Para adicionar um aluno desta lista, clica-se no botão ‘+’.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/adicionar_aluno.png}
+    \caption{\emph{Popup para adicionar um aluno ao turno}.}
+    \label{adicionar_aluno}
+\end{figure}
+
+Para estas mudanças terem efeito, também é necessário publicar o horário,
+como descrito anteriormente (figura \ref{publicar_horarios}).
+
+\textbf{- Mudar para o modo escuro:}
+Clicando no ícone de lua no canto superior direito, o diretor de curso pode mudar a aplicação
+para o modo escuro, como visto no exemplo seguinte:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/modo_escuro_diretor.png}
+    \caption{\emph{Exemplo de uma página no modo escuro}.}
+    \label{modo_escuro_diretor}
+\end{figure}
+
+Para voltar ao modo claro, é necessário clicar no botão de novo, que agora tem um ícone de sol.
+
+\textbf{- Terminar sessão:}
+Para terminar a sua sessão, o diretor de curso deve clicar no botão com um ícone de porta
+no canto superior direito da barra de navegação, voltando assim à página de login.
+
 \section*{Utilizador Aluno}
 
 \subsection{\emph{Cenário 4}}
@@ -506,14 +762,8 @@ o seu horário e enviar um pedido de troca de turno, os passos a efetuar são os
 
 \textbf{- Entrar com as suas credenciais:}
 
-Preencher o ecrã seguinte com os seu email e password e clicar em \textbf{Iniciar Sessão}:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{res/manual/pagina_login_vazia.png}
-    \caption{\emph{Página de inicio de sessão vazia}.}
-    \label{login_vazio}
-\end{figure}
+Preencher a página de início de sessão (figura \ref{login_vazio}) com o seu email e
+password e clicar em \textbf{Iniciar Sessão}:
 
 \begin{figure}[H]
     \centering
@@ -648,8 +898,8 @@ aparecendo o seguinte ecrã:
 
 \textbf{- Mudar para o modo escuro:}
 
-Clicando no ícone de lua no canto superior direito, o aluno pode mudar
-a aplicação para o modo escuro, como visto no exemplo seguinte:
+Tal como o diretor de curso, o aluno pode também mudar a aplicação para o modo escuro,
+como mostrado no exemplo seguinte:
 
 \begin{figure}[H]
     \centering
@@ -658,10 +908,8 @@ a aplicação para o modo escuro, como visto no exemplo seguinte:
     \label{exemplo_modo_escuro_aluno}
 \end{figure}
 
-Para voltar ao modo claro, é necessário clicar no botão de novo, que agora tem um ícone de sol.
-
 \textbf{Terminar sessão:}
-Para terminar a sua sessão, o aluno deve clicar no botão com um ícone de porta no
+Tal como o diretor de curso, o aluno termina sessão clicando no botão com um ícone de porta no
 canto superior direito da barra de navegação, voltando assim à página de início de sessão.
 
 \section{Reflexão sobre a Aplicação}
