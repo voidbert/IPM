@@ -63,14 +63,14 @@
 #complete-schedule-page-container {
     display: flex;
     flex: 1 0 0;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-sidebar {
     min-width: 15em;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-sidebar-title {
@@ -86,14 +86,13 @@
     display: flex;
     padding: 1rem;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #complete-schedule-tip {
-    position: absolute;
-    top: 1em;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    top: 5em;
+    left: calc((100vw - 10em) / 2);
 
     white-space: nowrap;
     overflow: hidden;
@@ -112,6 +111,8 @@
     flex-direction: column; /* For horizontal schedule growth */
     flex: 1 0 0;
     margin-top: 3rem;
+
+    overflow: auto;
 }
 </style>
 

@@ -57,7 +57,7 @@
     gap: 1em;
     padding: 1em;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #my-schedule-tip {
@@ -83,6 +83,8 @@
     flex-direction: column; /* For horizontal schedule growth */
     flex: 1 0 0;
     margin-top: 3rem;
+
+    overflow: auto;
 }
 </style>
 
