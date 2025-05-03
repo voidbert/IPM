@@ -23,6 +23,7 @@
                 @toggle="(e) => toggleCourse(e, course.course.id)">
                 <summary class="shift-selector-summary">
                     <Checkbox
+                        class="checkbox"
                         :modelValue="courseCheckboxValue(course.shifts)"
                         @input.prevent="handleCourseInput(course.shifts)">
                         {{ course.course.shortName }}
@@ -62,7 +63,6 @@
 }
 
 .shift-selector-summary::before {
-    appearance: none;
     content: "▶";
     color: var(--color-body-foreground);
     transition:
@@ -78,6 +78,18 @@
 .shift-selector-list {
     list-style-type: none;
     margin-top: 0.5em;
+}
+
+.shift-selector-details:open summary:hover:not(:has(.checkbox:hover))::before {
+    transform: rotate(90deg) scale(0.95);
+}
+
+.shift-selector-details:not(open) summary:hover:not(:has(.checkbox:hover))::before {
+    transform: scale(0.95);
+}
+
+.shift-selector .checkbox:hover {
+    background-color: var(--color-shift-selector-hover);
 }
 </style>
 
