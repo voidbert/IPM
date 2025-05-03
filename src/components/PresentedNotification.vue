@@ -23,13 +23,18 @@
         ]">
         <div class="notification-left">
             <span v-if="props.type != 'request'" class="notification-card" />
+            <NotificationCircle
+                v-if="props.type != 'request' && !props.notification.read"
+                class="notification-card-circle" />
             <span>{{ shownName }}</span>
         </div>
 
         <span class="notification-content">{{ shownContent }}</span>
 
         <span
-            v-if="type === 'request'"
+            v-if="
+                type === 'request' || (type === 'director' && props.notification.state != 'pending')
+            "
             :class="['notification-state', `notification-state-${props.notification.state}`]"
             :title="stateTooltip" />
 
@@ -39,8 +44,14 @@
             <div
                 v-if="props.type == 'director' && props.notification.state == 'pending'"
                 class="notification-buttons">
-                <IconButton type="reject" @click="reject" />
-                <IconButton type="accept" @click="accept" />
+                <IconButton
+                    type="reject"
+                    @click="reject"
+                    :disabled="props.notification.type == 'system'" />
+                <IconButton
+                    type="accept"
+                    @click="accept"
+                    :disabled="props.notification.type == 'system'" />
                 <IconButton type="view" @click="goTo" />
             </div>
         </div>
@@ -89,6 +100,11 @@
     background-color: var(--color-notification-foreground);
     mask-image: url("/mail.svg");
     mask-size: cover;
+}
+
+.notification-card-circle {
+    left: 0.6em;
+    top: 0.8em;
 }
 
 .notification-state {
@@ -163,6 +179,7 @@ import { User } from "../models/User.ts";
 
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import NotificationCircle from "./NotificationCircle.vue";
 
 export interface PageNotification {
     notification: Notification;
@@ -177,6 +194,7 @@ export interface PageNotification {
 const props = defineProps<PageNotification>();
 
 const shownName = computed(() => {
+    if (props.notification.type == "system") return "Sistema";
     const names = props.nameUser.name.split(" ");
     return names[0] + " " + names[names.length - 1];
 });
@@ -186,6 +204,8 @@ const shownContent = computed(() => {
         return `Troca de turno: ${(props.course as Course).shortName} ${(props.fromShift as Shift).name} → ${(props.toShift as Shift).name}`;
     } else if (props.notification.type === "professorRequest") {
         return `Troca de sala: ${(props.course as Course).shortName} ${(props.currentShift as Shift).name}`;
+    } else if (props.notification.type === "system") {
+        return props.notification.systemMessage;
     } else {
         return "O seu horário sofreu alterações";
     }
@@ -213,21 +233,36 @@ const shownDate = computed(() => {
 const accept = () => {
     // eslint-disable-next-line vue/no-mutating-props
     props.notification.state = "accepted";
+    // eslint-disable-next-line vue/no-mutating-props
+    props.notification.read = true;
     props.notification.update();
 };
 
 const reject = () => {
     // eslint-disable-next-line vue/no-mutating-props
     props.notification.state = "rejected";
+    // eslint-disable-next-line vue/no-mutating-props
+    props.notification.read = true;
     props.notification.update();
 };
 
 const router = useRouter();
 const goTo = () => {
+    if (props.notification.type != "system") {
+        // eslint-disable-next-line vue/no-mutating-props
+        props.notification.read = true;
+        props.notification.update();
+    }
     if (props.notification.type === "studentRequest") {
         router.push("/SolveProblems");
     } else if (props.notification.type === "professorRequest") {
         router.push(`/ManageShifts/${(props.currentShift as Shift).id}`);
+    } else if (props.notification.type === "system") {
+        if (props.notification.systemType === "studentRequest") {
+            router.push("/SolveProblems");
+        } else if (props.notification.systemType === "professorRequest") {
+            router.push("/ManageShifts");
+        }
     }
 };
 </script>
