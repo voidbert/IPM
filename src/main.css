@@ -52,6 +52,8 @@ body {
     --color-shift-background-6: #75f0ea;
     --color-shift-background-6-hover: #a3f5f1;
 
+    --color-shift-selector-hover: #9995;
+
     --color-toast-background: var(--color-uminho);
     --color-toast-foreground: #fff;
 

@@ -87,6 +87,10 @@
 .shift-selector-details:not(open) summary:hover:not(:has(.checkbox:hover))::before {
     transform: scale(0.95);
 }
+
+.shift-selector .checkbox:hover {
+    background-color: var(--color-shift-selector-hover);
+}
 </style>
 
 <script setup lang="ts">
