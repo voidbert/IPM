@@ -260,8 +260,6 @@ const goTo = () => {
     } else if (props.notification.type === "system") {
         if (props.notification.systemType === "studentRequest") {
             router.push("/SolveProblems");
-        } else if (props.notification.systemType === "professorRequest") {
-            router.push("/ManageShifts");
         }
     }
 };
