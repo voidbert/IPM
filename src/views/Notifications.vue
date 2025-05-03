@@ -62,10 +62,8 @@ User.getByEmail(loginStore.email as string).then(async (user) => {
     } else {
         let allNotifications: Notification[] = await Notification.getToUser((user as User).id);
         let changeShift = 0;
-        let changeRoom = 0;
         allNotifications.forEach((n) => {
             if (n.type === "studentRequest" && n.state === "pending") changeShift += 1;
-            else if (n.type === "professorRequest" && n.state === "pending") changeRoom += 1;
         });
         if (changeShift > maxType) {
             allNotifications = allNotifications.filter(
@@ -81,22 +79,6 @@ User.getByEmail(loginStore.email as string).then(async (user) => {
             );
             notificationGroup.systemMessage = `Tem ${changeShift} pedidos de troca de turno`;
             notificationGroup.systemType = "studentRequest";
-            allNotifications.push(notificationGroup);
-        }
-        if (changeRoom > maxType) {
-            allNotifications = allNotifications.filter(
-                (n) => !(n.type === "professorRequest" && n.state === "pending")
-            );
-            const notificationGroup = new Notification(
-                -1,
-                -1,
-                (user as User).id,
-                new Date(),
-                "system",
-                "pending"
-            );
-            notificationGroup.systemMessage = `Tem ${changeRoom} pedidos de troca de sala`;
-            notificationGroup.systemType = "professorRequest";
             allNotifications.push(notificationGroup);
         }
         notifications.value = allNotifications;
