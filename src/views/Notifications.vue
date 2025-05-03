@@ -71,7 +71,14 @@ User.getByEmail(loginStore.email as string).then(async (user) => {
             allNotifications = allNotifications.filter(
                 (n) => !(n.type === "studentRequest" && n.state === "pending")
             );
-            const notificationGroup = new Notification(-1, -1, (user as User).id, new Date(), "system", "pending");
+            const notificationGroup = new Notification(
+                -1,
+                -1,
+                (user as User).id,
+                new Date(),
+                "system",
+                "pending"
+            );
             notificationGroup.systemMessage = `Tem ${changeShift} pedidos de troca de turno`;
             notificationGroup.systemType = "studentRequest";
             allNotifications.push(notificationGroup);
@@ -80,7 +87,14 @@ User.getByEmail(loginStore.email as string).then(async (user) => {
             allNotifications = allNotifications.filter(
                 (n) => !(n.type === "professorRequest" && n.state === "pending")
             );
-            const notificationGroup = new Notification(-1, -1, (user as User).id, new Date(), "system", "pending");
+            const notificationGroup = new Notification(
+                -1,
+                -1,
+                (user as User).id,
+                new Date(),
+                "system",
+                "pending"
+            );
             notificationGroup.systemMessage = `Tem ${changeRoom} pedidos de troca de sala`;
             notificationGroup.systemType = "professorRequest";
             allNotifications.push(notificationGroup);

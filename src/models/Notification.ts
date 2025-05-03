@@ -15,7 +15,11 @@
 import { fetchJson } from "./Utils.ts";
 import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
-export type NotificationType = "studentRequest" | "professorRequest" | "publishedSchedules" | "system";
+export type NotificationType =
+    | "studentRequest"
+    | "professorRequest"
+    | "publishedSchedules"
+    | "system";
 export type NotificationState = "pending" | "accepted" | "rejected";
 
 export class Notification {
