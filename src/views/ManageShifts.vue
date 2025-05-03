@@ -30,14 +30,14 @@
 #manage-shifts-page-container {
     display: flex;
     flex: 1 0 0;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #manage-shifts-sidebar {
     min-width: 15em;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #manage-shifts-sidebar-title {
@@ -52,7 +52,7 @@
     display: flex;
     flex-direction: column; /* For horizontal schedule growth */
     padding: 1rem;
-    overflow: scroll;
+    overflow: auto;
 }
 </style>
 
