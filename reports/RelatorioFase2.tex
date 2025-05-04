@@ -71,7 +71,7 @@
 
 O objetivo do trabalho prático proposto na Unidade Curricular de Interface Pessoa-Máquina é a
 modelação e o desenvolvimento de uma aplicação Web para para a gestão de horários de um curso
-universitário, utilizado tanto pelos alunos como pelo diretor de curso. Em particular, deseja-se que
+universitário, utilizada tanto pelos alunos como pelo diretor de curso. Em particular, deseja-se que
 a aplicação permita aos alunos consultar o seu horário e fazer pedidos de troca de turno ao diretor
 de curso, e que o diretor de curso possa manualmente colocar alunos em turnos (para resolver
 limitações do algoritmo de colocação e aceder a pedidos de alunos) e aceder a pedidos de professores
@@ -138,14 +138,18 @@ horários dos alunos em estados intermédios sem que estes os vejam. Por exemplo
 vários alunos dos seus turnos, para os adicionar a outros turnos da mesma UC, assim, por exemplo,
 abrindo vagas em turnos mais procurados. No entanto, reparou-se que é importante realçar quando as
 mudanças feitas pelo diretor de curso ainda não são públicas. Por este motivo, tal como foi feito
-para o ícone de notificações, quando há alterações por publicar, um pequeno círculo é adicionado ao
-canto superior direito da hiperligação para a página ``Publicar Horário'', como mostra a figura
-abaixo:
+para o ícone de notificações, quando há alterações de horário por publicar, um pequeno círculo é
+adicionado ao canto superior direito da hiperligação para a página ``Publicar Horários'', como
+mostra a figura abaixo:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/prototype/mudancas-feitas-publicar-horario.png}
-    \caption{Captura de ecrã do protótipo da página ``Resolver Problemas'' com mudanças feitas.}
+    \caption{
+        \onehalfspacing
+        Captura da barra de navegação com realce na hiperligação para a página
+        ``Publicar Horários''.
+    }
     \label{mudancas-feitas-publicar-horario}
 \end{figure}
 
@@ -163,9 +167,8 @@ página ``Resolver Problemas'':
     \label{gerir-turnos-revisto}
 \end{figure}
 
-Na página ``Notificações'', o botão de alterar entre todas as notificações e as não lidas
-foi removido, visto que as mesmas já se encontram separadas por este critério e ordenadas
-cronológicamente.
+Na página ``Notificações'', o botão para alternar entre visualizar todas as notificações ou apenas
+as não lidas foi removido, visto que as mesmas já se encontram ordenadas por este critério:
 
 {\color{red} TODO - figura}
 
@@ -195,8 +198,8 @@ desenvolvidos:
 \subsection{Alerta}
 
 Este componente estático apresenta uma informação importante ao utilizador. É utilizado, por
-exemplo, para informar o utilizador na página ``Iniciar Sessão'' que as credenciais que submeteu
-se encontram incorretas, ou nos componentes ``Aluno'' e ``Problema'' que um aluno é
+exemplo, para informar o utilizador na página ``Iniciar Sessão'' que as credenciais que submeteu se
+encontram incorretas, ou nos componentes ``Aluno'' e ``Problema'' que um aluno é
 trabalhador-estudante, como se vê na figura \ref{problem}.
 
 \subsection{Barra de Navegação}
@@ -342,7 +345,7 @@ Pode ser visto na figura abaixo:
 \subsection{Lista de Estudantes}
 
 Este componente, utilizado na página ``Gerir Turno'', apresenta uma lista de estudantes, onde cada
-estudante se encontra associado a um botão, que pode ser usado o para adicionar a / remover de um
+estudante se encontra associado a um botão, que pode ser usado para o adicionar a / remover de um
 turno. Este componente pode ser visto na figura abaixo:
 
 \begin{figure}[H]
@@ -356,8 +359,8 @@ turno. Este componente pode ser visto na figura abaixo:
 
 Este componente é um diálogo com uma borda de janela. Várias páginas utilizam \emph{popups}, mas
 dois destes, para mostrar informação de um turno e para confirmar a troca entre dois turnos,
-apresentados abaixo, foram transformados em componentes visto que estão presentes em mais do que uma
-página, no caso, ``O meu Horário'' e ``Horário Completo''.
+apresentados abaixo, foram transformados em componentes, visto que estão presentes em mais do que
+uma página, no caso, ``O meu Horário'' e ``Horário Completo''.
 
 \begin{figure}[H]
     \centering
@@ -370,7 +373,7 @@ página, no caso, ``O meu Horário'' e ``Horário Completo''.
 \subsection{Seletor de turnos}
 
 Este componente, presente nas páginas ``Horário Completo'' e ``Gerir Turnos'', permite ao utilizador
-escolher que turnos deseja ver no horário.
+escolher que turnos deseja ver no horário apresentado.
 
 \begin{figure}[H]
     \centering
@@ -419,15 +422,14 @@ implementados:
 
 \subsection{Notificação}
 
-Este componente, utilizado no componente ``Lista de Notificações''
-(figura \ref{notifications-list}), permite apresentar o conteúdo e estado
-de uma notificação / pedido (trocas de turno, sala ou alertas).
-Existem várias variantes (notificação de aluno, director de curso ou pedido), distinguíveis pelo
-seu conteúdo. Adicionalmente, notificações do diretor de curso quando com o cursor em cima
-apresentam três botões que permitem rejeitar, aprovar ou navegar para a página de resolução do
-pedido de um aluno / professor. As variantes do diretor de curso e de um pedido podem-se
-observar abaixo:
-
+Este componente, utilizado no componente ``Lista de Notificações'' (figura
+\ref{notifications-list}), permite apresentar o conteúdo e estado de uma notificação / pedido
+(troca de turno, de sala, ou alerta). Existem várias variantes deste componente, apresentadas a
+diferentes utilizadores em diferentes cenários (notificação de aluno, do director de curso, ou
+pedido). Adicionalmente, notificações do diretor de curso, quando sobrevoadas pelo cursor,
+apresentam três botões, que permitem rejeitar, aprovar ou navegar para a página de resolução do
+pedido apresentado na notificação. As variantes do diretor de curso e de um pedido podem observar-se
+abaixo:
 
 \begin{figure}[H]
     \centering
@@ -439,11 +441,10 @@ observar abaixo:
 
 \subsection{Lista de Notificações}
 
-Este componente, utilizado nas páginas de ``Histórico de Pedidos'' e ``Notificações'',
-apresenta uma lista de notificações / pedidos, em que cada elemento é uma instância do componente
-``Notificação''. Permite listar as notificações / pedidos de um utilizador, organizados
-temporalmente e por estado do pedido, como se pode ver abaixo:
-
+Este componente, utilizado nas páginas de ``Histórico de Pedidos'' e ``Notificações'', apresenta uma
+lista de notificações / pedidos, em que cada elemento é uma instância do componente ``Notificação''.
+Permite listar as notificações / pedidos de um utilizador, organizados temporalmente e por estado do
+pedido, como se pode ver abaixo:
 
 \begin{figure}[H]
     \centering
@@ -468,7 +469,7 @@ facilidades e dificuldades sentidas com cada uma.
 Visto que a aplicação desenvolvida é uma aplicação Web, o uso de HTML e CSS é imperativo em quase
 todas as \emph{frameworks}. De um modo geral, o desenvolvimento de componentes e páginas com recurso
 a estas tecnologias foi fácil, especialmente devido à sua natureza declarativa. Outra facilidade do
-uso destas tecnologias foram as flexboxes, que simplificaram a organização dos elementos nos
+uso destas tecnologias foram as \emph{flexboxes}, que simplificaram a organização dos elementos nos
 componentes e nas páginas.
 
 No entanto, houve algumas dificuldades em garantir que o código desenvolvido funcionava em todos os
@@ -484,7 +485,7 @@ algumas funcionalidades devido a diferenças de funcionamento entre navegadores.
 No projeto desenvolvido, foi utilizado TypeScript \cite{typescript}, linguagem que é transpilada
 para JavaScript, mas que permite alguma verificação de tipos. O TypeScript foi uma grande ajuda para
 garantir a correção do código da aplicação, e assegurar, em \emph{compile-time}, que a aplicação não
-terá exceções em \emph{runtime} devido a erros de tipos. Ademais, o compilador não obriga que o
+teria exceções em \emph{runtime} devido a erros de tipos. Ademais, o compilador não obriga que o
 código seja tipado durante o processo de desenvolvimento, pelo que este pode continuar a ser
 bastante veloz. Assim, apenas quando se acaba de escrever um módulo / componente / página, podem
 adicionar-se anotações de tipo ao código para garantir a sua correção.
@@ -553,153 +554,163 @@ disponíveis, por exemplo, em Linux.
 \section{Manual de Utilização}
 \label{user-manual}
 
-\section*{Utilizador Diretor de curso}
+\subsection{Diretor de Curso}
 
-\subsection{\emph{Cenário 1}}
+\subsubsection{Cenário 1}
 
-No cenário 1 o diretor de curso entra na aplicação, consulta a ocupação dos turnos, verifica
-e aloca os alunos que o algoritmo não alocou e publica o horário. Para isso, terá de realizar
-os seguintes passos:
+Neste cenário, o diretor de curso entra na aplicação, consulta a ocupação dos turnos, e aloca os
+alunos que o algoritmo de geração de horários automático não alocou. Finalmente, publica o horário
+dos alunos. Para isso, terá de realizar os seguintes passos:
 
-\textbf{- Entrar com as suas credenciais:}
+\textbf{- Iniciar sessão com as suas credenciais:}
 
-Preencher o ecrã seguinte com o seu email e password e clicar em \textbf{Iniciar Sessão}:
+Preencher o ecrã seguinte com o seu endereço eletrónico e palavra-passe, terminando a clicar no
+botão ``Iniciar Sessão'':
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/pagina_login_vazia.png}
-    \caption{\emph{Página de inicio de sessão vazia}.}
-    \label{login_vazio}
+    \caption{Página ``Iniciar Sessão'' por preencher.}
+    \label{pagina_login_vazia}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/login_diretor.png}
-    \caption{\emph{Página de inicio de sessão preenchida}.}
+    \caption{Página``Iniciar Sessão'' preenchida com credenciais.}
     \label{login_diretor}
 \end{figure}
 
 \textbf{- Ver a ocupação dos turnos:}
 
-Para visualizar a ocupação dos vários turnos, o diretor de curso tem de aceder à página
-\textbf{Gerir Turnos}. Nesta, o diretor verá o horário do curso, podendo selecionar os
-turnos e unidades curriculares que pretende ver.
+A aplicação desenvolvida procura minimizar o esforço de memória necessário para a sua utilização.
+Não é necessário que o diretor de curso consulte a capacidade dos turnos para saber onde pode e não
+pode colocar alunos (ver página ``Resolver Problemas'' abaixo). Mesmo assim, pode fazê-lo, como se
+mostra nesta secção, primeiro acedendo à página ``Gerir Turnos'':
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/gerir_turnos.png}
-    \caption{\emph{Página de gestão de turnos}.}
+    \caption{Página ``Gerir Turnos''.}
     \label{gerir_turnos}
 \end{figure}
+
+É possível, através da barra lateral, selecionar que turnos são apresentados no horário, caso alguns
+turnos ou UCs não sejam de grande interesse para a tarefa atual do diretor de curso:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/gerir_turnos_filtrados.png}
-    \caption{\emph{Página de gestão de turnos com turnos não selecionados}.}
+    \caption{Página ``Gerir Turnos'' com alguns turnos por selecionar.}
     \label{gerir_turnos_filtrados}
 \end{figure}
 
-Clicando num turno, irá para a página de gestão deste turno, onde, para além de outras
-funcionalidades descritas mais à frente, pode consultar a sua lotação.
+Clicando num turno, o utilizador será redirecionado para a página ``Gerir Turno'', onde, para além
+de outras funcionalidades descritas posteriormente, pode consultar a sua lotação:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/gerir_turno.png}
-    \caption{\emph{Página de gestão de um turno}.}
+    \caption{Página ``Gerir Turno''.}
     \label{gerir_turno}
 \end{figure}
 
-\textbf{- Ver alunos não colocados:}
+\textbf{- Consultar alunos não colocados:}
 
-Ao entrar na aplicação, o diretor de curso entra na página \textbf{Resolver Problemas}
-(acessível também a partir da barra de navegação), que mostra os alunos que não estão
-colocados num turno e os pedidos de troca de turno, sendo também possível pesquisar
-nesta lista. Assim, o diretor de curso pode facilmente ver os alunos que não
-foram alocados pelo algoritmo.
+Ao entrar na aplicação, a página ``Resolver Problemas'' é apresentada ao diretor de curso, e mostra
+os alunos que não estão colocados num turno e os pedidos de troca de turno. Note-se que esta página
+também é acessível a partir da barra de navegação. A lista de problemas é pesquisável, tornando mais
+fácil encontrar um problema específico em listas de grande dimensão.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/resolver_problemas.png}
-    \caption{\emph{Página de resolução de problemas}.}
+    \caption{Página ``Resolver Problemas''.}
     \label{resolver_problemas}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/resolver_problemas_pesquisar.png}
-    \caption{\emph{Pesquisa na página de resolução de problemas}.}
+    \caption{Página ``Resolver Problemas'' durante uma pesquisa por um aluno.}
     \label{resolver_problemas_pesquisa}
 \end{figure}
 
 \textbf{- Alocação manual:}
 
-O diretor de curso pode, então, clicar num aluno da lista para o tentar alocar a um
-turno. Pode ver o horário desse aluno e os turnos possíveis, bem como a lotação dos
-mesmos, para assim tentar escolher um turno com vagas disponíveis que não crie conflitos
-no horário. Para colocar o aluno nesse turno de forma provisória, basta clicar no turno pretendido.
+O diretor de curso pode, nesta página, clicar num aluno da lista para o tentar alocar a um turno.
+Pode ver o horário desse aluno e os turnos selecionáveis, bem como a lotação dos mesmos, para assim
+tentar escolher um turno com vagas disponíveis que não crie conflitos no horário. Para colocar o
+aluno nesse turno de forma provisória, basta clicar no turno pretendido.
+
+{\color{red} - TODO - falar sobre o popup que aparece caso o diretor tente colocar numa sala cheia}
 
 \textbf{- Publicar horário:}
 
-Para fazer com que as mudanças efetuadas fiquem guardadas e afetem o horário dos alunos,
-o diretor de curso deve aceder à página \textbf{Publicar Horários} e clicar no botão
-com o mesmo nome.
+Para fazer com que as mudanças efetuadas fiquem guardadas e afetem o horário dos alunos, o diretor
+de curso deve aceder à página ``Publicar Horários'' e clicar no botão com o mesmo nome. Esta página
+apresenta sempre os problemas por revolver, lembrando ao diretor de curso de que pode estar a
+cometer um erro caso esteja a publicar horários ainda com turnos por atribuir e pedidos por
+satisfazer.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/publicar_horario.png}
-    \caption{\emph{Página de publicação de horários}.}
+    \caption{Página ``Publicar Horários''.}
     \label{publicar_horarios}
 \end{figure}
+
+Após publicar os horários, o utilizador será redirecionado para a página ``Resolver Problemas'', e
+surgirá uma confirmação de que os horários foram publicados:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/toast_horario_publicado.png}
-    \caption{\emph{Confirmação da publicação do horário}.}
+    \caption{Confirmação da publicação de horários.}
     \label{toast_horario_publicado}
 \end{figure}
 
-\subsection{\emph{Cenário 2}}
+\subsubsection{Cenário 2}
 
-Para as operações descritas no cenário 2, em que o diretor de curso responde a um
-pedido de mudança de sala, ele terá de realizar as seguintes ações:
+Para as operações descritas no cenário 2, em que o diretor de curso responde a um pedido de mudança
+de sala, ele terá de realizar as seguintes ações:
 
 \textbf{- Ver os pedidos:}
 
 Para ver os pedidos feitos pelos docentes, o diretor de curso irá consultar as suas notificações,
-clicando no botão com ícone de sino, no canto superior direito da página.
-Aí terá o pedido de mudança de sala e, passando o cursor por cima dele, terá três opções: rejeitar,
-aceitar e ir para o pedido.
+clicando no botão com ícone de sino, no canto superior direito da página. Sobrevoando o cursor ao
+pedido, terá três opções: rejeitá-lo, aceitá-lo ou visualizá-lo:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_sala.png}
-    \caption{\emph{Notificação de troca de sala}.}
+    \caption{Notificação de troca de sala na página ``Notificações do Diretor de Curso''.}
     \label{notificacao_troca_sala}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_sala_hover.png}
-    \caption{\emph{Opções da notificação}.}
+    \caption{Opções de uma notificação na página ``Notificações do Diretor de Curso''.}
     \label{notificacao_troca_sala_hover}
 \end{figure}
 
-As opções de rejeitar e aceitar dão como resolvido o pedido, mostrando
-a quem pediu se ele foi aceite ou rejeitado. A opção de ir para o pedido leva para
-a página onde este pode ser resolvido.
-Neste caso, o diretor clica nessa última opção e vai para a página de gestão
-de um turno (figura \ref{gerir_turno}).
+As opções de rejeitar e aceitar dão o pedido como resolvido, mostrando ao seu remetente se ele foi
+aceite ou rejeitado. A opção de visualizar o pedido leva o utilizador para a página onde este pode
+ser resolvido. Neste caso, o diretor, clicando nessa última opção, é redirecionado para a página
+``Gerir Turno'' (figura \ref{gerir_turno}).
 
 \textbf{- Consultar as salas disponíveis:}
 
-Nesta página, clicando no dropdown \textbf{Sala}, o diretor pode ver as salas disponíveis no horário
-daquele turno e a capacidade de cada uma. Neste exemplo, pode ver que a sala CP2 0.05 tem uma maior
-capacidade do que a sala atual e escolhe então mudar para esta, selecionando-a no dropdown.
+Nesta página, clicando no \emph{dropdown} ``Sala'', o diretor pode ver as salas disponíveis no
+horário daquele turno e a capacidade de cada sala. Neste exemplo, pode ver-se que a sala CP2 0.05
+tem uma maior capacidade do que a sala atual, pelo que o diretor pode escolher mudar o turno para
+essa sala, selecionando-a no \emph{dropdown}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/trocar_sala.png}
-    \caption{\emph{Página de gestão de turno, com uma nova sala selecionada}.}
+    \caption{Seleção da sala de um turno na página ``Gerir Turno''.}
     \label{trocar_sala}
 \end{figure}
 
@@ -708,125 +719,119 @@ capacidade do que a sala atual e escolhe então mudar para esta, selecionando-a 
 Para efetivar a alteração da sala no horário dos alunos, tal como no cenário 1,
 o diretor deve publicar o novo horário (figura \ref{publicar_horarios}).
 
-\subsection{\emph{Cenário 3}}
+\subsubsection{Cenário 3}
 
-No cenário 3, o diretor de curso vê que existe um pedido de troca de turno,
-e tenta atender esse pedido. Assim, realiza as seguintes ações na aplicação:
+Neste cenário, o diretor de curso vê que existe um pedido de troca de turno, e tenta atender a esse
+pedido. Para o fazer, realiza as seguintes ações na aplicação:
 
 \textbf{- Verificar que recebeu um pedido:}
 
-Como mencionado anteriormente, ao entrar na aplicação, o diretor de curso vê inicialmente a página
-Resolver Problemas. É nesta página que se encontram também os pedidos efetuados pelos alunos.
+Como mencionado anteriormente, ao entrar na aplicação, a página ``Resolver Problemas'' é apresentada
+ao diretor de curso. É nesta página que se encontram também os pedidos efetuados pelos alunos.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/resolver_troca_turno.png}
-    \caption{\emph{Página de resolução de problemas, com um pedido de troca de turno}.}
+    \caption{Página ``Resolver Problemas'' com um pedido de troca de turno.}
     \label{resolver_troca_turno}
 \end{figure}
 
-O pedido pode também ser visto na página de notificações, e acedido da mesma forma que o pedido
-de alteração de sala, com um botão Ir Para, que leva o utilizador para a página onde resolve o
-pedido, neste caso, a própria Resolver Problemas, com o pedido em questão já selecionado.
+O pedido pode também ser visto na página ``Notificações do Diretor de Curso''. Neste caso, o botão
+para visualizar um destes pedidos redireciona o utilizador para a página ``Resolver Problemas'', e
+não ``Gerir Turnos''.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/notificacao_troca_turno.png}
-    \caption{\emph{Página de notificações, com um pedido de troca de turno}.}
+    \caption{Página ``Notificações do Diretor de Curso'' com um pedido de troca de turno.}
     \label{notificacao_troca_turno}
 \end{figure}
 
+Nesta página, o diretor pode dar o pedido como aceite, sinalizando ao aluno que o pretende resolver,
+ou como rejeitado, sinalizando o contrário. Rejeitar um pedido também faz com que o mesmo não
+seja apresentado na página ``Resolver Problemas'' (figura \ref{resolver_troca_turno}).
+
 \textbf{- Verificar a capacidade do turno:}
 
-Nesta página (figura \ref{resolver_troca_turno}) é possível ver no horário do aluno que
-efetuou o pedido, o turno para onde pretende mudar, e os outros turnos desta
-Unidade Curricular, bem como a capacidade de cada um. Assim, pode verificar que o turno
-pretendido - o PL5 -  tem vagas disponíveis. No caso de não existir capacidade nesse turno,
-seria também visível se outros turnos à mesma hora têm capacidade e, no caso de não
-existirem turnos a essa hora com vagas disponíveis, é também fácil de ver, pelo aviso
-na lista de pedidos, que o aluno em questão é trabalhador estudante, para saber se a
-troca é feita para um turno cheio, como mencionado no cenário.
+Na página ``Resolver Problemas'' (figura \ref{resolver_troca_turno}), é possível ver, no horário do
+aluno que efetuou o pedido, o turno para onde este se pretende mudar, os outros turnos da Unidade
+Curricular, e a capacidade de cada um. Assim, pode verificar-se que o turno pretendido pelo aluno, o
+PL5, tem vagas disponíveis. No caso de não existir capacidade nesse turno, seria também visível se
+outros turnos à mesma hora têm capacidade e, no caso de não existam turnos a essa hora com vagas
+disponíveis, é também fácil de ver, pelo aviso na lista de pedidos, que o aluno em questão é
+trabalhador estudante, e que se pode abrir uma exceção e violar as restrições de capacidade dos
+turnos.
 
 \textbf{- Realizar a troca de turno:}
 
-Clicando então no turno pretendido, o aluno fica alocado neste de maneira provisória.
-Para fazer com que esta mudança tenha efeito no horário do aluno, é necessário ir à
-página \textbf{Publicar Horário} e fazer essa publicação (figura \ref{publicar_horarios}).
+Clicando então no turno pretendido, o aluno fica inscrito no mesmo de maneira provisória. Para fazer
+com que esta mudança tenha efeito no horário do aluno, é necessário ir à página
+``Publicar Horários'' e atualizar o horário dos alunos (figura \ref{publicar_horarios}).
+Logicamente, o diretor de curso pode e deve atender a vários pedidos dos alunos e apenas publicar os
+horários depois de concluir todas as alterações aos horários que desejava fazer.
 
-\textbf{- Aceitar o pedido:}
-
-Para dar o pedido como resolvido é necessário então o diretor de curso ir à sua página
-de notificações (figura \ref{notificacao_troca_turno}) e clicar no botão para aceitar o pedido.
-No caso de o diretor pretender recusar o pedido, clicando no botão Recusar na página de Resolver
-Problemas (figura \ref{resolver_troca_turno}), o pedido deixa de aparecer nessa página, e o seu
-estado é dado como recusado nas notificações do diretor de curso, e quando o aluno o consultar no
-seu histórico de pedidos.
-
-\subsection{\emph{Outras funcionalidades}}
+\subsubsection{Outras funcionalidades}
 
 \textbf{- Gerir um turno:}
 
 O diretor de curso pode também, na página de gestão de um turno (figura \ref{gerir_turno}),
 para além de consultar a lotação e trocar a sala de um turno, consultar e fazer a gestão dos
-alunos colocados neste. Na lista de alunos do lado direito é possível pesquisar por nome do aluno,
-retirar um aluno do turno clicando no X, e adicionar um aluno no botão do canto superior direito.
+alunos inscritos no mesmo. Na lista de alunos do lado direito, é possível pesquisar por nome do
+aluno, retirar um aluno do turno clicando no X, e adicionar um aluno no botão do canto superior
+direito.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/gerir_turno_pesquisar_alunos.png}
-    \caption{\emph{Pesquisa na página de gestão de um turno}.}
+    \caption{Pesquisa por alunos na página ``Gerir Turno''.}
     \label{gerir_turno_pesquisar}
 \end{figure}
 
-No popup de adicionar aluno vê-se uma lista dos alunos inscritos na unidade curricular
-a que o turno que se está a gerir pertence, existindo também uma barra de pesquisa.
-Para adicionar um aluno desta lista, clica-se no botão ‘+’.
+No diálogo para adicionar um novo aluno, é apresentada uma lista dos alunos inscritos na Unidade
+Curricular a que o turno que se está a gerir pertence, com exceção dos alunos já inscritos no turno
+a ser gerido. Também é possível procurar alunos nesta lista. Para adicionar um aluno desta lista ao
+turno, clica-se no botão ‘+’ a si associado.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/adicionar_aluno.png}
-    \caption{\emph{Popup para adicionar um aluno ao turno}.}
+    \caption{Diálogo para adicionar um aluno na página ``Gerir Turno''.}
     \label{adicionar_aluno}
 \end{figure}
 
-Para estas mudanças terem efeito, também é necessário publicar o horário,
-como descrito anteriormente (figura \ref{publicar_horarios}).
+Para estas mudanças terem efeito, também é necessário publicar o horário, como descrito
+anteriormente (figura \ref{publicar_horarios}).
 
 \textbf{- Mudar para o modo escuro:}
-Clicando no ícone de lua no canto superior direito, o diretor de curso pode mudar a aplicação
-para o modo escuro, como visto no exemplo seguinte:
+
+Clicando no ícone de Lua no canto superior direito, o diretor de curso pode mudar a aplicação
+para o modo escuro, que passa a ter um aspeto como o que se apresenta abaixo:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/modo_escuro_diretor.png}
-    \caption{\emph{Exemplo de uma página no modo escuro}.}
+    \caption{Exemplo de uma página no modo escuro.}
     \label{modo_escuro_diretor}
 \end{figure}
 
-Para voltar ao modo claro, é necessário clicar no botão de novo, que agora tem um ícone de sol.
+Para voltar ao modo claro, é necessário clicar no botão de novo, que agora tem um ícone de Sol.
 
 \textbf{- Terminar sessão:}
-Para terminar a sua sessão, o diretor de curso deve clicar no botão com um ícone de porta
-no canto superior direito da barra de navegação, voltando assim à página de login.
 
-\section*{Utilizador Aluno}
+Para terminar a sua sessão, o diretor de curso deve clicar no botão com um ícone de porta no canto
+superior direito da barra de navegação, voltando assim à página ``Iniciar Sessão''.
 
-\subsection{\emph{Cenário 4}}
+\subsection{Aluno}
+
+\subsubsection{Cenário 4}
 
 Para um aluno realizar as operações descritas no Cenário 4, ou seja, entrar na aplicação, consultar
 o seu horário e enviar um pedido de troca de turno, os passos a efetuar são os seguintes:
 
-\textbf{- Entrar com as suas credenciais:}
+\textbf{- Iniciar sessão com as suas credenciais:}
 
-Preencher a página de início de sessão (figura \ref{login_vazio}) com o seu email e
-password e clicar em \textbf{Iniciar Sessão}:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{res/manual/pagina_login_preenchida.png}
-    \caption{\emph{Página de inicio de sessão preenchida}.}
-    \label{login_preenchido}
-\end{figure}
+Para se autenticar, o aluno segue o mesmo processo que o diretor de curso na página
+``Iniciar Sessão'' (figura \ref{pagina_login_vazia}).
 
 \textbf{- Consultar o seu horário:}
 
@@ -835,138 +840,135 @@ Quando o aluno inicia a sua sessão, a primeira página que vê é a página do 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/pagina_o_meu_horario.png}
-    \caption{\emph{Página O Meu Horário}.}
+    \caption{Página ``O Meu Horário''.}
     \label{meu_horario}
 \end{figure}
 
 \textbf{- Procurar uma troca de turno:}
 
-Supondo que, como dizia no cenário, o aluno pretende trocar os seus turnos de quinta feira de
-manhã para outros dias, o primeiro passo será clicar nos turnos em questão, neste caso o CC - PL3:
+Supondo que, como descrito pelo cenário, o aluno pretende trocar os seus turnos de quinta-feira de
+manhã para outros dias, o primeiro passo será clicar nos turnos em questão, neste caso, o CC - PL3,
+que fará surgir o diálogo abaixo:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/popup_turno_meu_horario.png}
-    \caption{\emph{Popup de informações de um turno}.}
+    \caption{Diálogo com informações de um turno.}
     \label{popup_turno}
 \end{figure}
 
-De seguida, o aluno clica no botão \textbf{Procurar Troca}, que o leva para o seguinte ecrã:
+De seguida, o aluno clica no botão ``Procurar Troca'', que o leva para o seguinte ecrã:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/pagina_procura_troca_meu_horario.png}
-    \caption{\emph{Página de procura de troca}.}
+    \caption{Troca de turno na página ``O meu Horário''.}
     \label{procura_troca}
 \end{figure}
 
-Aqui, o aluno pode ver o turno que pretende trocar, as opções de turnos para onde pode ir
-e as suas capacidades, bem como o seu horário atual, de forma a poder ver com facilidade
-se a troca que irá pedir não causa conflitos no seu horário, por exemplo.
-Assim, como especificado no cenário, o aluno pretende trocar para um turno que não seja
-quinta feira de manhã e tenha capacidade disponível, neste caso, optamos pelo CC - PL5.
-Assim, o aluno clica nesse turno, aparecendo o seguinte pop-up:
+Aqui, o aluno pode ver o turno que pretende trocar, as opções de turnos para onde pode ir, as suas
+capacidades, e o seu horário atual, de forma a poder ver com facilidade se a troca que deseja fazer
+causará ou não conflitos no seu horário. Por exemplo, caso o aluno selecione trocar para o turno
+CC - PL5, deparar-se-á com o diálogo abaixo:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/popup_pedir_troca.png}
-    \caption{\emph{Pedido de confirmação}.}
+    \caption{Pedido de confirmação de troca de turno.}
     \label{popup_pedir_troca}
 \end{figure}
 
-Clicando em \textbf{Confirmar}, o pedido será enviado ao diretor de curso, e a seguinte
-mensagem de confirmação aparece por cima do horário ao qual o aluno volta:
+Clicando em ``Confirmar'', o pedido será enviado ao diretor de curso, e a seguinte mensagem de
+confirmação aparecerá por cima do horário do aluno:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/toast_confirmacao_troca.png}
-    \caption{\emph{Mensagem de sucesso}.}
+    \caption{Confirmação de sucesso na submissão de um pedido de troca de turno.}
     \label{toast_pedido_troca}
 \end{figure}
 
-\subsection{\emph{Outras funcionalidades}}
+\subsubsection{\emph{Outras funcionalidades}}
 
 O aluno, para além do descrito acima, tem também as seguintes opções:
 
 \textbf{- Ver o horário completo:}
 
-Se o aluno clicar na opção  \textbf{Horário Completo} na barra de navegação,
-pode ver o horário com todos os turnos das Unidades Curriculares em que está inscrito,
-com destaque para os turnos do seu horário e podendo selecionar os turnos que pretende ver:
+Se o aluno, através da barra de navegação, for para a página ``Horário Completo'', pode ver o
+horário de todos os turnos das Unidades Curriculares em que está inscrito, com destaque para os
+turnos do seu horário. Para organizar esta grande quantidade de informação, o aluno pode, na barra
+lateral, selecionar os turnos que pretende que lhe sejam apresentados:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/horario_completo.png}
-    \caption{\emph{Horário completo}.}
+    \caption{Página ``Horário completo''.}
     \label{horario_completo}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/horario_completo_filtrado.png}
-    \caption{\emph{Horário completo com turnos não selecionados}.}
+    \caption{Página ``Horário completo'' com alguns turnos por selecionar.}
     \label{horario_completo_filtrado}
 \end{figure}
 
-Nesta página também é possível clicar num turno para ver as suas informações e procurar uma troca,
-tal como na página \textbf{O meu Horário}, mostrando então a seguinte página de
-procura de uma troca, onde continua a ser possível filtrar os turnos que pretende ver:
+Esta página pode ser útil para alunos que desejam fazer mudanças ao seu horário mais complexas do
+que a troca de um ou dois turnos. Deste modo, podem ver mais informação, e selecionar exatamente a
+informação que desejam ver (o seu horário atual, os turnos que desejam, \ldots).
+
+Nesta página também é possível clicar num turno para ver mais informações sobre o mesmo e procurar
+uma troca, tal como na página ``O meu Horário''. Durante uma troca de turnos, diferentes turnos
+são estilizados de diferente modo para realçar as opções de troca possíveis, o horário atual do
+aluno, outros turnos visíveis, \emph{etc.}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/procura_troca_horario_completo.png}
-    \caption{\emph{Procura de troca no horário completo}.}
+    \caption{Procura de turno na página ``Horário Completo''.}
     \label{procura_troca_horario_completo}
 \end{figure}
 
 \textbf{- Ver o Histórico de Pedidos:}
 
-O aluno tem também a possibilidade de consultar os pedidos de troca de
-turno que já realizou e o seu estado (pendente, aceite ou rejeitado),
-clicando na opção \textbf{Histórico de Pedidos}:
+O aluno tem também a possibilidade de consultar os pedidos de troca de turno que já realizou e o seu
+estado (pendente, aceite ou rejeitado), navegando para a página ``Histórico de Pedidos'':
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/historico_pedidos.png}
-    \caption{\emph{Histórico de pedidos com pedido pendente}.}
+    \caption{Página ``Histórico de Pedidos'' com pedido pendente.}
     \label{historico_pedidos}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/historico_pedidos_resolvido.png}
-    \caption{\emph{Histórico de pedidos com pedido aceite}.}
+    \caption{Página ``Histórico de Pedidos'' com pedido aceite.}
     \label{historico_pedidos_resolvido}
 \end{figure}
 
 \textbf{- Ver as notificações:}
 
-O aluno pode também ver as suas notificações, que correspondem a mudanças no
-seu horário, clicando no botão com um ícone de sino no canto superior direito,
-aparecendo o seguinte ecrã:
+O aluno pode também ver as suas notificações, que correspondem a mudanças no seu horário, clicando
+no botão com um ícone de sino no canto superior direito:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/notificacoes_aluno.png}
-    \caption{\emph{Notificações do aluno}.}
+    \caption{Página ``Notificações do aluno''.}
     \label{notificacoes_aluno}
 \end{figure}
 
 \textbf{- Mudar para o modo escuro:}
 
-Tal como o diretor de curso, o aluno pode também mudar a aplicação para o modo escuro,
-como mostrado no exemplo seguinte:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{res/manual/exemplo_modo_escuro_aluno.png}
-    \caption{\emph{Exemplo de uma página no modo escuro}.}
-    \label{exemplo_modo_escuro_aluno}
-\end{figure}
+Tal como o diretor de curso, o aluno pode também mudar a aplicação para o modo escuro (figura
+\ref{modo_escuro_diretor}).
 
 \textbf{Terminar sessão:}
+
 Tal como o diretor de curso, o aluno termina sessão clicando no botão com um ícone de porta no
-canto superior direito da barra de navegação, voltando assim à página de início de sessão.
+canto superior direito da barra de navegação, voltando assim à página ``Iniciar Sessão''.
 
 \section{Reflexão sobre a Aplicação}
 
