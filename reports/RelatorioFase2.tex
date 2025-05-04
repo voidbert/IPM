@@ -643,8 +643,6 @@ Pode ver o horário desse aluno e os turnos selecionáveis, bem como a lotação
 tentar escolher um turno com vagas disponíveis que não crie conflitos no horário. Para colocar o
 aluno nesse turno de forma provisória, basta clicar no turno pretendido.
 
-{\color{red} - TODO - falar sobre o popup que aparece caso o diretor tente colocar numa sala cheia}
-
 \textbf{- Publicar horário:}
 
 Para fazer com que as mudanças efetuadas fiquem guardadas e afetem o horário dos alunos, o diretor
@@ -760,7 +758,17 @@ PL5, tem vagas disponíveis. No caso de não existir capacidade nesse turno, ser
 outros turnos à mesma hora têm capacidade e, no caso de não existam turnos a essa hora com vagas
 disponíveis, é também fácil de ver, pelo aviso na lista de pedidos, que o aluno em questão é
 trabalhador estudante, e que se pode abrir uma exceção e violar as restrições de capacidade dos
-turnos.
+turnos. Se for esse o caso, ao tentar alocar o aluno, irá aparecer uma mensagem de aviso, que
+informa que o turno pretendido está cheio, dando as opções de cancelar a operação, mudar a sala
+do turno (desativada no caso dos turnos práticos, porque o que limita a sua capacidade não é a
+sala), ou alocar mesmo assim.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/manual/popup_turno_cheio.png}
+    \caption{Popup que avisa que o turno onde se pretende alocar está cheio.}
+    \label{popup_turno_cheio}
+\end{figure}
 
 \textbf{- Realizar a troca de turno:}
 
