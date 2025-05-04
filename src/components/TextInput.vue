@@ -20,7 +20,8 @@
             :type="props.type == 'password' ? 'password' : 'text'"
             :class="['text-input-' + props.type, 'text-input-input']"
             v-model="model"
-            :placeholder="props.placeholder" />
+            :placeholder="props.placeholder"
+            aria-label="Input" />
         <div v-if="props.type == 'search'" class="text-input-search-logo" />
     </div>
 </template>

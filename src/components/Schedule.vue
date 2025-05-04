@@ -18,13 +18,15 @@
     <table class="schedule">
         <thead>
             <tr>
-                <th class="schedule-hour" />
-                <th class="schedule-day schedule-cell" v-for="day in days" :key="day">{{ day }}</th>
+                <th scope="col" class="schedule-hour" />
+                <th scope="col" class="schedule-day schedule-cell" v-for="day in days" :key="day">
+                    {{ day }}
+                </th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(hour, h) in hours" :key="h">
-                <th class="schedule-hour">{{ hour }}</th>
+                <th scope="row" class="schedule-hour">{{ hour }}</th>
                 <td class="schedule-cell" v-for="(_, d) in days" :key="d">
                     <PresentedShift
                         class="schedule-shift"

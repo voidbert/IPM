@@ -3,7 +3,6 @@
     "version": "0.0.0",
     "private": true,
     "type": "module",
-
     "scripts": {
         "dev": "run-s copy-db serve-dev",
         "preview": "run-s build copy-db serve-preview",
@@ -11,26 +10,26 @@
         "lint": "eslint . --fix",
         "format": "prettier --write src/ eslint.config.js index.html vite.config.js",
         "check-format": "prettier --check src/ eslint.config.js index.html vite.config.js",
-
         "copy-db": "node db-copy.js",
         "serve-dev": "run-p serve-app-dev serve-db",
         "serve-preview": "run-p serve-app-preview serve-db",
         "serve-app-dev": "vite",
         "serve-app-preview": "vite preview",
         "serve-db": "json-server .db-new.json",
-
         "build-step-1": "vue-tsc --build",
-        "build-step-2": "vite build"
+        "build-step-2": "vite build",
+        "pa11y-tests": "node pa11y-test.js"
     },
-
     "dependencies": {
         "json-server": "1.0.0-beta.3",
+        "pa11y": "^8.0.0",
+        "pa11y-reporter-cli": "^2.0.1",
         "pinia": "^3.0.2",
         "pinia-plugin-persistedstate": "^4.2.0",
+        "puppeteer": "^24.8.0",
         "vue": "^3.5.13",
         "vue-router": "^4.5.0"
     },
-
     "devDependencies": {
         "@types/node": "^22.14.1",
         "@vitejs/plugin-vue": "^5.2.3",
@@ -45,29 +44,23 @@
         "vite-plugin-vue-devtools": "^7.7.5",
         "vue-tsc": "^2.2.8"
     },
-
     "prettier": {
         "endOfLine": "lf",
         "printWidth": 100,
         "proseWrap": "preserve",
         "objectWrap": "preserve",
-
         "bracketSameLine": true,
         "singleAttributePerLine": false,
-
         "tabWidth": 4,
         "useTabs": false,
         "vueIndentScriptAndStyle": false,
-
         "bracketSpacing": true,
         "htmlWhitespaceSensitivity": "css",
-
         "semi": true,
         "singleQuote": false,
         "quoteProps": "as-needed",
         "trailingComma": "none",
         "arrowParens": "always",
-
         "requirePragma": false,
         "insertPragma": false
     }
