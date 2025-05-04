@@ -22,12 +22,14 @@
                 type="text"
                 v-model="email"
                 placeholder="Email"
-                v-on:update:modelValue="wrongCredentials = false" />
+                v-on:update:modelValue="wrongCredentials = false"
+                aria-label="Email" />
             <TextInput
                 type="password"
                 v-model="password"
                 placeholder="Password"
-                v-on:update:modelValue="wrongCredentials = false" />
+                v-on:update:modelValue="wrongCredentials = false"
+                aria-label="Password" />
             <Checkbox v-model="rememberUser">Lembrar-se de mim</Checkbox>
 
             <div id="login-submit-container">

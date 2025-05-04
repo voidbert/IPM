@@ -15,7 +15,10 @@
 -->
 
 <template>
-    <button class="icon-button" :disabled="props.disabled">
+    <button
+        class="icon-button"
+        :disabled="props.disabled"
+        :aria-label="props.disabled ? 'Botão desativado' : `Botão ${tooltip}`">
         <span
             class="icon-button-icon"
             :class="`icon-button-icon-${props.type}`"

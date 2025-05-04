@@ -62,8 +62,6 @@ body {
     --color-toggle-button-active: #705c5c;
     --color-toggle-button-hover: #b7afaf;
     --color-toggle-button-shadow: #808080;
-
-    --color-warning: var(--color-uminho);
 }
 
 body,
@@ -131,6 +129,8 @@ body[class="light"] {
     --color-undo-button-disabled: #bbb;
     --color-undo-button-regular: #333;
     --color-undo-button-hover: #555;
+
+    --color-warning: var(--color-uminho);
 }
 
 body[class="dark"] {
@@ -186,6 +186,8 @@ body[class="dark"] {
     --color-undo-button-disabled: #333;
     --color-undo-button-regular: #ddd;
     --color-undo-button-hover: #fff;
+
+    --color-warning: #fa0008;
 }
 
 @property --color-checkbox-unchecked {
