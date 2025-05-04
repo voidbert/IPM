@@ -53,9 +53,35 @@ import { ref } from "vue";
 const loginStore = useLoginStore();
 const notificationType = ref<"student" | "director">();
 const notifications = ref<Notification[]>([]);
+const maxType = 5;
 
 User.getByEmail(loginStore.email as string).then(async (user) => {
     notificationType.value = (user as User).type as "student" | "director";
-    notifications.value = await Notification.getToUser((user as User).id);
+    if (notificationType.value != "director") {
+        notifications.value = await Notification.getToUser((user as User).id);
+    } else {
+        let allNotifications: Notification[] = await Notification.getToUser((user as User).id);
+        let changeShift = 0;
+        allNotifications.forEach((n) => {
+            if (n.type === "studentRequest" && n.state === "pending") changeShift += 1;
+        });
+        if (changeShift > maxType) {
+            allNotifications = allNotifications.filter(
+                (n) => !(n.type === "studentRequest" && n.state === "pending")
+            );
+            const notificationGroup = new Notification(
+                -1,
+                -1,
+                (user as User).id,
+                new Date(),
+                "system",
+                "pending"
+            );
+            notificationGroup.systemMessage = `Tem ${changeShift} pedidos de troca de turno`;
+            notificationGroup.systemType = "studentRequest";
+            allNotifications.push(notificationGroup);
+        }
+        notifications.value = allNotifications;
+    }
 });
 </script>

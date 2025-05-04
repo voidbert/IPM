@@ -15,7 +15,11 @@
 import { fetchJson } from "./Utils.ts";
 import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
-export type NotificationType = "studentRequest" | "professorRequest" | "publishedSchedules";
+export type NotificationType =
+    | "studentRequest"
+    | "professorRequest"
+    | "publishedSchedules"
+    | "system";
 export type NotificationState = "pending" | "accepted" | "rejected";
 
 export class Notification {
@@ -27,6 +31,7 @@ export class Notification {
     course?: number;
     type: NotificationType;
     state: NotificationState;
+    read: boolean;
 
     // Student request attributes
     fromShift?: number;
@@ -34,6 +39,10 @@ export class Notification {
 
     // Professor request attributes
     currentShift?: number;
+
+    // System attributes
+    systemType?: NotificationType;
+    systemMessage?: string;
 
     static maxId = 0;
 
@@ -47,7 +56,8 @@ export class Notification {
         course: number | undefined = undefined,
         fromShift: number | undefined = undefined,
         toShift: number | undefined = undefined,
-        currentShift: number | undefined = undefined
+        currentShift: number | undefined = undefined,
+        read: boolean = false
     ) {
         this.id = id;
         this.to = to;
@@ -59,6 +69,7 @@ export class Notification {
         this.fromShift = fromShift;
         this.toShift = toShift;
         this.currentShift = currentShift;
+        this.read = read;
     }
 
     static createFromObject(notificationObject: any): Notification {
@@ -72,11 +83,13 @@ export class Notification {
             notificationObject["course"],
             notificationObject["fromShift"],
             notificationObject["toShift"],
-            notificationObject["currentShift"]
+            notificationObject["currentShift"],
+            notificationObject["read"]
         );
     }
 
     async update(): Promise<void> {
+        if (!this.read) this.read = true;
         await fetchJson(`/notifications/${this.id}`, "PUT", this);
 
         const notificationCirclesStore = useNotificationCirclesStore();

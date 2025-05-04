@@ -104,8 +104,9 @@ body[class="light"] {
     --color-notification-foreground: #000;
     --color-notification-background-read: #ccc;
     --color-notification-background-unread: #fafafa;
-    --color-notification-list-background: #bbb;
+    --color-notification-list-background: #ededed;
     --color-notification-shadow: #0000003f;
+    --color-notification-hover: #eddfed;
 
     --color-problem-student-name: #555;
     --color-problem-description: var(--color-body-foreground);
@@ -160,6 +161,7 @@ body[class="dark"] {
     --color-notification-background-unread: #333;
     --color-notification-list-background: #222;
     --color-notification-shadow: #0000003f;
+    --color-notification-hover: #3b3636;
 
     --color-problem-student-name: #aaa;
     --color-problem-description: var(--color-body-foreground);

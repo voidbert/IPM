@@ -19,11 +19,13 @@
         v-if="
             notifications.length > 0 && users.length > 0 && shifts.length > 0 && courses.length > 0
         "
-        class="notification-list">
-        <PresentedNotification
-            v-for="notification in shownNotifications"
-            :key="notification.notification.id"
-            v-bind="notification" />
+        class="notification-list-container">
+        <TransitionGroup name="notification" tag="div" class="notification-list">
+            <PresentedNotification
+                v-for="notification in shownNotifications"
+                :key="notification.notification.id"
+                v-bind="notification" />
+        </TransitionGroup>
     </ol>
     <div v-else class="notification-list notification-list-no-notifications">
         Sem {{ props.type === "request" ? "pedidos" : "notificações" }} a apresentar
@@ -31,19 +33,27 @@
 </template>
 
 <style scoped>
-.notification-list {
+.notification-list-container {
     list-style-type: none;
 
     display: flex;
     flex-direction: column;
     flex: 1 0 0;
 
-    gap: 0.5em;
     border-radius: 0.5em;
     padding: 0.5em;
     margin: 0px;
 
     background-color: var(--color-notification-list-background);
+}
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+
+    gap: 0.5em;
+    padding: 0.2em 0.5em 0.2em 0.2em;
 
     overflow-y: scroll;
 }
@@ -52,6 +62,10 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
+}
+
+.notification {
+    transition: transform 0.3s ease-in-out;
 }
 </style>
 
@@ -88,7 +102,7 @@ const shownNotifications = computed(() =>
 
             return {
                 notification: notification,
-                nameUser: users.value.find((u) => u.id === nameId) as User,
+                nameUser: users.value.find((u) => u.id === nameId) ?? ({} as User),
                 course: courses.value.find((c) => c.id === notification.course),
                 fromShift: shifts.value.find((s) => s.id === notification.fromShift),
                 toShift: shifts.value.find((s) => s.id === notification.toShift),
@@ -97,10 +111,16 @@ const shownNotifications = computed(() =>
             };
         })
         .sort((n1, n2) => {
-            const n1Read = n1.notification.state !== "pending";
-            const n2Read = n2.notification.state !== "pending";
+            const n1State = n1.notification.state !== "pending";
+            const n2State = n2.notification.state !== "pending";
+            const n1Read = n1.notification.read;
+            const n2Read = n2.notification.read;
 
-            if (n1Read && !n2Read) {
+            if (n1State && !n2State) {
+                return 1;
+            } else if (!n1State && n2State) {
+                return -1;
+            } else if (n1Read && !n2Read) {
                 return 1;
             } else if (!n1Read && n2Read) {
                 return -1;
