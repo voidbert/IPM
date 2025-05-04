@@ -89,7 +89,7 @@ Na fase anterior deste trabalho prático, construiu-se, em Figma \cite{figma}, u
 a implementar. Apesar de uma boa avaliação nesta fase, a docência da UC de Interface Pessoa-Máquina
 reparou em alguns aspetos que podiam ser melhorados. Nesta secção, apresentam-se as mudanças que
 foram feitas ao modelo da interface devido tanto aos comentários dos docentes como a outros aspetos
-que o grupo de trabalho se apercebeu que podiam ser melhorados.
+que o nosso grupo de trabalho se apercebeu que podiam ser melhorados.
 
 Em primeiro lugar, a página ``Iniciar Sessão'' não é ideal para a prevenção de erros: é possível que
 o utilizador submeta parcialmente as suas credenciais (apenas o seu endereço eletrónico ou apenas a
@@ -970,9 +970,75 @@ Tal como o diretor de curso, o aluno pode também mudar a aplicação para o mod
 Tal como o diretor de curso, o aluno termina sessão clicando no botão com um ícone de porta no
 canto superior direito da barra de navegação, voltando assim à página ``Iniciar Sessão''.
 
+\section{Acessibilidade}
+
+Durante o processo de desenvolvimento da aplicação, foi feito algum esforço para a tornar acessível.
+
+Em primeiro lugar, o código da aplicação tira proveito da semântica de várias \emph{tags} HTML
+(\texttt{nav}, \texttt{li}, \texttt{button}, \ldots), pelo que se espera que leitores de ecrã sejam
+capazes de compreender as páginas sem recurso a ARIA \emph{labels}, e oferecer uma boa experiência
+de utilização a utilizadores com deficiências visuais. Para validar esta e outras hipóteses, a
+extensão WAVE \cite{wave}, foi utilizada para procurar diversos problemas de acessibilidade, que o
+nosso grupo de trabalho procurou corrigir. Também no âmbito da percetibilidade, garantiu-se que os
+rácios de contraste entre o fundo e texto dos componentes eram aceitáveis, pelo menos no tema claro.
+No tema escuro, isto não se verifica, visto que a cor da Universidade do Minho, utilizada em vários
+elementos da interface, não contrasta bem com tons escuros. Mesmo assim, o utilizador tem a opção de
+utilizar o tema claro caso o necessite.
+
+No âmbito da operabilidade, o nosso principal foco do foi o de garantir que era possível navegar
+pelas várias páginas com o teclado de uma forma que faça sentido. A título de exemplo, é possível
+fechar diálogos e \emph{toasts} com a tecla \texttt{Esc}, e é possível desfazer ações com
+\texttt{Ctrl+Z}. Ademais, foi preciso especial cuidado nos horários para estes serem facilmente
+navegáveis com a tecla \texttt{Tab}: como estes têm um \emph{layout} tabular, linha a linha, foi
+preciso reajustar os valores de \texttt{tabindex} para garantir que os turnos eram visitados em
+ordem cronológica. Também se garantiu que os elementos selecionáveis tinham a sua classe CSS
+\texttt{:focus-visible} estilizada.
+
+No entanto, o principal problema que a aplicação sofre é a falta de responsividade perante
+diferentes tamanho de ecrã: são poucas as páginas e componentes que funcionam em ecrãs pequenos e
+verticais como os dos \emph{smartphones}. Fazer as alterações necessárias ao \emph{layout} das
+páginas para suportar variadíssimos tamanhos de ecrãs já envolveria bastante trabalho, mas também
+aumentaria significativamente o número de testes que se teriam de fazer a cada página: cada página
+teria de ser testada em vários navegadores e em vários tamanhos de ecrã, sendo que qualquer mudança
+ao \emph{layout} envolveria refazer toda esta testagem. Devido ao tempo que isto consumiria, optámos
+por dedicar mais tempo a melhorar a \emph{user experience} na aplicação, do que a a otimizar para
+diversos tamanhos de ecrã. No entanto, no futuro, se esta aplicação fosse usada em produção,
+\emph{layout} responsivo seria um das primeiras funcionalidades a ser implementada.
+
 \section{Reflexão sobre a Aplicação}
 
+Devido a falta de tempo, não foi possível avaliar a aplicação desenvolvida com utilizadores reais.
+Mesmo assim, apresentam-se, nesta secção, alguns comentários pessoais do nosso grupo sobre a
+aplicação final desenvolvida.
+
+Em primeiro lugar, é necessário notar que a aplicação cumpre os requisitos propostos, permitindo ao
+diretor de curso e aos alunos executar as ações nos cenários do enunciado do trabalho prático.
+Ademais, é necessário considerar que o modelo Figma da interface previamente construído foi avaliado
+de forma positiva, tanto heuristicamente como pela equipa docente. Visto que a aplicação
+implementada seguiu este modelo do modo mais próximo possível, acredita-se que a aplicação também
+providenciará uma boa experiência para o utilizador.
+
+No entanto, surgiram alguns aspetos que podiam ser melhorados numa eventual próxima iteração no
+desenvolvimento da aplicação. Em primeiro lugar, em páginas que dão a possibilidade ao utilizador de
+desfazer uma ação, também é importante dar a possibilidade de refazer uma ação previamente desfeita,
+algo que está em falta na aplicação desenvolvida. Ademais, na forma como as notificações são
+geridas, a experiência do utilizador melhoraria se as notificações fossem automaticamente aceites
+conforme as ações do utilizador. Por exemplo, se o diretor de curso visse o conteúdo de um pedido de
+mudança de sala e alterasse a sala em que o turno é lecionado, a notificação deveria automaticamente
+ser marcada como aceite. Estes pequenos detalhes são cruciais para assegurar uma boa experiência
+de utilização e, apesar de poucos, acreditamos que há espaço para melhoria na aplicação
+desenvolvida.
+
 \section{Conclusão}
+
+Em suma, ao longo deste semestre, foi levado a cabo o processo completo de desenvolvimento de uma
+interface, partindo da sua modelação, passando pela sua implementação, e terminando na sua testagem
+e avaliação. Em relação à segunda fase do trabalho prático, devido ao grande número de ferramentas
+utilizado, foi possível aprender um pouco sobre diversos aspetos de desenvolvimento Web, apesar de
+não ter sido possível aprofundar muito o nosso conhecimento em áreas específicas. Por muito que não
+tenha sido possível realizar a fase da avaliação da aplicação com o detalhe que era desejado,
+acreditamos que o produto desenvolvido não só cumpre os requisitos propostos, como também o faz
+apresentando uma boa experiência de utilização.
 
 \begingroup
 \section{Bibliografia}
@@ -1007,6 +1073,9 @@ canto superior direito da barra de navegação, voltando assim à página ``Inic
         ``ESLint''. ESLint. Apr. 24, 2025. [Online.] \url{https://eslint.org/}
     \bibitem{prettier}
         ``Prettier''. Prettier. Apr. 24, 2025. [Online.] \url{https://prettier.io/}
+    \bibitem{wave}
+        ``WAVE - Web Accessibility Evaluation Tool''. WAVE. Accessed: May 4, 2025. [Online.]
+        Available: \url{https://wave.webaim.org/extension/}
 \end{thebibliography}
 \endgroup
 
