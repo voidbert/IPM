@@ -15,30 +15,55 @@
 -->
 
 <template>
-    <button class="navbar-hoverable-icon" :title="props.tooltip" />
+    <button class="navbar-hoverable-icon" :title="props.tooltip">
+        <div class="navbar-hoverable-icon-svg" />
+        <NotificationCircle
+            class="navbar-hoverable-icon-notification-circle"
+            v-if="props.notificationCircle" />
+    </button>
 </template>
 
 <style scoped>
 .navbar-hoverable-icon {
-    all: unset;
+    position: relative;
     height: 100%;
     aspect-ratio: 1 / 1;
+
+    background: none;
+    border: none;
+    padding: 0px;
+}
+
+.navbar-hoverable-icon-svg {
+    height: 100%;
 
     background-color: var(--color-navbar-hoverable-icon-default);
     mask-image: v-bind("'url(\"' + props.url + '\")'");
     mask-size: cover;
 }
 
-.navbar-hoverable-icon:hover,
-.navbar-hoverable-icon:active {
-    background: var(--color-navbar-hoverable-icon-hover);
+.navbar-hoverable-icon-svg:hover {
+    background-color: var(--color-navbar-hoverable-icon-hover);
     transition: background-color 0.1s;
+}
+
+.navbar-hoverable-icon-notification-circle {
+    top: 0% !important;
+    right: 0% !important;
 }
 </style>
 
 <script setup lang="ts">
-const props = defineProps<{
-    url: string;
-    tooltip: string;
-}>();
+import NotificationCircle from "./NotificationCircle.vue";
+
+const props = withDefaults(
+    defineProps<{
+        url: string;
+        tooltip: string;
+        notificationCircle?: boolean;
+    }>(),
+    {
+        notificationCircle: false
+    }
+);
 </script>

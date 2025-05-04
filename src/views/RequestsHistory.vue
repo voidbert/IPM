@@ -15,40 +15,35 @@
 -->
 
 <template>
-    <div class="shift-block">
-        <Shift
-            v-for="shift in props.shifts_info"
-            :key="shift.name"
-            :shift_info="shift"
-            :block_height="props.block_height"></Shift>
-    </div>
+    <main id="requests-history-main">
+        <NotificationList type="request" :notifications="notifications" />
+    </main>
 </template>
 
 <style scoped>
-.shift-block {
+#requests-history-main {
     display: flex;
-    padding: 5px;
-    align-items: center;
-    gap: 3px;
-    flex-shrink: 0;
-    height: 120px;
+    flex-direction: column;
+    flex: 1 0 0;
+
+    gap: 1em;
+    padding: 1em;
 }
 </style>
 
 <script setup lang="ts">
-import Shift from "./Shift.vue";
-const props = defineProps<{
-    shifts_info: {
-        type: "full" | "full-pressed" | "border" | "disabled" | "disabled-highlighted";
-        color_nr: number;
-        uc: string;
-        name: string;
-        room: string;
-        capacity: string;
-        show_capacity: boolean;
-        start: number;
-        end: number;
-    }[];
-    block_height: number;
-}>();
+import NotificationList from "../components/NotificationList.vue";
+
+import { useLoginStore } from "../stores/login.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
+
+import { ref } from "vue";
+
+const loginStore = useLoginStore();
+const notifications = ref<Notification[]>([]);
+
+User.getByEmail(loginStore.email as string).then(async (user) => {
+    notifications.value = await Notification.getFromUser((user as User).id);
+});
 </script>

@@ -15,15 +15,17 @@
 -->
 
 <template>
-    <div class="dialog-container" v-if="model">
-        <dialog open>
-            <div class="dialog-title-bar">
+    <div class="popup-blur-container" v-if="model">
+        <dialog open class="popup">
+            <div class="popup-title-bar">
                 <ApplicationIcon />
-                <div class="dialog-title-bar-close-container">
-                    <NavbarHoverableIcon url="/close.svg" tooltip="Fechar" @click="model = false" />
-                </div>
+                <NavbarHoverableIcon
+                    class="popup-close-icon"
+                    url="/close.svg"
+                    tooltip="Fechar"
+                    @click="model = false" />
             </div>
-            <div class="dialog-contents">
+            <div class="popup-contents">
                 <slot />
             </div>
         </dialog>
@@ -31,7 +33,7 @@
 </template>
 
 <style scoped>
-.dialog-container {
+.popup-blur-container {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -43,35 +45,36 @@
     align-items: center;
 
     backdrop-filter: blur(5px) brightness(60%);
+    z-index: 2;
 }
 
-dialog {
+.popup {
     all: unset;
+    max-width: calc(100vw - 2em);
 }
 
-.dialog-title-bar {
+.popup-title-bar {
     display: flex;
-    height: 4rem;
+    height: 4em;
 
     align-items: center;
     justify-content: space-between;
-    gap: 10vw;
 
-    border-radius: 5px 5px 0px 0px;
-    padding: 0px 10px;
+    border-radius: 0.5em 0.5em 0px 0px;
+    padding: 0px 0.5em;
 
     background-color: var(--color-uminho);
 }
 
-.dialog-title-bar-close-container {
-    height: 60%;
+.popup-close-icon {
+    height: 3em;
 }
 
-.dialog-contents {
+.popup-contents {
     display: flex;
-    padding: 10px;
+    padding: 0.5em;
 
-    border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 0.5em 0.5em;
     background-color: var(--color-body-background);
 }
 </style>
@@ -79,5 +82,12 @@ dialog {
 <script setup lang="ts">
 import ApplicationIcon from "./ApplicationIcon.vue";
 import NavbarHoverableIcon from "./NavbarHoverableIcon.vue";
-const model = defineModel();
+
+const model = defineModel({ type: Boolean });
+
+document.addEventListener("keyup", (e) => {
+    if (e.key === "Escape") {
+        model.value = false;
+    }
+});
 </script>

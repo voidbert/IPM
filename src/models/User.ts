@@ -13,22 +13,25 @@
 // limitations under the License.
 
 import { fetchJson } from "./Utils.ts";
+import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
 
 export type UserType = "student" | "professor" | "director";
 
 export class User {
     // Common attributes
-    public id: number;
-    public email: string;
-    public password: string;
-    public type: UserType;
-    public name: string;
-    public profilePicture: string | null;
+    id: number;
+    email: string;
+    password: string;
+    type: UserType;
+    name: string;
+    profilePicture: string | null;
 
     // Student-only attributes
     number: string | null;
+    specialStatus: boolean;
     enrollments: number[];
-    schedule: number[];
+    committedSchedule: number[];
+    directorSchedule: number[];
 
     constructor(
         id: number,
@@ -38,8 +41,10 @@ export class User {
         name: string,
         profilePicture: string | null = null,
         number: string | null = null,
+        specialStatus: boolean = false,
         enrollments: number[] = [],
-        schedule: number[] = []
+        committedSchedule: number[] = [],
+        directorSchedule: number[] = []
     ) {
         this.id = id;
         this.email = email;
@@ -48,26 +53,74 @@ export class User {
         this.name = name;
         this.profilePicture = profilePicture;
         this.number = number;
+        this.specialStatus = specialStatus;
         this.enrollments = enrollments;
-        this.schedule = schedule;
+        this.committedSchedule = committedSchedule;
+        this.directorSchedule = directorSchedule;
     }
 
-    static createFromObject(userObject: any): User {
+    static createFromObject(userObject: Record<string, any>): User {
         return new User(
-            userObject["id"],
+            Number(userObject["id"]),
             userObject["email"],
             userObject["password"],
             userObject["type"],
             userObject["name"],
             userObject["profilePicture"],
             userObject["number"],
+            userObject["specialStatus"],
             userObject["enrollments"],
-            userObject["schedule"]
+            userObject["committedSchedule"],
+            userObject["directorSchedule"]
         );
     }
 
-    static async tryAuthenticate(email: string, password: string): Promise<User | null> {
-        const users = (await fetchJson(`/users?email=${email}&password=${password}`)) as any[];
-        return users.length == 1 ? User.createFromObject(users[0]) : null;
+    async update(): Promise<void> {
+        await fetchJson(`/users/${this.id}`, "PUT", this);
+
+        const notificationCirclesStore = useNotificationCirclesStore();
+        notificationCirclesStore.forceUpdate++;
+    }
+
+    static async getById(id: number): Promise<User | null> {
+        try {
+            const user = (await fetchJson(`/users/${id}`)) as Record<string, any>;
+            return User.createFromObject(user);
+        } catch {
+            return null;
+        }
+    }
+
+    static async getByEmail(email: string): Promise<User | null> {
+        const users = (await fetchJson(`/users?email=${email}`)) as Record<string, any>[];
+        if (users.length > 0) {
+            return User.createFromObject(users[0] as Record<string, any>);
+        } else {
+            return null;
+        }
+    }
+
+    static async getAll(): Promise<User[]> {
+        return (await fetchJson("/users")).map(User.createFromObject);
+    }
+
+    static async getUsersPublicInfo(ids: number[]): Promise<Record<number, User>> {
+        const usersPublic: Record<number, User> = {};
+        if (ids.length > 0) {
+            let query = `/users?id=${ids.pop()}`;
+            ids.forEach((id) => (query += `&id=${id}`));
+            const usersPrivate = (await fetchJson(query, "GET")) as any[];
+            usersPrivate.forEach((u) => {
+                usersPublic[u["id"]] = User.createFromObject({
+                    id: u["id"],
+                    email: u["email"],
+                    type: u["type"],
+                    name: u["name"],
+                    profilePicture: u["profilePicture"],
+                    number: u["number"]
+                });
+            });
+        }
+        return usersPublic;
     }
 }

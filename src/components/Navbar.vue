@@ -15,65 +15,42 @@
 -->
 
 <template>
-    <nav>
-        <div class="navbar-left">
-            <ApplicationIcon />
-            <NavbarLinks :links="links" />
-        </div>
+    <nav class="navbar">
+        <ApplicationIcon />
+        <NavbarLinks :links="links" />
 
-        <div class="navbar-right">
-            <NavbarHoverableIcon
-                v-if="themeStore.theme === 'light'"
-                @click="themeStore.change()"
-                url="/dark-mode.svg"
-                tooltip="Modo escuro" />
-            <NavbarHoverableIcon
-                v-else
-                @click="themeStore.change()"
-                url="/light-mode.svg"
-                tooltip="Modo claro" />
-            <RouterLink
-                to="./Notifications"
-                v-if="props.type !== 'login'"
-                class="navbar-hoverable-icon-container">
-                <NavbarHoverableIcon url="/notifications.svg" tooltip="Notificações" />
-            </RouterLink>
-            <NavbarHoverableIcon
-                v-if="props.type !== 'login'"
-                @click="logout()"
-                url="/log-out.svg"
-                tooltip="Terminar sessão" />
-        </div>
+        <NavbarHoverableIcon
+            :url="themeStore.theme === 'light' ? '/dark-mode.svg' : '/light-mode.svg'"
+            tooltip="Modo escuro"
+            @click="themeStore.change()" />
+        <NavbarHoverableIcon
+            v-if="props.type !== 'login'"
+            url="/notifications.svg"
+            tooltip="Notificações"
+            :notificationCircle="hasNotificationCircle"
+            @click="router.push('/Notifications')" />
+        <NavbarHoverableIcon
+            v-if="props.type !== 'login'"
+            @click="logout()"
+            url="/log-out.svg"
+            tooltip="Terminar sessão" />
     </nav>
 </template>
 
 <style scoped>
-nav {
+.navbar {
+    height: 4em;
     display: flex;
-    height: 4rem;
     justify-content: space-between;
-
-    background-color: var(--color-uminho);
-    padding: 0px 6px;
-}
-
-.navbar-left {
-    display: flex;
-    justify-content: left;
-}
-
-.navbar-right {
-    display: flex;
-    height: 100%;
     align-items: center;
 
-    gap: 6px;
+    padding: 0em 0.5em;
+
+    background-color: var(--color-navbar-background);
 }
 
-.navbar-hoverable-icon-container {
-    display: flex;
-    height: 100%;
-    align-items: center;
+.navbar-links {
+    flex-grow: 1;
 }
 
 .navbar-hoverable-icon {
@@ -88,15 +65,21 @@ import NavbarLinks from "./NavbarLinks.vue";
 
 import { useThemeStore } from "../stores/theme.ts";
 import { useLoginStore } from "../stores/login.ts";
+import { useNotificationCirclesStore } from "../stores/notificationCircles.ts";
+import { Notification } from "../models/Notification.ts";
+import { User } from "../models/User.ts";
 
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
-    type: "login" | "student" | "director";
+    type: "login" | "student" | "director" | "professor";
 }>();
 
-// Setup navbar links
+// Links
+const hasSchedulesCircles = ref(false);
+const hasNotificationCircle = ref(false);
+
 const links = computed(() => {
     return {
         login: [],
@@ -125,20 +108,39 @@ const links = computed(() => {
             },
             {
                 name: "Publicar Horários",
-                url: "/PublishSchedules"
+                url: "/PublishSchedules",
+                notificationCircle: hasSchedulesCircles.value
             }
-        ]
+        ],
+        professor: []
     }[props.type];
 });
 
 // Theme switching
 const themeStore = useThemeStore();
 
+// Notification circles
+const loginStore = useLoginStore();
+const notificationCirclesStore = useNotificationCirclesStore();
+
+const updateNotificationCircles = async () => {
+    const users = await User.getAll();
+    const user = (await User.getByEmail(loginStore.email as string)) as User;
+    const notifications = await Notification.getToUser(user.id);
+
+    hasSchedulesCircles.value = users.some(
+        (u) => JSON.stringify(u.committedSchedule) !== JSON.stringify(u.directorSchedule)
+    );
+    hasNotificationCircle.value = notifications.filter((n) => n.state === "pending").length > 0;
+};
+
+watch(notificationCirclesStore, updateNotificationCircles);
+notificationCirclesStore.forceUpdate++;
+
 // Session control
 const router = useRouter();
-const loginStore = useLoginStore();
 const logout = () => {
     loginStore.logout();
-    router.replace("/");
+    router.push("/");
 };
 </script>

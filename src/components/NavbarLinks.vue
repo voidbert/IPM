@@ -16,45 +16,60 @@
 
 <template>
     <ul class="navbar-links">
-        <RouterLink class="navbar-pill" v-for="link in props.links" :key="link.url" :to="link.url">
-            <li>{{ link.name }}</li>
+        <RouterLink
+            class="navbar-links-pill"
+            v-for="link in props.links"
+            :key="link.url"
+            :to="link.url">
+            <li>
+                {{ link.name }}
+                <NotificationCircle v-if="link.notificationCircle" />
+            </li>
         </RouterLink>
     </ul>
 </template>
 
 <style scoped>
 .navbar-links {
-    display: inline-flex;
-    gap: 5pt;
+    display: flex;
+    gap: 0.5em;
 }
 
-.navbar-pill {
-    padding: 0.4em;
-    border-radius: 0.3em;
-
+.navbar-links-pill {
     list-style-type: none;
     text-decoration: none;
 
-    color: var(--color-navbar-text-default);
+    position: relative;
+    padding: 0.5em;
+    border-radius: 0.5em;
+
+    color: var(--color-navbar-link-inactive-foreground);
+    background-color: var(--color-navbar-link-inactive-background);
+
+    transition:
+        background-color 0.1s,
+        color 0.1s;
 }
 
-.navbar-pill.router-link-active {
-    color: var(--color-uminho);
-    background-color: var(--color-navbar-text-default);
-    text-shadow: 0px 0px 1px var(--color-uminho);
+.navbar-links-pill.router-link-active {
+    color: var(--color-navbar-link-active-foreground);
+    background-color: var(--color-navbar-link-active-background);
+    text-shadow: 0px 0px 1px var(--color-navbar-link-active-foreground);
 }
 
-.navbar-pill:hover:not(.router-link-active),
-.navbar-pill:active:not(.router-link-active) {
-    text-shadow: 0px 0px 1px var(--color-navbar-text-default);
+.navbar-links-pill:hover:not(.router-link-active) {
+    background-color: var(--color-navbar-link-inactive-hover);
 }
 </style>
 
 <script setup lang="ts">
+import NotificationCircle from "./NotificationCircle.vue";
+
 const props = defineProps<{
     links: {
         name: string;
         url: string;
+        notificationCircle?: boolean;
     }[];
 }>();
 </script>

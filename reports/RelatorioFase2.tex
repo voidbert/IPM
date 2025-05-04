@@ -163,6 +163,12 @@ página ``Resolver Problemas'':
     \label{gerir-turnos-revisto}
 \end{figure}
 
+Na página ``Notificações'', o botão de alterar entre todas as notificações e as não lidas
+foi removido, visto que as mesmas já se encontram separadas por este critério e ordenadas
+cronológicamente.
+
+{\color{red} TODO - figura}
+
 Por último, também se seguiu a sugestão da equipa docente de mostrar o estado dos pedidos nas
 páginas ``Histórico de Pedidos'' e ``Notificações do Diretor de Curso''. Abaixo, apresenta-se, como
 exemplo, o modelo da página ``Histórico de Pedidos''. Apesar do uso de linguagem iconográfica, tal
@@ -171,7 +177,7 @@ o cursor os sobrevoar por alguns segundos:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{res/prototype/estado-pedido-tooltip.png}
+    \includegraphics[width=0.2\textwidth]{res/prototype/estado-pedido-tooltip.png}
     \caption{\emph{Tooltip} sobre o estado de um pedido.}
     \label{estado-pedido-tooltip}
 \end{figure}
@@ -395,6 +401,56 @@ turno. Existem várias variantes de turnos, necessárias para ser possível dist
 quais é possível interagir, turnos pertencentes ao horário do aluno, o turno do qual um aluno
 requisita para sair, \emph{etc.}. É também possível escolher se se deseja que um turno apresente ou
 não a sua capacidade.
+
+\subsection{Botão com ícone}
+
+Este componente trata-se de um \emph{widget} no qual se pode clicar para se realizar uma ação,
+sendo utilizado no componente ``Notificação'', do diretor de curso (figura \ref{notification}).
+Existem várias variantes para as ações de rejeitar, aprovar ou navegar para a página de resolução
+de um pedido, distinguíveis pelo seu ícone. Abaixo podem ser vistos os três tipos do botão
+implementados:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{res/components/icon-button.png}
+    \caption{Da esquerda para a direita, variantes de rejeição, aprovação e navegação dos botões.}
+    \label{icon-button}
+\end{figure}
+
+\subsection{Notificação}
+
+Este componente, utilizado no componente ``Lista de Notificações''
+(figura \ref{notifications-list}), permite apresentar o conteúdo e estado
+de uma notificação / pedido (trocas de turno, sala ou alertas).
+Existem várias variantes (notificação de aluno, director de curso ou pedido), distinguíveis pelo
+seu conteúdo. Adicionalmente, notificações do diretor de curso quando com o cursor em cima
+apresentam três botões que permitem rejeitar, aprovar ou navegar para a página de resolução do
+pedido de um aluno / professor. As variantes do diretor de curso e de um pedido podem-se
+observar abaixo:
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{res/components/director-notification.png}
+    \includegraphics[width=\textwidth]{res/components/student-request.png}
+    \caption{De cima para baixo, variantes notificação de diretor de curso e de pedido.}
+    \label{notification}
+\end{figure}
+
+\subsection{Lista de Notificações}
+
+Este componente, utilizado nas páginas de ``Histórico de Pedidos'' e ``Notificações'',
+apresenta uma lista de notificações / pedidos, em que cada elemento é uma instância do componente
+``Notificação''. Permite listar as notificações / pedidos de um utilizador, organizados
+temporalmente e por estado do pedido, como se pode ver abaixo:
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{res/components/director-notifications-list.png}
+    \caption{Lista de notificações, do diretor de curso.}
+    \label{notifications-list}
+\end{figure}
 
 \section{Páginas Implementadas}
 

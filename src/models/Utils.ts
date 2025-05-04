@@ -16,8 +16,9 @@ export const fetchJson = async (
     path: string,
     method: string = "GET",
     body: any = undefined
-): Promise<any> => {
+): Promise<Record<string, any> | Record<string, any>[]> => {
     const response = await fetch("http://localhost:3000" + path, {
+        headers: { "Content-Type": "application/json" },
         method: method,
         body: JSON.stringify(body)
     });

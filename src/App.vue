@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import Navbar from "./components/Navbar.vue";
 
+import { useLoginStore } from "./stores/login.ts";
 import { useThemeStore } from "./stores/theme.ts";
 
 import { ref } from "vue";
@@ -29,9 +30,12 @@ import { RouterView, useRouter } from "vue-router";
 
 // Prepare navbar
 const router = useRouter();
-const navbarType = ref<"login" | "student" | "director">("login");
+const navbarType = ref<"login" | "student" | "director" | "professor">("login");
+const loginStore = useLoginStore();
 router.beforeEach((to) => {
-    navbarType.value = to.meta.userType;
+    navbarType.value = to.meta.userType.includes(loginStore.user.type)
+        ? loginStore.user.type
+        : "login";
 });
 
 // Theme switching
