@@ -766,12 +766,12 @@ trabalhador estudante, e que se pode abrir uma exceção e violar as restriçõe
 turnos. Se for esse o caso, ao tentar alocar o aluno, irá aparecer uma mensagem de aviso, que
 informa que o turno pretendido está cheio, dando as opções de cancelar a operação, mudar a sala
 do turno (desativada no caso dos turnos práticos, porque o que limita a sua capacidade não é a
-sala), ou alocar mesmo assim.
+sala), ou atribuir o turno mesmo assim.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{res/manual/popup_turno_cheio.png}
-    \caption{Popup que avisa que o turno onde se pretende alocar está cheio.}
+    \caption{Popup que avisa que o turno ao qual se pretende adicionar um aluno está cheio.}
     \label{popup_turno_cheio}
 \end{figure}
 
@@ -991,12 +991,12 @@ Em primeiro lugar, o código da aplicação tira proveito da semântica de vári
 (\texttt{nav}, \texttt{li}, \texttt{button}, \ldots), pelo que se espera que leitores de ecrã sejam
 capazes de compreender as páginas sem recurso a ARIA \emph{labels}, e oferecer uma boa experiência
 de utilização a utilizadores com deficiências visuais. Para validar esta e outras hipóteses, a
-extensão WAVE \cite{wave}, foi utilizada para procurar diversos problemas de acessibilidade, que o
-nosso grupo de trabalho procurou corrigir. Também no âmbito da percetibilidade, garantiu-se que os
-rácios de contraste entre o fundo e texto dos componentes eram aceitáveis, pelo menos no tema claro.
-No tema escuro, isto não se verifica, visto que a cor da Universidade do Minho, utilizada em vários
-elementos da interface, não contrasta bem com tons escuros. Mesmo assim, o utilizador tem a opção de
-utilizar o tema claro caso o necessite.
+extensão WAVE \cite{wave} e o programa Pa11y \cite{pa11y} foram utilizados para procurar diversos
+problemas de acessibilidade, que o nosso grupo de trabalho procurou corrigir. Também no âmbito da
+percetibilidade, garantiu-se que os rácios de contraste entre o fundo e texto dos componentes eram
+aceitáveis, pelo menos no tema claro. No tema escuro, isto não se verifica, visto que a cor da
+Universidade do Minho, utilizada em vários elementos da interface, não contrasta bem com tons
+escuros. Mesmo assim, o utilizador tem a opção de utilizar o tema claro caso o necessite.
 
 No âmbito da operabilidade, o nosso principal foco do foi o de garantir que era possível navegar
 pelas várias páginas com o teclado de uma forma que faça sentido. A título de exemplo, é possível
@@ -1089,6 +1089,8 @@ apresentando uma boa experiência de utilização.
     \bibitem{wave}
         ``WAVE - Web Accessibility Evaluation Tool''. WAVE. Accessed: May 4, 2025. [Online.]
         Available: \url{https://wave.webaim.org/extension/}
+    \bibitem{pa11y}
+        ``Pa11y''. Pa11y. Accessed: May 4, 2025. [Online.] Available: \url{https://pa11y.org/}
 \end{thebibliography}
 \endgroup
 
