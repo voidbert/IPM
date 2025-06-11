@@ -1,7 +1,11 @@
 # IPM
 
-UMinho's Human-Computer Interaction 2024/25 assignment. See [Assignment.pdf](Assignment.pdf) for
-more details.
+User interface for managing schedules in a university course. UMinho's Human-Computer Interaction
+2024/25 assignment. See [Assignment.pdf](Assignment.pdf) for more details.
+
+Grade : 19 / 20 :star:
+
+![Screenshot of one of the application's pages](reports/res/manual/resolver_problemas.png)
 
 ## Authors
 
